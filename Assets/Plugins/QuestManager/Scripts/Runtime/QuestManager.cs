@@ -11,15 +11,16 @@ namespace GEAR.QuestManager
 {
     public class QuestManager : MonoBehaviour
     {
-        [SerializeField] private string QuestsPath = "Quests";
-        [SerializeField] private GameObject MainQuestBody;
-        [SerializeField] private Vector3 MQBodyiniOffset = new Vector3(0, -5, 0);
-        [SerializeField] private Vector3 MQBodyOffset = new Vector3(0, -2.85f, 0);
-        [SerializeField] private GameObject SubQuestBody;
-        [SerializeField] private Vector3 SQBodyOffset = new Vector3(0f, -2f, -0.1f);
-        [SerializeField] private GameObject DataObjectRoot;
-        [SerializeField] private GameObject Cover;
+        //[SerializeField] private TextAsset streamingAsset;
+        // [SerializeField] private GameObject MainQuestBody;
+        // [SerializeField] private Vector3 MQBodyiniOffset = new Vector3(0, -5, 0);
+        // [SerializeField] private Vector3 MQBodyOffset = new Vector3(0, -2.85f, 0);
+        // [SerializeField] private GameObject SubQuestBody;
+        // [SerializeField] private Vector3 SQBodyOffset = new Vector3(0f, -2f, -0.1f);
+        // [SerializeField] private GameObject DataObjectRoot;
+        // [SerializeField] private GameObject Cover;
 
+        /*
         private int _mainQuestIndex = 0;
         private readonly List<MainQuest> _mainQuests = new List<MainQuest>();
 
@@ -36,14 +37,13 @@ namespace GEAR.QuestManager
         {
             _mainQuests.Clear();
 
-            var text = Resources.Load<TextAsset>(QuestsPath);
-            if (!text)
+            if (!streamingAsset)
             {
-                Debug.LogError($"QuestManager::ReadQuestXML: Unable to load quest file {QuestsPath}");
+                Debug.LogError($"QuestManager::ReadQuestXML: Unable to load quest file");
                 return;
             }
 
-            var doc = XDocument.Load(new MemoryStream(text.bytes));
+            var doc = XDocument.Load(new MemoryStream(streamingAsset.bytes));
 
             var mainQuestPosition = MQBodyiniOffset;
             foreach (var mainQuest in doc.Descendants("MainQuest"))
@@ -126,5 +126,6 @@ namespace GEAR.QuestManager
                 Cover.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 90f));
             }
         }
+        */
     }
 }

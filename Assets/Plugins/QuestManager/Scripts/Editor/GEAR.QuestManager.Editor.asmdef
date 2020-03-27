@@ -1,6 +1,8 @@
 {
     "name": "GEAR.QuestManager.Editor",
-    "references": [],
+    "references": [
+        "GEAR.QuestManager"
+    ],
     "optionalUnityReferences": [
         "TestAssemblies"
     ],

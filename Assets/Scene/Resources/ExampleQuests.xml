@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QuestManager>
+    <QuestList>
+
+        <MainQuest>
+			<TranslationKey>QM_MainQuest1</TranslationKey>
+			<DefaultText>Main Quest 1</DefaultText>
+			
+            <SubQuest>
+				<TranslationKey>QM_SubQuest11</TranslationKey>
+				<DefaultText>Sub Quest 1</DefaultText>
+				<Script></Script>
+			</SubQuest>
+			
+            <SubQuest>
+				<TranslationKey>QM_SubQuest12</TranslationKey>
+				<DefaultText>Sub Quest 2</DefaultText>
+				<Script></Script>
+			</SubQuest>
+        </MainQuest>
+
+		<MainQuest>
+			<TranslationKey>QM_MainQuest2</TranslationKey>
+			<DefaultText>Main Quest 2</DefaultText>
+			
+            <SubQuest>
+				<TranslationKey>QM_SubQuest21</TranslationKey>
+				<DefaultText>Sub Quest 1</DefaultText>
+				<Script></Script>
+			</SubQuest>
+			
+            <SubQuest>
+				<TranslationKey>QM_SubQuest22</TranslationKey>
+				<DefaultText>Sub Quest 2</DefaultText>
+				<Script></Script>
+			</SubQuest>
+        </MainQuest>
+		
+    </QuestList>
+</QuestManager>
