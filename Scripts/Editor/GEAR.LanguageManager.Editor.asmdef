@@ -1,6 +1,8 @@
 {
     "name": "GEAR.LanguageManager.Editor",
-    "references": [],
+    "references": [
+        "GEAR.LanguageManager"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
