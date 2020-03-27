@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: -82291597, guid: b756cd77d40dc61409e6c5eb9d0d808d, type: 3}
   m_Name: SceneFusionConfig
   m_EditorClassIdentifier: 
-  ShowGettingStartedScreen: 1
+  ShowGettingStartedScreen: 0
   Offsets:
     OnlineStatusOffset: {x: 0, y: 0}
     HierarchyIconOffset: 0

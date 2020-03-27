@@ -1,7 +1,12 @@
 {
     "name": "GEAR.LanguageManager.Tests",
-    "references": [],
-    "optionalUnityReferences": [],
+    "references": [
+        "GEAR.LanguageManager",
+        "Unity.TextMeshPro"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
     "includePlatforms": [
         "Editor",
         "macOSStandalone",

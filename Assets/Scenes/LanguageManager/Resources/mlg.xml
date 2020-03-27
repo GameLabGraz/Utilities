@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageManager>
+    <Translations>
+	
+        <Translation Key="DescriptionLM">
+            <English>This package is used to localize text components in Unity.</English>
+            <German>Diese Paket wird zum Lokalisieren von Textkomponenten in Unity verwendet.</German>
+        </Translation>
+		
+		<Translation Key="German">
+            <English>German</English>
+            <German>Deutsch</German>
+        </Translation>
+
+		<Translation Key="English">
+            <English>English</English>
+            <German>Englisch</German>
+        </Translation>
+		
+    </Translations>
+</LanguageManager>

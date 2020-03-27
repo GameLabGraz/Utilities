@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageManager>
+    <Translations>
+
+		<Translation Key="GER">
+            <English>German</English>
+            <German>Deutsch</German>
+        </Translation>
+
+		<Translation Key="ENG">
+            <English>English</English>
+            <German>Englisch</German>
+        </Translation>
+		
+    </Translations>
+</LanguageManager>

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using GEAR.Serialize;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,8 +15,12 @@ namespace GEAR.Localization
 
     public class LanguageManager : MonoBehaviour
     {
+        private const string XmlSchemaFile = "mlgSchema";
+        private readonly XmlSchemaSet _xmlSchemaSet = new XmlSchemaSet();
+
+        [SerializeField]
         [SerializeProperty("CurrentLanguage")]
-        public SystemLanguage _currentLanguage = SystemLanguage.English;
+        private SystemLanguage _currentLanguage = SystemLanguage.English;
 
         public SystemLanguage CurrentLanguage
         {
@@ -25,11 +32,16 @@ namespace GEAR.Localization
             }
         }
 
+        public void SetLanguage(string languageKey)
+        {
+            CurrentLanguage = Enum.TryParse(languageKey, out SystemLanguage language) 
+                ? language : SystemLanguage.Unknown;
+        }
+
         [SerializeField]
-        private List<string> _mlgFiles;
+        private List<TextAsset> _mlgFiles = new List<TextAsset>();
 
         public static LanguageManager Instance { get; private set; }
-
 
         public LanguageChangedEvent OnLanguageChanged = new LanguageChangedEvent();
 
@@ -41,7 +53,9 @@ namespace GEAR.Localization
             if (Instance == null)
             {
                 Instance = this;
-                Instance.CurrentLanguage = SystemLanguage.German;
+                Instance.CurrentLanguage = Application.systemLanguage;
+                Instance._xmlSchemaSet.Add("", XmlReader.Create(
+                        new MemoryStream(Resources.Load<TextAsset>(XmlSchemaFile).bytes)));
             }
             else if (Instance != this)
             {
@@ -54,7 +68,6 @@ namespace GEAR.Localization
             {
                 Instance.LoadMlgFile(mlgFile);
             }
-
         }
 
         public void ClearTranslations()
@@ -72,33 +85,53 @@ namespace GEAR.Localization
             return _translations.ContainsKey(key) ? _translations[key].GetValue(language) : key;
         }
 
-        public void LoadMlgFile(string path)
+        public bool LoadMlgFile(TextAsset mlgFile)
         {
-            var text = Resources.Load<TextAsset>(path);
-            if (!text)
+            var result = true;
+            if (!mlgFile)
             {
-                Debug.LogError($"LanguageManager::LoadMlgFile: Unable to load language file {path}");
-                return;
+                Debug.LogError($"LanguageManager::LoadMlgFile: Unable to load language file");
+                return false;
             }
 
-            var doc = XDocument.Load(new MemoryStream(text.bytes));
-            foreach (var translationElement in doc.Descendants("Translation"))
+            try
             {
-                var key = translationElement.Attribute("Key")?.Value;
-                if (key == null)
-                    continue;
-
-                var translation = new Translation(key);
-                foreach (var languageElement in translationElement.Elements())
+                var doc = XDocument.Load(new MemoryStream(mlgFile.bytes));
+                doc.Validate(_xmlSchemaSet, (o, e) =>
                 {
-                    if (!Enum.TryParse(languageElement.Name.ToString(), out SystemLanguage language))
+                    Debug.Log(e.Message);
+                    result = false;
+                });
+
+                foreach (var translationElement in doc.Descendants("Translation"))
+                {
+                    var key = translationElement.Attribute("Key")?.Value;
+                    if (key == null)
                         continue;
 
-                    translation.AddTranslation(language, languageElement.Value);
-                }
+                    var translation = new Translation(key);
+                    foreach (var languageElement in translationElement.Elements())
+                    {
+                        if (!Enum.TryParse(languageElement.Name.ToString(), out SystemLanguage language))
+                        {
+                            Debug.Log($"LanguageManager::LoadMlgFile: Unsupported Language {languageElement.Name}");
+                            result = false;
+                            continue;
+                        }
 
-                _translations[key] = translation;
+                        translation.AddTranslation(language, languageElement.Value);
+                    }
+
+                    _translations[key] = translation;
+                }
             }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                return false;
+            }
+
+            return result;
         }
     }
 }
