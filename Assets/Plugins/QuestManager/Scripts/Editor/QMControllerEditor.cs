@@ -1,5 +1,4 @@
-﻿using System.IO;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace GEAR.QuestManager.Editor
@@ -7,11 +6,18 @@ namespace GEAR.QuestManager.Editor
     [CustomEditor (typeof (QMController))]
     public class QMControllerEditor : UnityEditor.Editor
     {
+        private const string TexturePath = "gearLogo";
+        private Texture2D _logoTexture;
+
+        private void Awake()
+        {
+            _logoTexture = Resources.Load<Texture2D>(TexturePath);
+        }
+
         public override void OnInspectorGUI ()
         {
+            DrawLogoTexture();
             DrawDefaultInspector ();
-
-            LogoTexture();
 
             if (GUILayout.Button ("Generate Quest Manager"))
             {
@@ -19,24 +25,12 @@ namespace GEAR.QuestManager.Editor
             }
         }
 
-        private static void LogoTexture()
+        private void DrawLogoTexture()
         {
-            string texturePath = "gearLogo";
-
-            
-            var tex = Resources.Load<Texture2D>(texturePath);
-            if (tex)
+            if (_logoTexture)
             {
-                Debug.Log("Logo Texture is found");
-
-                GUILayout.Box(tex,GUILayout.Width(90f), GUILayout.Height(60f), GUILayout.ExpandWidth(true));
+                GUILayout.Box(_logoTexture, GUILayout.Width(90f), GUILayout.Height(60f), GUILayout.ExpandWidth(true));
             }
-
-            else
-            {
-                Debug.Log("No texture is found");
-            }
-
         }
     }
 }
