@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace Gear.QuestManager
+namespace GEAR.QuestManager.NodeGraph.Editor
 {
     [CustomEditor(typeof(QM_StoreValueOfGraph))]
-    public class QM_StoreValueOfGraph_Editor : Editor
+    public class QM_StoreValueOfGraph_Editor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
@@ -14,7 +14,6 @@ namespace Gear.QuestManager
             {
                 ((QM_StoreValueOfGraph)target).GenerateQuestsList();
             }
-
         }
     }
 }

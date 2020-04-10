@@ -6,7 +6,7 @@ namespace GEAR.QuestManager.Editor
     [CustomEditor (typeof (QMController))]
     public class QMControllerEditor : UnityEditor.Editor
     {
-        private const string TexturePath = "gearLogo";
+        private const string TexturePath = "images/logo";
         private Texture2D _logoTexture;
 
         private void Awake()
@@ -21,7 +21,7 @@ namespace GEAR.QuestManager.Editor
 
             if (GUILayout.Button ("Generate Quest Manager"))
             {
-                ((QMController)target).GenerateQM ();
+                ((QMController)target).GenerateQuestManager ();
             }
         }
 

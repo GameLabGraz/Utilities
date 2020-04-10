@@ -1,16 +1,15 @@
-﻿using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gear.QuestManager
+namespace GEAR.QuestManager.NodeGraph
 {
     public class QM_StoreValueOfGraph : MonoBehaviour
     {
-        [SerializeField] private QM_NodeGraph QuestGraph;
+        [SerializeField] private QMNodeGraph QuestGraph;
 
         public List<XNode.Node> MainQuests;
         public Dictionary<XNode.Node, List<XNode.Node>> QuestDictionary = new Dictionary<XNode.Node, List<XNode.Node>>();
+
         public void GenerateQuestsList()
         {
             MainQuests.Clear();
@@ -50,8 +49,8 @@ namespace Gear.QuestManager
                     subQuestList.Add(con.node);
 
                     // For Test
-                    var subQuestData = con.node as QM_Node_SubQuest;
-                    Debug.Log(subQuestData.SubQuestName);
+                    var subQuestData = con.node as QMNodeSubQuest;
+                    Debug.Log(subQuestData.questName);
                 }
             }
 

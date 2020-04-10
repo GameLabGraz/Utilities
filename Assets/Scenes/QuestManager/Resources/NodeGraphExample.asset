@@ -1,0 +1,367 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6093343453195302554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 979a2b2360384cf489b1975e87d62f7a, type: 3}
+  m_Name: QM Node Main Quest
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -328, y: -360}
+  ports:
+    keys:
+    - questBody
+    - mainQuest
+    values:
+    - _fieldName: questBody
+      _node: {fileID: -6093343453195302554}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 114932935851905840}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: mainQuest
+      _node: {fileID: -6093343453195302554}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: mainQuest
+        node: {fileID: 7167590962673005406}
+        reroutePoints: []
+      - fieldName: mainQuest
+        node: {fileID: 5915021278519868321}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  questNumber: 1
+  questName: QM_MainQuest1
+  questBody: 
+  mainQuest: Move Inside the Room
+--- !u!114 &-1729867735511975564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda726931a62c37419ee05915b759a7c, type: 3}
+  m_Name: QM Node Sub Quest
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -24, y: 504}
+  ports:
+    keys:
+    - mainQuest
+    values:
+    - _fieldName: mainQuest
+      _node: {fileID: -1729867735511975564}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: mainQuest
+        node: {fileID: -301418111414509366}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  questNumber: 3
+  questName: SubQuest23
+  mainQuest: 
+  scriptFile: {fileID: 0}
+  AdditionalInformation: 0
+--- !u!114 &-1138184417525347739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda726931a62c37419ee05915b759a7c, type: 3}
+  m_Name: QM Node Sub Quest
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -24, y: 8}
+  ports:
+    keys:
+    - mainQuest
+    values:
+    - _fieldName: mainQuest
+      _node: {fileID: -1138184417525347739}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: mainQuest
+        node: {fileID: -301418111414509366}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  questNumber: 1
+  questName: SubQuest21
+  mainQuest: 
+  scriptFile: {fileID: 0}
+  AdditionalInformation: 1
+--- !u!114 &-301418111414509366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 979a2b2360384cf489b1975e87d62f7a, type: 3}
+  m_Name: QM Node Main Quest
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -344, y: -104}
+  ports:
+    keys:
+    - questBody
+    - mainQuest
+    values:
+    - _fieldName: questBody
+      _node: {fileID: -301418111414509366}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: 114932935851905840}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: mainQuest
+      _node: {fileID: -301418111414509366}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: mainQuest
+        node: {fileID: -1138184417525347739}
+        reroutePoints: []
+      - fieldName: mainQuest
+        node: {fileID: 2861989252046737838}
+        reroutePoints: []
+      - fieldName: mainQuest
+        node: {fileID: -1729867735511975564}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  questNumber: 2
+  questName: QM_MainQuest2
+  questBody: 
+  mainQuest: Open the Quest Manager
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4fbca5352464d2469b8589c623ba66a, type: 3}
+  m_Name: NodeGraphExample
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -6093343453195302554}
+  - {fileID: -301418111414509366}
+  - {fileID: 7167590962673005406}
+  - {fileID: 5915021278519868321}
+  - {fileID: -1138184417525347739}
+  - {fileID: 2861989252046737838}
+  - {fileID: -1729867735511975564}
+  - {fileID: 114932935851905840}
+  Logo: {fileID: 0}
+--- !u!114 &114932935851905840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6de8ac21b80fd04cb3bdd516b726b18, type: 3}
+  m_Name: QM Node Body
+  m_EditorClassIdentifier: GEAR.QuestManager:Gear.QuestManager.NodeGraph:QMNodeBody
+  graph: {fileID: 11400000}
+  position: {x: -664, y: -264}
+  ports:
+    keys:
+    - questBody
+    values:
+    - _fieldName: questBody
+      _node: {fileID: 114932935851905840}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: questBody
+        node: {fileID: -6093343453195302554}
+        reroutePoints: []
+      - fieldName: questBody
+        node: {fileID: -301418111414509366}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  questBody: Quest Body
+  questBodyName: QuestManager Example
+--- !u!114 &2861989252046737838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda726931a62c37419ee05915b759a7c, type: 3}
+  m_Name: QM Node Sub Quest
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -24, y: 264}
+  ports:
+    keys:
+    - mainQuest
+    values:
+    - _fieldName: mainQuest
+      _node: {fileID: 2861989252046737838}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: mainQuest
+        node: {fileID: -301418111414509366}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  questNumber: 2
+  questName: SubQuest22
+  mainQuest: 
+  scriptFile: {fileID: 0}
+  AdditionalInformation: 0
+--- !u!114 &5915021278519868321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda726931a62c37419ee05915b759a7c, type: 3}
+  m_Name: QM Node Sub Quest
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -8, y: -264}
+  ports:
+    keys:
+    - mainQuest
+    values:
+    - _fieldName: mainQuest
+      _node: {fileID: 5915021278519868321}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: mainQuest
+        node: {fileID: -6093343453195302554}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  questNumber: 2
+  questName: SubQuest12
+  mainQuest: 
+  scriptFile: {fileID: 0}
+  AdditionalInformation: 1
+--- !u!114 &7167590962673005406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda726931a62c37419ee05915b759a7c, type: 3}
+  m_Name: QM Node Sub Quest
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -8, y: -504}
+  ports:
+    keys:
+    - mainQuest
+    values:
+    - _fieldName: mainQuest
+      _node: {fileID: 7167590962673005406}
+      _typeQualifiedName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: mainQuest
+        node: {fileID: -6093343453195302554}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  questNumber: 1
+  questName: SubQuest11
+  mainQuest: 
+  scriptFile: {fileID: 0}
+  AdditionalInformation: 0

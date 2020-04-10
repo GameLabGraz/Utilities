@@ -2,7 +2,8 @@
     "name": "GEAR.QuestManager",
     "references": [
         "Unity.TextMeshPro",
-        "GEAR.LanguageManager"
+        "GEAR.LanguageManager",
+        "XNode"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

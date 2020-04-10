@@ -1,127 +1,154 @@
-﻿using GEAR.QuestManager;
+﻿using GEAR.QuestManager.NodeGraph;
+using GEAR.QuestManager.Reader;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public struct QM_ColliderParam
+namespace GEAR.QuestManager
 {
-    public string name;
-    public Vector3 position;
-    public Quaternion rotation;
-    public Transform parent;
-}
 
-[ExecuteInEditMode]
-public class QMController : MonoBehaviour
-{
-    [SerializeField] private TextAsset streamingAsset;
-    [SerializeField] private GameObject mainQuestBodyPrefab;
-    [SerializeField] private Vector3 MQBodyiniOffset = new Vector3 (0, -5, 0);
-    [SerializeField] private Vector3 MQBodyOffset = new Vector3 (0, -2.85f, 0);
-    [SerializeField] private GameObject subQuestBodyPrefab;
-    [SerializeField] private Vector3 SQBodyOffset = new Vector3 (0f, -2f, -0.1f);
-    [SerializeField] private GameObject dataObjectRootPrefab;
-
-    [Header("Cover")]
-    [SerializeField] private GameObject coverPrefab;
-    [SerializeField] private float coverOffset;
-
-    [Header("Collider")]
-    [SerializeField] private GameObject colliderPlaceHolderPrefab;
-    [SerializeField] private float colliderOffset = 0.0f;
-
-    [Header("Initializer")]
-    [SerializeField] private GameObject initializerPrefab;
-
-    [Header("Handle")]
-    [SerializeField] private bool handleAutoPosition = true;
-    [SerializeField] private GameObject handlePrefab;
-    [SerializeField] private Vector3 handleOffset;
-
-    public float CoverOffset
+    public struct QM_ColliderParam
     {
-        get => coverOffset;
-        set => coverOffset = value;
+        public string name;
+        public Vector3 position;
+        public Quaternion rotation;
+        public Transform parent;
     }
 
-    private QuestManager questManager;
-    private Vector3 coverSize => coverPrefab.GetComponent<MeshRenderer> ().bounds.size;
-    private Vector3 coverPosition => coverPrefab.transform.position + new Vector3(0, CoverOffset, 0); //TODO check whether coverPrefab position in necessary
-
-    public void GenerateQM ()
+    [ExecuteInEditMode]
+    public class QMController : MonoBehaviour
     {
-        if (questManager)
+        [SerializeField] private GameObject mainQuestBodyPrefab;
+        [SerializeField] private Vector3 MQBodyOffset = new Vector3 (0, -2.85f, 0);
+        [SerializeField] private GameObject subQuestBodyPrefab;
+        [SerializeField] private Vector3 SQBodyOffset = new Vector3 (0f, -2f, -0.1f);
+
+        [Header ("Cover")][SerializeField] private GameObject coverPrefab;
+        [SerializeField] private float coverOffset;
+
+        [Header ("Collider")][SerializeField] private GameObject colliderPlaceHolderPrefab;
+        [SerializeField] private float colliderOffset = 0.0f;
+
+        [Header ("Initializer")][SerializeField]
+        private GameObject initializerPrefab;
+
+        [Header ("Handle")][SerializeField] private bool handleAutoPosition = true;
+        [SerializeField] private GameObject handlePrefab;
+        [SerializeField] private Vector3 handleOffset;
+
+        [Header ("Quest Data Source")][SerializeField]
+        private QMNodeGraph nodeGraph;
+
+        [SerializeField] private TextAsset xmlFile;
+        private QMReader _qmReader;
+
+        public float CoverOffset
         {
-            DestroyImmediate(questManager.gameObject);
+            get => coverOffset;
+            set => coverOffset = value;
         }
 
-        Debug.Log("Quest Manager Generated");
-        questManager = new GameObject("QuestManager").AddComponent<QuestManager>();
+        private QuestManager questManager;
+        private Vector3 coverSize => coverPrefab.GetComponent<MeshRenderer> ().bounds.size;
 
-        SetupCollider();
+        private Vector3 coverPosition =>
+            coverPrefab.transform.position +
+            new Vector3 (0, CoverOffset, 0); //TODO check whether coverPrefab position in necessary
 
-        SetupPlaceHolder();
-    }
-
-    private void SetupCollider()
-    {
-        var colliderCollection = new GameObject("ColliderCollection");
-        colliderCollection.transform.parent = questManager.transform;
-        GenerateCollider(new QM_ColliderParam()
+        public void GenerateQuestManager ()
         {
-            name = "topCollider",
-            position = coverPosition - new Vector3(0, coverSize.y / 2f, 0),
-            rotation = Quaternion.Euler(0, 0, 0),
-            parent = colliderCollection.transform
-        });
-        GenerateCollider(new QM_ColliderParam()
+            if (questManager)
+            {
+                DestroyImmediate (questManager.gameObject);
+            }
+
+            Debug.Log ("Quest Manager Generated");
+            questManager = new GameObject ("QuestManager").AddComponent<QuestManager> ();
+
+            SetupCollider ();
+
+            SetupPlaceHolder ();
+        }
+
+        private void SetupCollider ()
         {
-            name = "bottomCollider",
-            position = coverPosition - new Vector3(0, coverPosition.y - colliderOffset, 0),
-            rotation = Quaternion.Euler(180, 0, 0),
-            parent = colliderCollection.transform
-        });
-    }
+            var colliderCollection = new GameObject ("ColliderCollection");
+            colliderCollection.transform.parent = questManager.transform;
+            GenerateCollider (new QM_ColliderParam
+            {
+                name = "topCollider",
+                    position = coverPosition - new Vector3 (0, coverSize.y / 2f, 0),
+                    rotation = Quaternion.Euler (0, 0, 0),
+                    parent = colliderCollection.transform
+            });
+            GenerateCollider (new QM_ColliderParam
+            {
+                name = "bottomCollider",
+                    position = coverPosition - new Vector3 (0, coverPosition.y - colliderOffset, 0),
+                    rotation = Quaternion.Euler (180, 0, 0),
+                    parent = colliderCollection.transform
+            });
+        }
 
-    private void GenerateCollider (QM_ColliderParam colliderParam)
-    {
-        var qmCollider = Instantiate (colliderPlaceHolderPrefab, colliderParam.parent);
-        qmCollider.name = colliderParam.name;
-        qmCollider.transform.position = colliderParam.position;
-        qmCollider.transform.rotation = colliderParam.rotation;
-        qmCollider.transform.localScale = new Vector3 (
-            qmCollider.transform.localScale.x,
-            qmCollider.transform.localScale.y * coverSize.y * 100f,
-            qmCollider.transform.localScale.z * coverSize.z);
-    }
+        private void GenerateCollider (QM_ColliderParam colliderParam)
+        {
+            var qmCollider = Instantiate (colliderPlaceHolderPrefab, colliderParam.parent);
+            qmCollider.name = colliderParam.name;
+            qmCollider.transform.position = colliderParam.position;
+            qmCollider.transform.rotation = colliderParam.rotation;
+            qmCollider.transform.localScale = new Vector3 (
+                qmCollider.transform.localScale.x,
+                qmCollider.transform.localScale.y * coverSize.y * 100f,
+                qmCollider.transform.localScale.z * coverSize.z);
+        }
 
-    private void SetupPlaceHolder()
-    {
-        var placeHolder = new GameObject("PlaceHolder");
-        placeHolder.transform.parent = questManager.transform;
-        var origin = new GameObject("Origin");
-        origin.transform.parent = placeHolder.transform;
-        var initializer = Instantiate(initializerPrefab, origin.transform);
+        private void SetupPlaceHolder ()
+        {
+            var placeHolder = new GameObject ("PlaceHolder");
+            placeHolder.transform.parent = questManager.transform;
+            var origin = new GameObject ("Origin");
+            origin.transform.parent = placeHolder.transform;
+            var initializer = Instantiate (initializerPrefab, origin.transform);
 
-        SetupData(placeHolder);
-    }
+            SetupData (placeHolder);
+        }
 
-    private void SetupData(GameObject parent)
-    {
-        var data = new GameObject("Data");
-        data.transform.parent = parent.transform;
+        private void SetupData (GameObject parent)
+        {
+            var data = new GameObject ("Data");
+            data.transform.parent = parent.transform;
 
-        var cover = Instantiate(coverPrefab, data.transform);
-        cover.transform.position = coverPosition;
+            var cover = Instantiate (coverPrefab, data.transform);
+            cover.transform.position = coverPosition;
 
-        SetupHandle(data, cover);
+            SetupHandle (data, cover);
+            SetupRoot (data);
 
-    }
+        }
 
-    private void SetupHandle(GameObject parent, GameObject Cover)
-    {
-        var handle = Instantiate(handlePrefab, parent.transform);
+        private void SetupHandle (GameObject parent, GameObject cover)
+        {
+            var handle = Instantiate (handlePrefab, parent.transform);
 
-        handle.transform.position = handleAutoPosition ?
-            coverPosition - new Vector3(0,  coverSize.y * 0.2f,  coverSize.z * 0.7f) : handleOffset;
+            handle.transform.position = handleAutoPosition ?
+                coverPosition - new Vector3 (0, coverSize.y * 0.2f, coverSize.z * 0.7f) :
+                handleOffset;
+        }
+
+        private void SetupRoot (GameObject parent)
+        {
+            var root = new GameObject ("Root");
+            root.transform.parent = parent.transform;
+
+            var reader = gameObject.AddComponent<QMNodeGraphReader>();
+            reader.Root = root;
+            reader.NodeGraph = nodeGraph;
+            reader.MainQuestPrefab = mainQuestBodyPrefab;
+            reader.MainQuestIniOffset = coverPosition;
+            reader.MainQuestBodyOffset = MQBodyOffset;
+            reader.SubQuestPrefab = subQuestBodyPrefab;
+            reader.SubQuestBodyOffset = SQBodyOffset;
+
+            reader.ReadData ();
+
+        }
     }
 }
