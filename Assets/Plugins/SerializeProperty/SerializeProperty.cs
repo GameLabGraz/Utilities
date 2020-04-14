@@ -7,7 +7,6 @@ using UnityEditor;
 
 namespace GEAR.Serialize
 {
-
     [System.AttributeUsage(System.AttributeTargets.Field)]
     public class SerializeProperty : PropertyAttribute
     {
@@ -23,38 +22,41 @@ namespace GEAR.Serialize
     [CustomPropertyDrawer(typeof(SerializeProperty))]
     public class SerializePropertyAttributeDrawer : PropertyDrawer
     {
-        private PropertyInfo propertyFieldInfo = null;
+        private SerializedProperty _property;
+        private PropertyInfo _propertyFieldInfo;
+
+        private UnityEngine.Object Target => _property.serializedObject.targetObject;
+        private bool HasRangeAttribute => RangeAttribute != null;
+        private RangeAttribute RangeAttribute => Target.GetType().GetMember(_property.name,
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)[0].GetCustomAttribute<RangeAttribute>();
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            UnityEngine.Object target = property.serializedObject.targetObject;
+            if (_property == null)
+                _property = property;
 
             // Find the property field using reflection, in order to get access to its getter/setter.
-            if (propertyFieldInfo == null)
-                propertyFieldInfo = target.GetType().GetProperty(((SerializeProperty) attribute).PropertyName,
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-            if (propertyFieldInfo != null)
+            if (_propertyFieldInfo == null)
+                _propertyFieldInfo = Target.GetType().GetProperty(((SerializeProperty)attribute).PropertyName,
+                                                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (_propertyFieldInfo != null)
             {
-
                 // Retrieve the value using the property getter:
-                object value = propertyFieldInfo.GetValue(target, null);
+                var value = _propertyFieldInfo.GetValue(Target, null);
 
                 // Draw the property, checking for changes:
                 EditorGUI.BeginChangeCheck();
-                value = DrawProperty(position, property.propertyType, propertyFieldInfo.PropertyType, value, label);
+                value = DrawProperty(position, property.propertyType, _propertyFieldInfo.PropertyType, value, label);
 
                 // If any changes were detected, call the property setter:
-                if (EditorGUI.EndChangeCheck() && propertyFieldInfo != null)
+                if (EditorGUI.EndChangeCheck() && _propertyFieldInfo != null)
                 {
-
                     // Record object state for undo:
-                    Undo.RecordObject(target, "Inspector");
+                    Undo.RecordObject(Target, "Inspector");
 
                     // Call property setter:
-                    propertyFieldInfo.SetValue(target, value, null);
+                    _propertyFieldInfo.SetValue(Target, value, null);
                 }
-
             }
             else
             {
@@ -62,46 +64,48 @@ namespace GEAR.Serialize
             }
         }
 
-        private object DrawProperty(Rect position, SerializedPropertyType propertyType, Type type, object value,
-            GUIContent label)
+        private object DrawProperty(Rect position, SerializedPropertyType propertyType, Type type, object value, GUIContent label)
         {
             switch (propertyType)
             {
                 case SerializedPropertyType.Integer:
-                    return EditorGUI.IntField(position, label, (int) value);
+                    return HasRangeAttribute ?
+                        EditorGUI.IntSlider(position, label, (int)value, (int)RangeAttribute.min, (int)RangeAttribute.max) :
+                        EditorGUI.IntField(position, label, (int)value);
                 case SerializedPropertyType.Boolean:
-                    return EditorGUI.Toggle(position, label, (bool) value);
+                    return EditorGUI.Toggle(position, label, (bool)value);
                 case SerializedPropertyType.Float:
-                    return EditorGUI.FloatField(position, label, (float) value);
+                    return HasRangeAttribute ?
+                        EditorGUI.Slider(position, label, (float)value, RangeAttribute.min, RangeAttribute.max) :
+                        EditorGUI.FloatField(position, label, (float)value);
                 case SerializedPropertyType.String:
-                    return EditorGUI.TextField(position, label, (string) value);
+                    return EditorGUI.TextField(position, label, (string)value);
                 case SerializedPropertyType.Color:
-                    return EditorGUI.ColorField(position, label, (Color) value);
+                    return EditorGUI.ColorField(position, label, (Color)value);
                 case SerializedPropertyType.ObjectReference:
-                    return EditorGUI.ObjectField(position, label, (UnityEngine.Object) value, type, true);
+                    return EditorGUI.ObjectField(position, label, (UnityEngine.Object)value, type, true);
                 case SerializedPropertyType.ExposedReference:
-                    return EditorGUI.ObjectField(position, label, (UnityEngine.Object) value, type, true);
+                    return EditorGUI.ObjectField(position, label, (UnityEngine.Object)value, type, true);
                 case SerializedPropertyType.LayerMask:
-                    return EditorGUI.LayerField(position, label, (int) value);
+                    return EditorGUI.LayerField(position, label, (int)value);
                 case SerializedPropertyType.Enum:
-                    return EditorGUI.EnumPopup(position, label, (Enum) value);
+                    return EditorGUI.EnumPopup(position, label, (Enum)value);
                 case SerializedPropertyType.Vector2:
-                    return EditorGUI.Vector2Field(position, label, (Vector2) value);
+                    return EditorGUI.Vector2Field(position, label, (Vector2)value);
                 case SerializedPropertyType.Vector3:
-                    return EditorGUI.Vector3Field(position, label, (Vector3) value);
+                    return EditorGUI.Vector3Field(position, label, (Vector3)value);
                 case SerializedPropertyType.Vector4:
-                    return EditorGUI.Vector4Field(position, label, (Vector4) value);
+                    return EditorGUI.Vector4Field(position, label, (Vector4)value);
                 case SerializedPropertyType.Rect:
-                    return EditorGUI.RectField(position, label, (Rect) value);
+                    return EditorGUI.RectField(position, label, (Rect)value);
                 case SerializedPropertyType.AnimationCurve:
-                    return EditorGUI.CurveField(position, label, (AnimationCurve) value);
+                    return EditorGUI.CurveField(position, label, (AnimationCurve)value);
                 case SerializedPropertyType.Bounds:
-                    return EditorGUI.BoundsField(position, label, (Bounds) value);
+                    return EditorGUI.BoundsField(position, label, (Bounds)value);
                 default:
                     throw new NotImplementedException("Unimplemented propertyType " + propertyType + ".");
             }
         }
-
     }
 #endif
 }
