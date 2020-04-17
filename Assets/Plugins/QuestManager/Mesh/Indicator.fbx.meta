@@ -9,6 +9,7 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: QM_Indicator
+    4300002: QM_AdditionalInfo
   externalObjects: {}
   materials:
     importMaterials: 1
