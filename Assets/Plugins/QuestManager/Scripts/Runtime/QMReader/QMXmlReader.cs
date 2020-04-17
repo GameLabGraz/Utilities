@@ -10,26 +10,25 @@ namespace GEAR.QuestManager.Reader
 {
     public class QMXmlReader : QMReader
     {
-        [SerializeField] private TextAsset xmlFile;
+        private TextAsset _xmlFile;
 
-        public TextAsset XmLFile
+        public QMXmlReader(TextAsset xmlFile)
         {
-            get => xmlFile;
-            set => xmlFile = value;
+            _xmlFile = xmlFile;
         }
 
-        public override List<MainQuestInfo> ReadData()
+        public List<MainQuestInfo> ReadData()
         {
             var mainQuestInfos = new List<MainQuestInfo>();
 
-            if (!XmLFile)
+            if (!_xmlFile)
             {
                 Debug.LogError($"QMXmlReader::ReadData: Unable to load xml file.");
                 return new List<MainQuestInfo>();
             }
 
             //ToDo XML validation
-            var doc = XDocument.Load(new MemoryStream(XmLFile.bytes));
+            var doc = XDocument.Load(new MemoryStream(_xmlFile.bytes));
             foreach (var mainQuest in doc.Descendants("MainQuest"))
             {
                  var mainQuestInfo = new MainQuestInfo(

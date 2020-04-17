@@ -9,33 +9,32 @@ namespace GEAR.QuestManager.Reader
     [ExecuteInEditMode]
     public class QMNodeGraphReader : QMReader
     {
-        [SerializeField] private QMNodeGraph nodeGraph;
+        private QMNodeGraph _nodeGraph;
 
-        public QMNodeGraph NodeGraph
+        public QMNodeGraphReader(QMNodeGraph nodeGraph)
         {
-            get => nodeGraph;
-            set => nodeGraph = value;
+            _nodeGraph = nodeGraph;
         }
 
-        public override List<MainQuestInfo> ReadData()
+        public List<MainQuestInfo> ReadData()
         {
             var mainQuestInfos = new List<MainQuestInfo>();
 
-            if (!nodeGraph)
+            if (!_nodeGraph)
             {
                 Debug.LogError($"QMNodeGraphReader::ReadData: Unable to load node graph.");
                 return new List<MainQuestInfo>();
             }
 
-            foreach (var node in NodeGraph.nodes.GetNodeByName(NodeType.QuestBody.GetStringValue()))
+            foreach (var node in _nodeGraph.nodes.GetNodeByName(NodeType.QuestBody.GetStringValue()))
             {
-                foreach (QMNodeMainQuest mainQuestNode in NodeGraph.GetConnectedNodes(node, NodeType.MainQuest))
+                foreach (QMNodeMainQuest mainQuestNode in _nodeGraph.GetConnectedNodes(node, NodeType.MainQuest))
                 {
                     var mainQuestInfo = new MainQuestInfo(
                         mainQuestNode.questNumber, 
                         mainQuestNode.questName);
 
-                    foreach (QMNodeSubQuest subQuestNode in NodeGraph.GetConnectedNodes(mainQuestNode, NodeType.SubQuest))
+                    foreach (QMNodeSubQuest subQuestNode in _nodeGraph.GetConnectedNodes(mainQuestNode, NodeType.SubQuest))
                     {
                           mainQuestInfo.AddSubQuestInfo(new SubQuestInfo(
                             subQuestNode.questNumber,
