@@ -2,7 +2,7 @@
 using System.Linq;
 using XNode;
 
-namespace GEAR.QuestManager.NodeGraph.Extensions
+namespace GEAR.QuestManager.Extensions
 {
     public static class XNodeExtensions
     {

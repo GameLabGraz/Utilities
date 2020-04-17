@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using GEAR.QuestManager.NodeGraph.Attribute;
+using GEAR.QuestManager.Attribute;
 
-namespace GEAR.QuestManager.NodeGraph.Extensions
+namespace GEAR.QuestManager.Extensions
 {
     public static class EnumExtensions
     {

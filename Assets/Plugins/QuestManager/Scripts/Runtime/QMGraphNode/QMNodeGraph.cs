@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using GEAR.QuestManager.NodeGraph.Attribute;
-using GEAR.QuestManager.NodeGraph.Extensions;
+using GEAR.QuestManager.Attribute;
+using GEAR.QuestManager.Extensions;
 
 namespace GEAR.QuestManager.NodeGraph
 {

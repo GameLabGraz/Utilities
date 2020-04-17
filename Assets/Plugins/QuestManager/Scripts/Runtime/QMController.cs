@@ -1,6 +1,7 @@
 ﻿using System;
 using GEAR.QuestManager.NodeGraph;
 using GEAR.QuestManager.Reader;
+using TMPro;
 using UnityEngine;
 
 namespace GEAR.QuestManager
@@ -49,7 +50,7 @@ namespace GEAR.QuestManager
         }
 
         private QuestManager questManager;
-        private Vector3 coverSize => coverPrefab.GetComponent<MeshRenderer> ().bounds.size;
+        private Vector3 CoverSize => coverPrefab.GetMeshSize();
 
         private Vector3 coverPosition =>
             coverPrefab.transform.position +
@@ -82,7 +83,7 @@ namespace GEAR.QuestManager
             GenerateCollider (new QM_ColliderParam
             {
                 name = "topCollider",
-                    position = coverPosition - new Vector3 (0, coverSize.y / 2f, 0),
+                    position = coverPosition - new Vector3 (0, CoverSize.y / 2f, 0),
                     rotation = Quaternion.Euler (0, 0, 0),
                     parent = colliderCollection.transform
             });
@@ -103,8 +104,8 @@ namespace GEAR.QuestManager
             qmCollider.transform.rotation = colliderParam.rotation;
             qmCollider.transform.localScale = new Vector3 (
                 qmCollider.transform.localScale.x,
-                qmCollider.transform.localScale.y * coverSize.y * 100f,
-                qmCollider.transform.localScale.z * coverSize.z);
+                qmCollider.transform.localScale.y * CoverSize.y * 100f,
+                qmCollider.transform.localScale.z * CoverSize.z);
         }
 
         private void SetupPlaceHolder ()
@@ -136,7 +137,7 @@ namespace GEAR.QuestManager
             var handle = Instantiate (handlePrefab, parent.transform);
 
             handle.transform.position = handleAutoPosition ?
-                coverPosition - new Vector3 (0, coverSize.y * 0.2f, coverSize.z * 0.7f) :
+                coverPosition - new Vector3 (0, CoverSize.y * 0.2f, CoverSize.z * 0.7f) :
                 handleOffset;
         }
 
@@ -149,18 +150,87 @@ namespace GEAR.QuestManager
                 _qmReader = gameObject.AddComponent<QMNodeGraphReader> ();
 
             var reader = (QMNodeGraphReader) _qmReader;
-            reader.Root = root;
             reader.NodeGraph = nodeGraph;
-            reader.MainQuestPrefab = mainQuestBodyPrefab;
-            reader.MainQuestIniOffset = coverPosition;
-            reader.MainQuestBodyOffset = MQBodyOffset;
-            reader.SubQuestPrefab = subQuestBodyPrefab;
-            reader.SubQuestBodyOffset = SQBodyOffset;
-            reader.autoPositionQuests = autoPositionQuests;
-            reader.CoverSize = coverSize;
+            var mainQuestInfos = reader.ReadData ();
 
-            reader.ReadData ();
 
+            //------------------------------
+            var mainQuestSize = mainQuestBodyPrefab.GetMeshSize();
+            var subQuestSize = subQuestBodyPrefab.GetMeshSize();
+
+            var mainQuestPosition = coverPosition + MQBodyOffset;
+
+            if (autoPositionQuests)
+            {
+                mainQuestPosition = new Vector3(
+                    coverPosition.x - 0.2f * mainQuestSize.x,
+                    coverPosition.y - 0.5f * CoverSize.y - 0.7f * mainQuestSize.y,
+                    coverPosition.z - 0.05f * mainQuestSize.z);
+            }
+
+            foreach (var mainQuestInfo in mainQuestInfos)
+            {
+                var mainQuest = Instantiate(mainQuestBodyPrefab, root.transform);
+                mainQuest.transform.position = mainQuestPosition;
+
+                AddTextComponent(mainQuest, mainQuestInfo.Name);
+
+                var subQuestOffsetCount = 0;
+                var nextOffset = Vector3.zero;
+
+                foreach (var subQuestInfo in mainQuestInfo.GetSubQuestInfos())
+                {
+                    var subQuest = Instantiate(subQuestBodyPrefab, mainQuest.transform);
+                    subQuest.transform.localScale = Vector3.one;
+                    subQuest.transform.localRotation = Quaternion.Euler(Vector3.zero);
+
+                    var subQuestPosition = subQuestOffsetCount * SQBodyOffset;
+                    nextOffset = SQBodyOffset * subQuestOffsetCount;
+
+                    if (autoPositionQuests)
+                    {
+                        subQuestPosition = new Vector3(
+                            mainQuestPosition.x - 0.2f * mainQuestSize.x,
+                            mainQuestPosition.y - 0.5f * mainQuestSize.y - 0.7f * subQuestSize.y - 1.2f * subQuestSize.y * subQuestOffsetCount,
+                            mainQuestPosition.z - 0.05f * mainQuestSize.z);
+
+                        nextOffset = new Vector3(
+                            coverPosition.x - 0.2f * mainQuestSize.x,
+                            subQuestPosition.y - 1.2f * mainQuestSize.y,
+                            coverPosition.z - 0.05f * mainQuestSize.z);
+                    }
+                    subQuest.transform.position = subQuestPosition;
+
+                    AddTextComponent(subQuest, subQuestInfo.Name);
+
+                    subQuestOffsetCount++;
+                }
+
+                mainQuestPosition = nextOffset;
+            }
+
+            //-------------------------------
+
+        }
+
+        private void AddTextComponent(GameObject quest, string text)
+        {
+            var questSize = quest.GetMeshSize();
+
+            var textObj = new GameObject("Text");
+            textObj.transform.parent = quest.transform;
+            textObj.transform.localPosition = Vector3.zero;
+            textObj.transform.forward = quest.transform.right;
+
+            var textMeshComp = textObj.AddComponent<TextMeshPro>();
+            textMeshComp.text = text;
+            textMeshComp.alignment = TextAlignmentOptions.Left;
+            textMeshComp.enableAutoSizing = true;
+            textMeshComp.fontSizeMin = 0.0f;
+
+            var rt = textMeshComp.GetComponent<RectTransform>();
+            rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, questSize.z * 0.8f);
+            rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, questSize.y * 0.7f);
         }
     }
 }

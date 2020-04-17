@@ -1,4 +1,4 @@
-﻿namespace GEAR.QuestManager.NodeGraph.Attribute
+﻿namespace GEAR.QuestManager.Attribute
 {
     public class StringValue : System.Attribute
     {
