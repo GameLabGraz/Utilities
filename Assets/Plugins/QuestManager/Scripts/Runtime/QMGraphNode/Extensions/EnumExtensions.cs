@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using GEAR.QuestManager.NodeGraph.Attribute;
 
 namespace GEAR.QuestManager.NodeGraph.Extensions
 {

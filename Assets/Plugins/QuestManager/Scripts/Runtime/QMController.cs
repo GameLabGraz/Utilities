@@ -1,4 +1,5 @@
-﻿using GEAR.QuestManager.NodeGraph;
+﻿using System;
+using GEAR.QuestManager.NodeGraph;
 using GEAR.QuestManager.Reader;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace GEAR.QuestManager
         [SerializeField] private Vector3 MQBodyOffset = new Vector3 (0, -2.85f, 0);
         [SerializeField] private GameObject subQuestBodyPrefab;
         [SerializeField] private Vector3 SQBodyOffset = new Vector3 (0f, -2f, -0.1f);
+        [SerializeField] private bool autoPositionQuests = true;
 
         [Header ("Cover")][SerializeField] private GameObject coverPrefab;
         [SerializeField] private float coverOffset;
@@ -52,6 +54,11 @@ namespace GEAR.QuestManager
         private Vector3 coverPosition =>
             coverPrefab.transform.position +
             new Vector3 (0, CoverOffset, 0); //TODO check whether coverPrefab position in necessary
+
+        private void Start()
+        {
+            _qmReader = GetComponent<QMReader>();
+        }
 
         public void GenerateQuestManager ()
         {
@@ -137,8 +144,11 @@ namespace GEAR.QuestManager
         {
             var root = new GameObject ("Root");
             root.transform.parent = parent.transform;
+            
+            if(_qmReader == null)
+                _qmReader = gameObject.AddComponent<QMNodeGraphReader> ();
 
-            var reader = gameObject.AddComponent<QMNodeGraphReader>();
+            var reader = (QMNodeGraphReader) _qmReader;
             reader.Root = root;
             reader.NodeGraph = nodeGraph;
             reader.MainQuestPrefab = mainQuestBodyPrefab;
@@ -146,6 +156,8 @@ namespace GEAR.QuestManager
             reader.MainQuestBodyOffset = MQBodyOffset;
             reader.SubQuestPrefab = subQuestBodyPrefab;
             reader.SubQuestBodyOffset = SQBodyOffset;
+            reader.autoPositionQuests = autoPositionQuests;
+            reader.CoverSize = coverSize;
 
             reader.ReadData ();
 
