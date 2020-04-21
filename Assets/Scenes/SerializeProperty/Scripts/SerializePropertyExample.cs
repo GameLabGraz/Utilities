@@ -1,5 +1,6 @@
-﻿using GEAR.Serialize;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using GEAR.Serialize;
 
 public class SerializePropertyExample : MonoBehaviour
 {
@@ -20,6 +21,19 @@ public class SerializePropertyExample : MonoBehaviour
     [Range(0, 5, order = 0)]
     [SerializeProperty("FloatPropertyRange", order = 1)]
     private float floatPropertyRange = 1.0f;
+
+    [SerializeField]
+    [SerializeProperty("ObjectArray")]
+    private GameObject[] objectArray;
+
+    [SerializeField]
+    [SerializeProperty("ObjectList")]
+    private List<GameObject> objectList;
+
+    [SerializeField]
+    [Range(0, 5, order = 0)]
+    [SerializeProperty("IntArray", order = 1)]
+    private int[] intArray;
 
     public int IntProperty
     {
@@ -43,5 +57,23 @@ public class SerializePropertyExample : MonoBehaviour
     {
         get => floatPropertyRange;
         set => floatPropertyRange = value;
+    }
+
+    public GameObject[] ObjectArray
+    {
+        get => objectArray;
+        set => objectArray = value;
+    }
+
+    public List<GameObject> ObjectList
+    {
+        get => objectList;
+        set => objectList = value;
+    }
+
+    public int[] IntArray
+    {
+        get => intArray;
+        set => intArray = value;
     }
 }

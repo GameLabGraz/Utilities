@@ -293,9 +293,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intProperty: 1
-  intPropertyRange: 1
-  floatProperty: 1.5
-  floatPropertyRange: 1
+  intPropertyRange: 3
+  floatProperty: 1
+  floatPropertyRange: 3.25
+  objectArray:
+  - {fileID: 1565913223}
+  - {fileID: 1340368509}
+  - {fileID: 0}
+  objectList:
+  - {fileID: 1340368509}
+  - {fileID: 1565913223}
+  - {fileID: 0}
+  - {fileID: 0}
+  intArray: 010000000300000001000000
 --- !u!4 &1958274069
 Transform:
   m_ObjectHideFlags: 0
