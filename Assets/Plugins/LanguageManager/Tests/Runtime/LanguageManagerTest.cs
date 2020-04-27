@@ -55,6 +55,7 @@ public class LanguageManagerTest
 
     [TestCase("GER", SystemLanguage.English, "German")]
     [TestCase("GER", SystemLanguage.German, "Deutsch")]
+    [TestCase("EscapedMicroSign", SystemLanguage.English, "µ", Description = "Tests whether escaped characters are converted.")]
     public void TestLocalizedText(string key, SystemLanguage language, string expected)
     {
         _languageManager.LoadMlgFile(ValidMlg);
