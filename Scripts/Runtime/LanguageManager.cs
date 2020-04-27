@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
@@ -119,7 +120,7 @@ namespace GEAR.Localization
                             continue;
                         }
 
-                        translation.AddTranslation(language, languageElement.Value);
+                        translation.AddTranslation(language, Regex.Unescape(languageElement.Value));
                     }
 
                     _translations[key] = translation;

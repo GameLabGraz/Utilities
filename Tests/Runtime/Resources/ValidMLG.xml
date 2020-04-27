@@ -11,6 +11,12 @@
             <English>English</English>
             <German>Englisch</German>
         </Translation>
+
+        <Translation Key="EscapedMicroSign">
+            <English>\u00B5</English>
+            <German>\u00B5</German>
+        
+    </Translation>
 		
     </Translations>
 </LanguageManager>
