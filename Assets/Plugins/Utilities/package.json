@@ -1,0 +1,9 @@
+{
+	"name": "com.gear.utilities",
+	"displayName": "Utilties",
+	"version": "1.0.0",
+	"unity": "2018.4",
+	"author": "TUG GEAR Group",
+	"description": "This package contains general helpful tools.",
+	"dependencies": {}
+}

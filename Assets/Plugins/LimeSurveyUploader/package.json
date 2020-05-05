@@ -1,0 +1,11 @@
+{
+	"name": "com.gear.limesurveyuploader",
+	"displayName": "LimeSurvey Uploader",
+	"version": "1.0.0",
+	"unity": "2018.4",
+	"author": "TUG GEAR Group",
+	"description": "This package is used to upload VV survey files to LimeSurvey.",
+	"dependencies": {
+		"com.gear.utilities": "1.0.0"
+	}
+}
