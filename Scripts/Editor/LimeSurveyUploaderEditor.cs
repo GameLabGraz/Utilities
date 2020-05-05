@@ -13,7 +13,9 @@ namespace GEAR.LimeSurvey.Editor
         private SerializedProperty password;
         private SerializedProperty surveyId;
 
+        private SerializedProperty excludeRecordIds;
         private SerializedProperty insert;
+        private SerializedProperty importAsNotFinalized;
         private SerializedProperty charset;
 
         private void OnEnable()
@@ -24,7 +26,9 @@ namespace GEAR.LimeSurvey.Editor
             password = serializedObject.FindProperty("password");
             surveyId = serializedObject.FindProperty("surveyId");
 
+            excludeRecordIds = serializedObject.FindProperty("excludeRecordIds");
             insert = serializedObject.FindProperty("insert");
+            importAsNotFinalized = serializedObject.FindProperty("importAsNotFinalized");
             charset = serializedObject.FindProperty("charset");
         }
 
@@ -38,7 +42,12 @@ namespace GEAR.LimeSurvey.Editor
             password.stringValue = EditorGUILayout.PasswordField(password.displayName, password.stringValue);
             EditorGUILayout.PropertyField(surveyId);
 
-            EditorGUILayout.PropertyField(insert);
+            EditorGUILayout.PropertyField(excludeRecordIds);
+            
+            if(!excludeRecordIds.boolValue)
+                EditorGUILayout.PropertyField(insert);
+
+            EditorGUILayout.PropertyField(importAsNotFinalized);
             EditorGUILayout.PropertyField(charset);
 
             serializedObject.ApplyModifiedProperties();

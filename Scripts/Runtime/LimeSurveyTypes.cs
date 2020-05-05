@@ -31,11 +31,12 @@ namespace GEAR.LimeSurvey
         [StringValue("vvimport")] Import
     }
 
-    public enum LimeSurveyInsertType
+    public enum LimeSurveyInsertIdType
     {
-        [StringValue("ignore")] Ignore,
-        [StringValue("renumber")] Renumber,
-        [StringValue("replace")] Replace
+        [StringValue("noid")] NoId,             // Exclude record IDs
+        [StringValue("ignore")] Ignore,         // Report and skip the new record
+        [StringValue("renumber")] Renumber,     // Renumber the new record
+        [StringValue("replace")] Replace        // Replace the existing record
     }
 
     public enum LimeSurveyCharset
