@@ -1,9 +1,14 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using GEAR.LimeSurvey.Extensions;
 using GEAR.Utilities.Coroutine;
+using UnityEngine.Serialization;
+using Debug = UnityEngine.Debug;
 
 namespace GEAR.LimeSurvey
 {
@@ -17,7 +22,11 @@ namespace GEAR.LimeSurvey
 
         [Header("Upload Settings")]
 
-        [SerializeField] private LimeSurveyInsertType insert = LimeSurveyInsertType.Ignore;
+        [SerializeField] private bool excludeRecordIds = true;
+
+        [SerializeField] private LimeSurveyInsertIdType insert = LimeSurveyInsertIdType.Ignore;
+
+        [SerializeField] private bool importAsNotFinalized;
 
         [SerializeField] private LimeSurveyCharset charset = LimeSurveyCharset.Utf8;
 
@@ -94,9 +103,15 @@ namespace GEAR.LimeSurvey
                 form.AddField(LimeSurveyField.Sid, surveyId);
 
                 form.AddField(LimeSurveyField.File, "file");
-                form.AddField(LimeSurveyField.NoId, "noid");
-                form.AddField(LimeSurveyField.Insert, insert);
-                form.AddField(LimeSurveyField.Finalized, "notfinalized");
+
+                if(excludeRecordIds)
+                    form.AddField(LimeSurveyField.NoId, LimeSurveyInsertIdType.NoId);
+                else
+                    form.AddField(LimeSurveyField.Insert, insert);
+                
+                if(importAsNotFinalized)
+                    form.AddField(LimeSurveyField.Finalized, "notfinalized");
+
                 form.AddField(LimeSurveyField.Charset, charset);
 
                 form.AddBinaryData(LimeSurveyField.File, data);
