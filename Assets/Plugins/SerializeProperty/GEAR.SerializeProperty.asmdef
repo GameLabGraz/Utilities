@@ -2,13 +2,7 @@
     "name": "GEAR.SerializeProperty",
     "references": [],
     "optionalUnityReferences": [],
-    "includePlatforms": [
-        "Editor",
-        "macOSStandalone",
-        "WebGL",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
