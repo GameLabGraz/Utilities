@@ -1,5 +1,5 @@
 ﻿using System;
-using GEAR.Utilities.Extensions;
+using GEAR.Gadgets.Extensions;
 using UnityEngine;
 
 namespace GEAR.LimeSurvey.Extensions

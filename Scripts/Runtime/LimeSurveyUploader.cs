@@ -1,13 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using GEAR.LimeSurvey.Extensions;
-using GEAR.Utilities.Coroutine;
-using UnityEngine.Serialization;
+using GEAR.Gadgets.Coroutine;
 using Debug = UnityEngine.Debug;
 
 namespace GEAR.LimeSurvey

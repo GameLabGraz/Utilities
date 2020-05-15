@@ -1,4 +1,4 @@
-﻿using GEAR.Utilities.Attribute;
+﻿using GEAR.Gadgets.Attribute;
 
 namespace GEAR.LimeSurvey
 {
