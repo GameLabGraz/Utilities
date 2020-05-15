@@ -2,7 +2,7 @@ git subtree push --prefix Assets/Plugins/LanguageManager origin package/language
 git subtree push --prefix Assets/Plugins/QuestManager origin package/questmanager
 git subtree push --prefix Assets/Plugins/SerializeProperty origin package/serializeproperty
 git subtree push --prefix Assets/Plugins/LimeSurveyUploader origin package/limesurveyuploader
-git subtree push --prefix Assets/Plugins/Utilities origin package/utilities
+git subtree push --prefix Assets/Plugins/Gadgets origin package/gadgets
 
 echo off
 echo Press enter to exit

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using GEAR.Utilities.Attribute;
+using GEAR.Gadgets.Attribute;
 
-namespace GEAR.Utilities.Extensions
+namespace GEAR.Gadgets.Extensions
 {
     public static class EnumExtensions
     {

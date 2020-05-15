@@ -1,11 +1,7 @@
 {
-    "name": "GEAR.Utilities.Edior.Tests",
-    "references": [
-        "GEAR.Utilities.Editor"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
+    "name": "GEAR.Gadgets",
+    "references": [],
+    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

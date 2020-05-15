@@ -5,7 +5,7 @@ The GameLabGraz/Utilities project contains a list of useful packages for [Unity]
 - [LimeSurveyUploader](https://github.com/GameLabGraz/Utilities/tree/package/limesurveyuploader) - Used to upload VV survey files to LimeSurvey.
 - [QuestManager](https://github.com/GameLabGraz/Utilities/tree/package/questmanager) - Used to show users different main/sub quests.
 - [SerializeProperty](https://github.com/GameLabGraz/Utilities/tree/package/serializeproperty) - Used to serialze c# properties for the Unity Editor.
-- [Misc](https://github.com/GameLabGraz/Utilities/tree/package/misc) - Includes different useful stuff.
+- [Gadgets](https://github.com/GameLabGraz/Utilities/tree/package/gadgets) - Includes different useful stuff.
 
 ## Import packages into your Unity project
 To import a package into a Unity project, add the following line to your /Packages/manifest.json file:

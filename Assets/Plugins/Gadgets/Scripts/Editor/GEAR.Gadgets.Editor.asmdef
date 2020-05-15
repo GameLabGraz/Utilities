@@ -1,5 +1,5 @@
 {
-    "name": "GEAR.Utilities.Editor",
+    "name": "GEAR.Gadgets.Editor",
     "references": [
         "GEAR.Utilities"
     ],

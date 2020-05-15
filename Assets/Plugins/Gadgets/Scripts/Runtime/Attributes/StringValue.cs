@@ -1,4 +1,4 @@
-﻿namespace GEAR.Utilities.Attribute
+﻿namespace GEAR.Gadgets.Attribute
 {
     public class StringValue : System.Attribute
     {
