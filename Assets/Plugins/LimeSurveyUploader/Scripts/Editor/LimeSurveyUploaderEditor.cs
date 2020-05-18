@@ -6,7 +6,7 @@ namespace GEAR.LimeSurvey.Editor
     [CustomEditor(typeof(LimeSurveyUploader))]
     public class LimeSurveyUploaderEditor : UnityEditor.Editor
     {
-        private const string TexturePath = "images/logo";
+        private const string TexturePath = "images/logoLimeSurveyUploader";
         private Texture2D _logoTexture;
 
         private SerializedProperty user;
