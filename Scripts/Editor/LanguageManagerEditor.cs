@@ -6,7 +6,7 @@ namespace GEAR.Localization.Editor
     [CustomEditor(typeof(LanguageManager))]
     public class LanguageManagerEditor : UnityEditor.Editor
     {
-        private const string TexturePath = "images/logo";
+        private const string TexturePath = "images/logoLanguageManager";
         private Texture2D _logoTexture;
         private void Awake()
         {
