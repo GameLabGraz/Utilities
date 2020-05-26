@@ -1,7 +1,7 @@
 {
     "name": "GEAR.Gadgets.Editor",
     "references": [
-        "GEAR.Utilities"
+        "GEAR.Gadgets"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
