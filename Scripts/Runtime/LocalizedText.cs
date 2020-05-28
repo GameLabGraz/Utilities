@@ -7,9 +7,11 @@ namespace GEAR.Localization
     public class LocalizedText : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("The key that should be used to get the text from the language file.")]
         private string key;
 
         [SerializeField]
+        [Tooltip("The suffix will be inserted after the text that will be loaded from the language file.")]
         private string suffix = string.Empty;
 
         private Text _text;
