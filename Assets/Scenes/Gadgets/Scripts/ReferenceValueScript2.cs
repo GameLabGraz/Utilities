@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using UnityEngine;
-
-
+ 
 [Serializable]
 public class MyTestClass {
     public string testString;

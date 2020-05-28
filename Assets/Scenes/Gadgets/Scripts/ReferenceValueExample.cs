@@ -4,6 +4,7 @@ using GEAR.Gadgets.ReferenceValue;
 using GEAR.Gadgets.ReferenceValue.Editor;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CustomPropertyDrawer(typeof(MyClassReferenceValue))]
 public class MyClassReferenceValuePropertyDrawer : ReferenceValuePropertyDrawer<MyTestClass> { }
