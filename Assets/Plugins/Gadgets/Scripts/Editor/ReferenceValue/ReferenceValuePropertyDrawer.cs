@@ -51,8 +51,8 @@ namespace GEAR.Gadgets.ReferenceValue.Editor
                 referenceValue.objectInfo.Object, typeof(Object), true);
 
             var components = new List<Component>();
-            // var fields = new List<FieldInfo>();
             var fieldNames = new List<string>();
+            var fullNames = new List<string>();
 
             if (referenceValue.objectInfo.Object != null)
             {
@@ -74,9 +74,10 @@ namespace GEAR.Gadgets.ReferenceValue.Editor
                         foreach (var f in currentComponentFields)
                         {
                             if(duplicateList.Contains(component.GetType()))
-                                fieldNames.Add($"{component.GetType().FullName} ({component.GetInstanceID()})/{f.Name}");
+                                fullNames.Add($"{component.GetType().FullName} ({component.GetInstanceID()})/{f.Name}");
                             else
-                                fieldNames.Add($"{component.GetType().FullName}/{f.Name}");
+                                fullNames.Add($"{component.GetType().FullName}/{f.Name}");
+                            fieldNames.Add($"{f.Name}");
                             components.Add(component);
                         }
                     }
@@ -88,12 +89,13 @@ namespace GEAR.Gadgets.ReferenceValue.Editor
                         .Where(field => typeof(T).IsAssignableFrom(field.FieldType));
                 
                     fieldNames.AddRange(currentComponentFields.Select(f => f.Name));
+                    fullNames.AddRange(currentComponentFields.Select(f => f.Name));
                 }
             }
 
             IncrementPosition();
             
-            referenceValue.index = EditorGUI.Popup(_position, "Value", referenceValue.index, fieldNames.ToArray());
+            referenceValue.index = EditorGUI.Popup(_position, "Value", referenceValue.index, fullNames.ToArray());
 
             if (EditorGUI.EndChangeCheck())
             {

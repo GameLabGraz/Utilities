@@ -1,15 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GEAR.Gadgets.ReferenceValue;
+using GEAR.Gadgets.ReferenceValue.Editor;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+
+[CustomPropertyDrawer(typeof(MyClassReferenceValue))]
+public class MyClassReferenceValuePropertyDrawer : ReferenceValuePropertyDrawer<MyTestClass> { }
+
+[Serializable] public class MyClassReferenceValue : ReferenceValue<MyTestClass> { }
 
 public class ReferenceValueExample : MonoBehaviour
 {
     [SerializeField] private IntegerReferenceValue intReferenceValue;
     [SerializeField] private List<FloatReferenceValue> floatReferenceValues;
+    [SerializeField] private MyClassReferenceValue referenceTestViaGameObject;
+    [SerializeField] private MyClassReferenceValue referenceTestViaComponent;
     
-    public UnityEvent onExample = new UnityEvent();
-
     private void Start()
     {
         intReferenceValue.Value = 1;
@@ -18,5 +26,15 @@ public class ReferenceValueExample : MonoBehaviour
         {
             floatReferenceValue.Value = 2.3f;
         }
+
+        var value1 = referenceTestViaGameObject.Value;
+        Debug.Assert(value1 != null && value1.testString.CompareTo("Sandra's Test") == 0 
+                                    && Math.Abs(value1.testFloat - 20.1) < 0.0001,
+            "Getting value of reference via GameObject is not working.");
+        var value2 = referenceTestViaComponent.Value;
+        Debug.Assert(value2 != null && value2.testString.CompareTo("Sandra's Test") == 0 
+                                    && Math.Abs(value2.testFloat - 20.1) < 0.0001,
+            "Getting value of reference via Component is not working.");
+
     }
 }

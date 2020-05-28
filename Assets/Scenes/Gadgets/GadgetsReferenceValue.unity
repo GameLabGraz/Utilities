@@ -245,20 +245,18 @@ MonoBehaviour:
       Object: {fileID: 837433889}
       ComponentName: 
       FieldName: floatValue4
-  onExample:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 837433885}
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  referenceTestViaGameObject:
+    index: 0
+    objectInfo:
+      Object: {fileID: 837433885}
+      ComponentName: ReferenceValueScript2
+      FieldName: ReferenceValueScript2/testVariable
+  referenceTestViaComponent:
+    index: 0
+    objectInfo:
+      Object: {fileID: 837433890}
+      ComponentName: 
+      FieldName: testVariable
 --- !u!4 &837433887
 Transform:
   m_ObjectHideFlags: 0
@@ -327,6 +325,9 @@ MonoBehaviour:
   floatValue2: 2.2
   floatValue3: 3.3
   floatValue4: 4.4
+  testVariable:
+    testString: Sandra's Test
+    testFloat: 20.1
 --- !u!1 &2125744821
 GameObject:
   m_ObjectHideFlags: 0
