@@ -6,6 +6,11 @@
             <English>This package is used to localize text components in Unity.</English>
             <German>Diese Paket wird zum Lokalisieren von Textkomponenten in Unity verwendet.</German>
         </Translation>
+        
+        <Translation Key="Unicode">
+            <English>Here you should see some unicode characters: \u03B1, \u03B2 \u0026 \u03B3 \u2192 \u00B5C</English>
+            <German>Hier sollten Sie einige Unicode-Zeichen sehen: \u03B1, \u03B2 \u0026 \u03B3 \u2192 \u00B5C</German>            
+        </Translation>
 		
 		<Translation Key="German">
             <English>German</English>
