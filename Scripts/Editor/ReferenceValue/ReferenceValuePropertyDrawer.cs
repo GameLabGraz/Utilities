@@ -51,34 +51,43 @@ namespace GEAR.Gadgets.ReferenceValue.Editor
                 referenceValue.objectInfo.Object, typeof(Object), true);
 
             var components = new List<Component>();
-            var fields = new List<FieldInfo>();
+            // var fields = new List<FieldInfo>();
             var fieldNames = new List<string>();
 
             if (referenceValue.objectInfo.Object != null)
             {
                 if (referenceValue.objectInfo.Object is GameObject gameObject)
                 {
+                    var allGameObjComponents = gameObject.GetComponents<Component>();
+
+                    var duplicateList =
+                        allGameObjComponents.GroupBy(x => x.GetType())
+                            .Where(g => g.Count() > 1)
+                            .Select(y => y.Key)
+                            .ToList();
+                    
                     foreach (var component in gameObject.GetComponents<Component>())
                     {
-                        fields.AddRange(component.GetType()
-                            .GetFields(BindingFlags)
-                            .Where(field => typeof(T).IsAssignableFrom(field.FieldType)));
-
-                        foreach (var field in fields)
+                        var currentComponentFields = component.GetType().GetFields(BindingFlags)
+                            .Where(field => typeof(T).IsAssignableFrom(field.FieldType));
+                        
+                        foreach (var f in currentComponentFields)
                         {
-                            fieldNames.Add($"{component}{component.GetInstanceID()}/{field.Name}");
+                            if(duplicateList.Contains(component.GetType()))
+                                fieldNames.Add($"{component.GetType().FullName} ({component.GetInstanceID()})/{f.Name}");
+                            else
+                                fieldNames.Add($"{component.GetType().FullName}/{f.Name}");
                             components.Add(component);
                         }
                     }
                 }
                 else
                 {
-                    fields.AddRange(referenceValue.objectInfo.Object.GetType()
+                    var currentComponentFields = referenceValue.objectInfo.Object.GetType()
                         .GetFields(BindingFlags)
-                        .Where(field => typeof(T).IsAssignableFrom(field.FieldType)));
-
-                    fieldNames.AddRange(fields
-                        .Select(field => field.Name));
+                        .Where(field => typeof(T).IsAssignableFrom(field.FieldType));
+                
+                    fieldNames.AddRange(currentComponentFields.Select(f => f.Name));
                 }
             }
 
