@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
@@ -11,6 +8,7 @@ using System.Xml.Schema;
 using GEAR.Serialize;
 using UnityEngine;
 using UnityEngine.Events;
+using TranslationDict = System.Collections.Generic.Dictionary<string, GEAR.Localization.Translation>;
 
 namespace GEAR.Localization
 {
@@ -24,9 +22,6 @@ namespace GEAR.Localization
         [SerializeField]
         [SerializeProperty("CurrentLanguage")]
         private SystemLanguage _currentLanguage = SystemLanguage.English;
-
-        private string _lastError = "";
-        public string LastError => _lastError;
 
         public SystemLanguage CurrentLanguage
         {
@@ -51,7 +46,7 @@ namespace GEAR.Localization
 
         public LanguageChangedEvent OnLanguageChanged = new LanguageChangedEvent();
 
-        private readonly Dictionary<string, Translation> _translations = new Dictionary<string, Translation>();
+        private TranslationDict _translations = new TranslationDict();
 
         private void Awake()
         {
@@ -93,178 +88,106 @@ namespace GEAR.Localization
 
         public bool LoadMlgFile(TextAsset mlgFile)
         {
-            // return LoadMlgFile(mlgFile, _xmlSchemaSet, _translations, out _lastError, true);
-            
-            var result = true;
-            if (!mlgFile)
-            {
-                _lastError = $"LanguageManager::LoadMlgFile: Unable to load language file";
-                Debug.LogError(_lastError);
-                return false;
-            }
-
-            try
-            {
-                var doc = XDocument.Load(new MemoryStream(mlgFile.bytes));
-                doc.Validate(_xmlSchemaSet, (o, e) =>
-                {
-                    Debug.Log(e.Message);
-                    result = false;
-                });
-
-                foreach (var translationElement in doc.Descendants("Translation"))
-                {
-                    var key = translationElement.Attribute("Key")?.Value;
-                    if (key == null)
-                        continue;
-
-                    var translation = new Translation(key);
-                    foreach (var languageElement in translationElement.Elements())
-                    {
-                        if (!Enum.TryParse(languageElement.Name.ToString(), out SystemLanguage language))
-                        {
-                            _lastError = $"LanguageManager::LoadMlgFile: Unsupported Language {languageElement.Name}";
-                            Debug.Log(_lastError);
-                            result = false;
-                            continue;
-                        }
-
-                        translation.AddTranslation(language, Regex.Unescape(languageElement.Value));
-                    }
-
-                    _translations[key] = translation;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e.Message);
-                _lastError = e.Message;
-                return false;
-            }
-
-            return result;
+            _translations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
+            return !error;
         }
-        
-        public static bool LoadMlgFile(TextAsset mlgFile, XmlSchemaSet xmlSchemaSet, Dictionary<string, Translation> translations, out string lastError, out HashSet<SystemLanguage> supportedLanguages, bool outputDebug)
+
+        public bool SaveMlgFile(string path)
         {
-            lastError = "";
-            supportedLanguages = new HashSet<SystemLanguage>();
-            var result = true;
-            if (!mlgFile)
+            SaveMlgFile(path, _translations, out var error);
+            return !error;
+        }
+
+        public static TranslationDict LoadMlgFile(TextAsset mlgFile, XmlSchemaSet xmlSchemaSet, out bool error)
+        {
+            var loadingError = false;
+            var translations = new TranslationDict();
+
+            if(mlgFile)
             {
-                lastError = $"LanguageManager::LoadMlgFile: Unable to load language file";
-                if(outputDebug)
-                    Debug.LogError(lastError);
-                return false;
-            }
-            
-            try
-            {
-                var doc = XDocument.Load(new MemoryStream(mlgFile.bytes));
-                var tmpError = "";
-                doc.Validate(xmlSchemaSet, (o, e) =>
+                try
                 {
-                    tmpError = e.Message;
-                    if(outputDebug)
+                    var doc = XDocument.Load(new MemoryStream(mlgFile.bytes));
+                    doc.Validate(xmlSchemaSet, (o, e) =>
+                    {
                         Debug.Log(e.Message);
-                    result = false;
-                });
-                lastError = tmpError;
+                        loadingError = true;
+                    });
 
-                foreach (var translationElement in doc.Descendants("Translation"))
-                {
-                    var key = translationElement.Attribute("Key")?.Value;
-                    if (key == null)
-                        continue;
-
-                    var translation = new Translation(key);
-                    foreach (var languageElement in translationElement.Elements())
+                    foreach (var translationElement in doc.Descendants("Translation"))
                     {
-                        if (!Enum.TryParse(languageElement.Name.ToString(), out SystemLanguage language))
-                        {
-                            lastError = $"LanguageManager::LoadMlgFile: Unsupported Language {languageElement.Name}";
-                            if(outputDebug)
-                                Debug.Log(lastError);
-                            result = false;
+                        var key = translationElement.Attribute("Key")?.Value;
+                        if (key == null)
                             continue;
+
+                        var translation = new Translation(key);
+                        foreach (var languageElement in translationElement.Elements())
+                        {
+                            if (!Enum.TryParse(languageElement.Name.ToString(), out SystemLanguage language))
+                            {
+                                Debug.Log($"LanguageManager::LoadMlgFile: Unsupported Language {languageElement.Name}");
+                                loadingError = true;
+                                continue;
+                            }
+
+                            translation.AddTranslation(language, Regex.Unescape(languageElement.Value));
                         }
 
-                        supportedLanguages.Add(language);
-                        translation.AddTranslation(language, Regex.Unescape(languageElement.Value));
+                        translations[key] = translation;
                     }
-
-                    translations[key] = translation;
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e.Message);
+                    loadingError = true;
                 }
             }
-            catch (Exception e)
+            else
             {
-                if(outputDebug)
-                    Debug.Log(e.Message);
-                lastError = e.Message;
-                return false;
+                Debug.LogError($"LanguageManager::LoadMlgFile: Unable to load language file");
+                loadingError = true;
             }
 
-            return result;
+            error = loadingError;
+            return translations;
         }
 
-        public static bool SaveMlgFile(string path, Dictionary<string, Translation> translations, List<SystemLanguage> writingLanguages,
-            out string lastError)
+        public static void SaveMlgFile(string path, TranslationDict translations , out bool error)
         {
-            lastError = "";
-            try
+            var saveError = false;
+
+            if (path.EndsWith(".xml"))
             {
-                if (!path.EndsWith(".xml"))
-                {
-                    lastError = "No xml file.";
-                    return false;
-                }
+                var writer = XmlWriter.Create(path, 
+                    new XmlWriterSettings { NewLineOnAttributes = true, Indent = true });
+                
+                writer.WriteStartDocument();
+                writer.WriteStartElement("LanguageManager");
+                writer.WriteStartElement("Translations");
 
-                using (var file = new StreamWriter(path, false))
+                foreach (var translation in translations)
                 {
-                    file.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                    file.WriteLine("<LanguageManager>");
-                    file.WriteLine("  <Translations>");
+                    writer.WriteStartElement("Translation");
+                    writer.WriteAttributeString("Key", translation.Key);
 
-                    foreach (var translation in translations)
+                    foreach (var language in translation.Value.Values)
                     {
-                        file.WriteLine("    <Translation Key=\"" + translation.Key + "\">");
-
-                        foreach (var value in translation.Value.Values)
-                        {
-                            if (writingLanguages.Any() && !writingLanguages.Contains(value.Key)) 
-                                continue;
-                            
-                            var val = new StringBuilder();
-                            if (value.Value.Any(c => c >= 255 || c == '&'))
-                            {
-                                foreach (var c in value.Value)
-                                {
-                                    if (c >= 255 || c == '&')
-                                        val.Append($@"\u{(ushort) c:x4}");
-                                    else
-                                        val.Append(c);
-                                }
-                            }
-                            else
-                                val.Append(value.Value);
-
-                            file.WriteLine("      <" + value.Key + ">" + val + "</" + value.Key + ">");
-                        }
-
-                        file.WriteLine("    </Translation>");
+                        writer.WriteElementString(language.Key.ToString(), language.Value);
                     }
 
-                    file.WriteLine("  </Translations>");
-                    file.WriteLine("</LanguageManager>");
+                    writer.WriteEndElement();
                 }
-                return true;
-            } 
-            catch (Exception e)
-            {
-                lastError = e.Message;
-                Console.WriteLine(e);
-                return false;
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+                writer.Close();
             }
+            else
+            {
+                Debug.Log($"LanguageManager::SaveMlgFile: No xml file.");
+                saveError = true;
+            }
+            error = saveError;
         }
     }
 }

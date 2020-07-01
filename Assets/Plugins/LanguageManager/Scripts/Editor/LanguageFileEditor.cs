@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using UnityEditor;
 using UnityEngine;
+using TranslationDict = System.Collections.Generic.Dictionary<string, GEAR.Localization.Translation>;
 
 namespace GEAR.Localization.Editor
 {
     public class LanguageFileEditor : EditorWindow
     {
-        [MenuItem("Window/Language Editor")]
+        [MenuItem("Window/GameLab/Language Editor")]
         public static void ShowWindow()
         {
             GetWindow<LanguageFileEditor>("Language Editor");
@@ -18,20 +20,19 @@ namespace GEAR.Localization.Editor
 
         Vector2 scrollPositionContent = Vector2.zero;
         Vector2 scrollPositionLanguage = Vector2.zero;
-        private Translation addingTranslation = null;
+        private Translation addingTranslation;
         private string newLanguage = "";
 
-
-        private bool languageFoldout = true;
-        private string currentPath = "";
+        private TranslationDict translations = new TranslationDict();
         private readonly HashSet<SystemLanguage> removedLanguages = new HashSet<SystemLanguage>();
         private readonly HashSet<SystemLanguage> addedLanguages = new HashSet<SystemLanguage>();
         private HashSet<SystemLanguage> supportedLanguages = new HashSet<SystemLanguage>();
-        private readonly Dictionary<string, Translation> translations = new Dictionary<string, Translation>();
+
+        private string currentPath = "";
+        private bool languageFoldout = true;
         private bool reloaded = true;
         
-        // Start is called before the first frame update
-        void OnGUI()
+        private void OnGUI()
         {
             var style = EditorStyles.miniButton;
             style.fixedWidth = 55;
@@ -69,12 +70,14 @@ namespace GEAR.Localization.Editor
         
                 var xmlSchemaSet = new XmlSchemaSet();
                 xmlSchemaSet.Add("", XmlReader.Create(new MemoryStream(Resources.Load<TextAsset>("mlgSchema").bytes)));
-                if (!LanguageManager.LoadMlgFile(textAsset, xmlSchemaSet, translations, out var lastError,
-                    out supportedLanguages, false))
+
+                translations = LanguageManager.LoadMlgFile(textAsset, xmlSchemaSet, out var error);
+                if (error)
                 {
-                    GUILayout.Label("Error: " + lastError, EditorStyles.helpBox);
+                    GUILayout.Label("Unable to load Mlg file.");
                     return;
                 }
+                LoadSupportedLanguages();
 
                 reloaded = false;
             }
@@ -221,7 +224,7 @@ namespace GEAR.Localization.Editor
         
         private void AddLanguage(ICollection<SystemLanguage> supportedLanguages)
         {
-            if (SystemLanguage.TryParse<SystemLanguage>(newLanguage, true, out var parsedLanguage))
+            if (Enum.TryParse<SystemLanguage>(newLanguage, true, out var parsedLanguage))
             {
                 addedLanguages.Add(parsedLanguage);
                 if (removedLanguages.Contains(parsedLanguage))
@@ -239,12 +242,10 @@ namespace GEAR.Localization.Editor
 
         private void SaveChanges()
         {
-            if (!LanguageManager.SaveMlgFile(currentPath, translations, supportedLanguages.ToList(), out var lastError))
-            {
-                ShowNotification(new GUIContent("Could not save file:\n" + lastError));
-            }
-            else
-                ShowNotification(new GUIContent("Saved\n" + currentPath));
+            LanguageManager.SaveMlgFile(currentPath, translations, out var error);
+            ShowNotification(error
+                ? new GUIContent("Error: Unable to save Mlg file.")
+                : new GUIContent("Saved\n" + currentPath));
 
             reloaded = true;
             addingTranslation = null;
@@ -259,6 +260,12 @@ namespace GEAR.Localization.Editor
             removedLanguages.Clear();
             addingTranslation = null;
             Repaint();
+        }
+
+        private void LoadSupportedLanguages()
+        {
+            foreach (var language in translations.Values.SelectMany(translation => translation.Values.Keys))
+                supportedLanguages.Add(language);
         }
     }
 }
