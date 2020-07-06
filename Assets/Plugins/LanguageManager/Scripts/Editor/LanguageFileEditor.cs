@@ -63,7 +63,7 @@ namespace GEAR.Localization.Editor
             EditorGUILayout.TextField("File", path);
             var textAsset = Selection.activeObject as TextAsset;
             if (Directory.Exists(path) || !textAsset) {
-                GUILayout.Label("Please select a MLG file to edit the content.", EditorStyles.helpBox);
+                EditorGUILayout.HelpBox("Please select a MLG file to edit the content.", MessageType.Warning);
                 return;
             }
 
@@ -83,7 +83,7 @@ namespace GEAR.Localization.Editor
                 translations = LanguageManager.LoadMlgFile(textAsset, xmlSchemaSet, out var error);
                 if (error)
                 {
-                    GUILayout.Label("Unable to load Mlg file.");
+                    EditorGUILayout.HelpBox("Unable to load Mlg file.", MessageType.Error);
                     return;
                 }
                 LoadSupportedLanguages();
