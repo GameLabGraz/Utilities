@@ -1,13 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GEAR.Localization
 {
-
+    [Serializable]
     public class Translation
     {
-        private readonly string _key;
+        private string _key;
         private readonly Dictionary<SystemLanguage, string> _values = new Dictionary<SystemLanguage, string>();
+
+        public Dictionary<SystemLanguage, string> Values => _values;
+        public string Key
+        {
+            get => _key;
+            set => _key = value;
+        }
 
         public Translation(string key)
         {
@@ -29,6 +37,11 @@ namespace GEAR.Localization
             if (_values.ContainsKey(SystemLanguage.English))
                 return _values[SystemLanguage.English];
             return _key;
+        }
+
+        public string GetValueIfAvailable(SystemLanguage language)
+        {
+            return _values.ContainsKey(language) ? _values[language] : "";
         }
     }
 }
