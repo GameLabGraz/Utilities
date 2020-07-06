@@ -17,7 +17,10 @@ namespace GEAR.Localization.Editor
         {
             GetWindow<LanguageFileEditor>("Language Editor");
         }
-
+        
+        private const string TexturePath = "images/logoLanguageManager";
+        private Texture2D logo = null;
+        
         Vector2 scrollPositionContent = Vector2.zero;
         Vector2 scrollPositionLanguage = Vector2.zero;
         private Translation addingTranslation;
@@ -31,13 +34,19 @@ namespace GEAR.Localization.Editor
         private string currentPath = "";
         private bool languageFoldout = true;
         private bool reloaded = true;
-        
+
+        private void OnEnable()
+        {
+            logo = Resources.Load(TexturePath, typeof(Texture2D)) as Texture2D;
+        }
+
         private void OnGUI()
         {
             var style = EditorStyles.miniButton;
             style.fixedWidth = 55;
             style.alignment = TextAnchor.MiddleCenter;
             
+            GUILayout.Label(logo, GUILayout.Height(100), GUILayout.MinHeight(100), GUILayout.ExpandHeight(false));
             GUILayout.Label("Language Editor", EditorStyles.largeLabel);
             GUILayout.Label("You can edit your MLG files within this editor. If you make any changes, " +
                             "please do not forget to save them before selecting another file.", EditorStyles.helpBox);
@@ -242,7 +251,7 @@ namespace GEAR.Localization.Editor
 
         private void SaveChanges()
         {
-            LanguageManager.SaveMlgFile(currentPath, translations, out var error);
+            LanguageManager.SaveMlgFile(currentPath, translations, supportedLanguages.ToList(), out var error);
             ShowNotification(error
                 ? new GUIContent("Error: Unable to save Mlg file.")
                 : new GUIContent("Saved\n" + currentPath));

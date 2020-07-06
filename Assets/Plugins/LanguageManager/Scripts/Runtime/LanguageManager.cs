@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
@@ -92,11 +93,11 @@ namespace GEAR.Localization
             return !error;
         }
 
-        public bool SaveMlgFile(string path)
-        {
-            SaveMlgFile(path, _translations, out var error);
-            return !error;
-        }
+        // public bool SaveMlgFile(string path)
+        // {
+        //     SaveMlgFile(path, _translations, out var error);
+        //     return !error;
+        // }
 
         public static TranslationDict LoadMlgFile(TextAsset mlgFile, XmlSchemaSet xmlSchemaSet, out bool error)
         {
@@ -152,7 +153,8 @@ namespace GEAR.Localization
             return translations;
         }
 
-        public static void SaveMlgFile(string path, TranslationDict translations , out bool error)
+        public static void SaveMlgFile(string path, TranslationDict translations, List<SystemLanguage> writingLanguages,
+            out bool error)
         {
             var saveError = false;
 
@@ -170,9 +172,13 @@ namespace GEAR.Localization
                     writer.WriteStartElement("Translation");
                     writer.WriteAttributeString("Key", translation.Key);
 
-                    foreach (var language in translation.Value.Values)
+                    if (writingLanguages.Any())
                     {
-                        writer.WriteElementString(language.Key.ToString(), language.Value);
+                        foreach (var language in translation.Value.Values.Where(
+                            language => writingLanguages.Contains(language.Key)))
+                        {
+                            writer.WriteElementString(language.Key.ToString(), language.Value);
+                        }
                     }
 
                     writer.WriteEndElement();
