@@ -15,6 +15,8 @@ namespace GEAR.Localization
 {
     [Serializable] public class LanguageChangedEvent : UnityEvent<SystemLanguage> { }
 
+    
+    [ExecuteAlways]
     public class LanguageManager : MonoBehaviour
     {
         private const string XmlSchemaFile = "mlgSchema";
@@ -47,11 +49,14 @@ namespace GEAR.Localization
 
         public LanguageChangedEvent OnLanguageChanged = new LanguageChangedEvent();
 
-        private TranslationDict _translations = new TranslationDict();
+        public TranslationDict Translations { get; private set; } = new TranslationDict();
 
         private void Awake()
         {
-            DontDestroyOnLoad(this);
+            Debug.Log("AWAKE LANG MANAGER !");
+            if(Application.isPlaying)
+                DontDestroyOnLoad(this);
+
             if (Instance == null)
             {
                 Instance = this;
@@ -72,9 +77,23 @@ namespace GEAR.Localization
             }
         }
 
+        private void Start()
+        {
+            if (!Application.isEditor) return;
+            Debug.Log("Editor Start");
+            Awake();
+        }
+
+        private void Update()
+        {
+            if (!Application.isEditor) return;
+            Debug.Log("Editor Update");
+            Awake();
+        }
+
         public void ClearTranslations()
         {
-            Instance._translations.Clear();
+            Instance.Translations.Clear();
         }
 
         public string GetString(string key)
@@ -84,12 +103,12 @@ namespace GEAR.Localization
 
         public string GetString(string key, SystemLanguage language)
         {
-            return _translations.ContainsKey(key) ? _translations[key].GetValue(language) : key;
+            return Translations.ContainsKey(key) ? Translations[key].GetValue(language) : key;
         }
 
         public bool LoadMlgFile(TextAsset mlgFile)
         {
-            _translations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
+            Translations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
             return !error;
         }
 

@@ -6,9 +6,9 @@ namespace GEAR.Localization
     [RequireComponent(typeof(Text))]
     public class LocalizedText : MonoBehaviour
     {
-        [SerializeField]
+        // [SerializeField]
         [Tooltip("The key that should be used to get the text from the language file.")]
-        private string key;
+        public string key;
 
         [SerializeField]
         [Tooltip("The suffix will be inserted after the text that will be loaded from the language file.")]
