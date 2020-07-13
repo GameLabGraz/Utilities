@@ -53,7 +53,6 @@ namespace GEAR.Localization
 
         private void Awake()
         {
-            Debug.Log("AWAKE LANG MANAGER !");
             if(Application.isPlaying)
                 DontDestroyOnLoad(this);
 
@@ -70,24 +69,17 @@ namespace GEAR.Localization
             }
 
             ClearTranslations();
-
-            foreach (var mlgFile in _mlgFiles)
+            
+            var noDuplicatesMLGFiles = _mlgFiles.Distinct().ToList();
+            foreach (var mlgFile in noDuplicatesMLGFiles)
             {
                 Instance.LoadMlgFile(mlgFile);
             }
         }
-
-        private void Start()
-        {
-            if (!Application.isEditor) return;
-            Debug.Log("Editor Start");
-            Awake();
-        }
-
+        
         private void Update()
         {
-            if (!Application.isEditor) return;
-            Debug.Log("Editor Update");
+            if (Application.IsPlaying(gameObject)) return;
             Awake();
         }
 
@@ -108,8 +100,29 @@ namespace GEAR.Localization
 
         public bool LoadMlgFile(TextAsset mlgFile)
         {
-            Translations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
-            return !error;
+            if (Translations.Count == 0)
+            {
+                Translations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
+                return !error;
+            }
+            else
+            {
+                var newTranslations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
+                foreach (var newTranslation in newTranslations)
+                {
+                    if (Translations.ContainsKey(newTranslation.Key))
+                    {
+                        Debug.LogError("Duplicate Language Keys within two MLG Files! (Key: " + newTranslation.Key + ")");
+                        return false;
+                    }
+                    else
+                    {
+                        Translations.Add(newTranslation.Key, newTranslation.Value);
+                    }
+                }
+
+                return !error;
+            }
         }
 
         // public bool SaveMlgFile(string path)
