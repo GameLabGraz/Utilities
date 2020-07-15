@@ -15,6 +15,8 @@ namespace GEAR.Localization
 {
     [Serializable] public class LanguageChangedEvent : UnityEvent<SystemLanguage> { }
 
+    
+    [ExecuteAlways]
     public class LanguageManager : MonoBehaviour
     {
         private const string XmlSchemaFile = "mlgSchema";
@@ -47,11 +49,13 @@ namespace GEAR.Localization
 
         public LanguageChangedEvent OnLanguageChanged = new LanguageChangedEvent();
 
-        private TranslationDict _translations = new TranslationDict();
+        public TranslationDict Translations { get; private set; } = new TranslationDict();
 
         private void Awake()
         {
-            DontDestroyOnLoad(this);
+            if(Application.isPlaying)
+                DontDestroyOnLoad(this);
+
             if (Instance == null)
             {
                 Instance = this;
@@ -65,16 +69,23 @@ namespace GEAR.Localization
             }
 
             ClearTranslations();
-
-            foreach (var mlgFile in _mlgFiles)
+            
+            var noDuplicatesMLGFiles = _mlgFiles.Distinct().ToList();
+            foreach (var mlgFile in noDuplicatesMLGFiles)
             {
                 Instance.LoadMlgFile(mlgFile);
             }
         }
+        
+        private void Update()
+        {
+            if (Application.IsPlaying(gameObject)) return;
+            Awake();
+        }
 
         public void ClearTranslations()
         {
-            Instance._translations.Clear();
+            Instance.Translations.Clear();
         }
 
         public string GetString(string key)
@@ -84,13 +95,34 @@ namespace GEAR.Localization
 
         public string GetString(string key, SystemLanguage language)
         {
-            return _translations.ContainsKey(key) ? _translations[key].GetValue(language) : key;
+            return Translations.ContainsKey(key) ? Translations[key].GetValue(language) : key;
         }
 
         public bool LoadMlgFile(TextAsset mlgFile)
         {
-            _translations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
-            return !error;
+            if (Translations.Count == 0)
+            {
+                Translations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
+                return !error;
+            }
+            else
+            {
+                var newTranslations = LoadMlgFile(mlgFile, _xmlSchemaSet, out var error);
+                foreach (var newTranslation in newTranslations)
+                {
+                    if (Translations.ContainsKey(newTranslation.Key))
+                    {
+                        Debug.LogError("Duplicate Language Keys within two MLG Files! (Key: " + newTranslation.Key + ")");
+                        return false;
+                    }
+                    else
+                    {
+                        Translations.Add(newTranslation.Key, newTranslation.Value);
+                    }
+                }
+
+                return !error;
+            }
         }
 
         // public bool SaveMlgFile(string path)

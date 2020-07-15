@@ -1,7 +1,10 @@
 {
     "name": "GEAR.LanguageManager.Editor",
     "references": [
-        "GEAR.LanguageManager"
+        "GEAR.LanguageManager",
+        "RotaryHeart.AutoCompleteTextField",
+        "RotaryHeart.AutoCompleteTextField.Editor",
+        "RotaryHeart"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
