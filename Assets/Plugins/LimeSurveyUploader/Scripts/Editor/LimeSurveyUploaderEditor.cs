@@ -6,7 +6,9 @@ namespace GEAR.LimeSurvey.Editor
     [CustomEditor(typeof(LimeSurveyUploader))]
     public class LimeSurveyUploaderEditor : UnityEditor.Editor
     {
-        private const string TexturePath = "images/logoLimeSurveyUploader";
+        private const string TexturePathDarkTheme = "images/logo_darkTheme";
+        private const string TexturePathLightTheme = "images/logo_lightTheme";
+        private const float logoHeight = 48;
         private Texture2D _logoTexture;
 
         private SerializedProperty user;
@@ -20,7 +22,7 @@ namespace GEAR.LimeSurvey.Editor
 
         private void OnEnable()
         {
-            _logoTexture = Resources.Load<Texture2D>(TexturePath);
+            _logoTexture = Resources.Load<Texture2D>(EditorGUIUtility.isProSkin? TexturePathDarkTheme : TexturePathLightTheme);
 
             user = serializedObject.FindProperty("user");
             password = serializedObject.FindProperty("password");
@@ -57,7 +59,7 @@ namespace GEAR.LimeSurvey.Editor
         {
             if (_logoTexture)
             {
-                GUILayout.Box(_logoTexture, GUILayout.Width(90f), GUILayout.Height(60f), GUILayout.ExpandWidth(true));
+                GUILayout.Label(_logoTexture, GUILayout.Height(logoHeight), GUILayout.MinHeight(logoHeight), GUILayout.MaxHeight(logoHeight), GUILayout.ExpandHeight(false));
             }
         }
     }

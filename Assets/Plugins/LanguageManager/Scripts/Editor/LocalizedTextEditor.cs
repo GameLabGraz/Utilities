@@ -10,7 +10,7 @@ namespace GEAR.Localization
     {
         private const string TexturePathDarkTheme = "images/logo_darkTheme";
         private const string TexturePathLightTheme = "images/logo_lightTheme";
-        private const float logoHeight = 40;
+        private const float logoHeight = 48;
         private Texture2D logo = null;
         
         SerializedProperty keyProperty;
