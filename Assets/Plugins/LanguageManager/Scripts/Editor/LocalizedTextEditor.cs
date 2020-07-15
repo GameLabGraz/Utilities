@@ -8,7 +8,9 @@ namespace GEAR.Localization
     [CustomEditor(typeof(LocalizedTextBase), true)]
     public class LocalizedTextEditor : UnityEditor.Editor
     {
-        private const string TexturePath = "images/logoLanguageManager";
+        private const string TexturePathDarkTheme = "images/logo_darkTheme";
+        private const string TexturePathLightTheme = "images/logo_lightTheme";
+        private const float logoHeight = 40;
         private Texture2D logo = null;
         
         SerializedProperty keyProperty;
@@ -18,7 +20,7 @@ namespace GEAR.Localization
 
         public void OnEnable()
         {
-            logo = Resources.Load(TexturePath, typeof(Texture2D)) as Texture2D;
+            logo = Resources.Load(EditorGUIUtility.isProSkin? TexturePathDarkTheme : TexturePathLightTheme, typeof(Texture2D)) as Texture2D;
             keyProperty = serializedObject.FindProperty("key");
             suffixProperty = serializedObject.FindProperty("suffix");
             
@@ -33,7 +35,7 @@ namespace GEAR.Localization
         {
             serializedObject.Update();
             if(logo)
-                GUILayout.Label(logo, GUILayout.Height(50), GUILayout.MinHeight(50), GUILayout.ExpandHeight(false));
+                GUILayout.Label(logo, GUILayout.Height(logoHeight), GUILayout.MinHeight(logoHeight), GUILayout.MaxHeight(logoHeight), GUILayout.ExpandHeight(false));
 
             var style = new GUIStyle(GUI.skin.textField);
             if (keyProperty.stringValue != "" && !_options.Contains(keyProperty.stringValue))

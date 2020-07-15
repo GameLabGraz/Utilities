@@ -58,8 +58,12 @@ namespace RotaryHeart.Lib.AutoComplete
                 ComponentButton.active.background = null;
 
                 SelectionColor = new Color(0.24f, 0.49f, 0.91f);
-                OddElementColor = new Color(0.76f, 0.76f, 0.76f);
-                EvenElementColor = new Color(0.72f, 0.72f, 0.72f);
+                OddElementColor = (EditorGUIUtility.isProSkin
+                    ? new Color(0.22f, 0.22f, 0.22f)
+                    : new Color(0.76f, 0.76f, 0.76f));
+                EvenElementColor = (EditorGUIUtility.isProSkin
+                    ? new Color(0.18f, 0.18f, 0.18f)
+                    : new Color(0.72f, 0.72f, 0.72f));
             }
         }
         
