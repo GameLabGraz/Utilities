@@ -501,7 +501,7 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    1: SCENE_FUSION
+    1: SCENE_FUSION;RH_AutoComplete
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}

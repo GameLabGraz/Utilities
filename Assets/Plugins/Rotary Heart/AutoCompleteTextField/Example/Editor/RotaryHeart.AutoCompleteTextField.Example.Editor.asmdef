@@ -1,0 +1,11 @@
+{
+    "name": "RotaryHeart.AutoCompleteTextField.Example.Editor",
+    "references": [
+        "RotaryHeart.AutoCompleteTextField.Editor",
+        "RotaryHeart.AutoCompleteTextField"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

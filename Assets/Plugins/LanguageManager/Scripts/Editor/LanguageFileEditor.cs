@@ -18,11 +18,11 @@ namespace GEAR.Localization.Editor
             GetWindow<LanguageFileEditor>("Language Editor");
         }
         
-        private const string TexturePath = "images/logoLanguageManager";
+        private const string TexturePathDarkTheme = "images/logo_darkTheme";
+        private const string TexturePathLightTheme = "images/logo_lightTheme";
         private Texture2D logo = null;
         
         Vector2 scrollPositionContent = Vector2.zero;
-        Vector2 scrollPositionLanguage = Vector2.zero;
         private Translation addingTranslation;
         private string newLanguage = "";
 
@@ -37,7 +37,7 @@ namespace GEAR.Localization.Editor
 
         private void OnEnable()
         {
-            logo = Resources.Load(TexturePath, typeof(Texture2D)) as Texture2D;
+            logo = Resources.Load(EditorGUIUtility.isProSkin? TexturePathDarkTheme : TexturePathLightTheme, typeof(Texture2D)) as Texture2D;
         }
 
         private void OnGUI()

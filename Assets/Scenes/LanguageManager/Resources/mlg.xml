@@ -1,25 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageManager>
   <Translations>
-    <Translation Key="DescriptionLM">
+    <Translation
+      Key="DescriptionLM">
       <English>This package is used to localize text components in Unity.</English>
       <German>Diese Paket wird zum Lokalisieren von Textkomponenten in Unity verwendet.</German>
-      <Spanish></Spanish>
+      <Spanish />
     </Translation>
-    <Translation Key="Unicode">
-      <English>Here you should see some unicode characters: \u03b1, \u03b2 \u0026 \u03b3 \u2192 µC</English>
-      <German>Hier sollten Sie einige Unicode-Zeichen sehen: \u03b1, \u03b2 \u0026 \u03b3 \u2192 µC</German>
-      <Spanish></Spanish>
+    <Translation
+      Key="Unicode">
+      <English>Here you should see some unicode characters: α, β &amp; γ → µC</English>
+      <German>Hier sollten Sie einige Unicode-Zeichen sehen: α, β &amp; γ → µC</German>
+      <Spanish />
     </Translation>
-    <Translation Key="German">
+    <Translation
+      Key="German">
       <English>German</English>
       <German>Deutsch</German>
-      <Spanish></Spanish>
+      <Spanish>Allemande</Spanish>
     </Translation>
-    <Translation Key="English">
+    <Translation
+      Key="English">
       <English>English</English>
       <German>Englisch</German>
-      <Spanish></Spanish>
+      <Spanish>Anglais</Spanish>
+    </Translation>
+    <Translation
+      Key="Spanish">
+      <English>Spanish</English>
+      <German>Spanisch</German>
+      <Spanish>Espanol</Spanish>
     </Translation>
   </Translations>
 </LanguageManager>

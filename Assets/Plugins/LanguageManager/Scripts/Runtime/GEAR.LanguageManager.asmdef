@@ -2,7 +2,10 @@
     "name": "GEAR.LanguageManager",
     "references": [
         "GEAR.SerializeProperty",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "RotaryHeart.AutoCompleteTextField",
+        "RotaryHeart.AutoCompleteTextField.Editor",
+        "RotaryHeart"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

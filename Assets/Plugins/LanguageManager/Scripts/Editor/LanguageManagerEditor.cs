@@ -6,11 +6,13 @@ namespace GEAR.Localization.Editor
     [CustomEditor(typeof(LanguageManager))]
     public class LanguageManagerEditor : UnityEditor.Editor
     {
-        private const string TexturePath = "images/logoLanguageManager";
+        private const string TexturePathDarkTheme = "images/logo_darkTheme";
+        private const string TexturePathLightTheme = "images/logo_lightTheme";
+        private const float logoHeight = 40;
         private Texture2D _logoTexture;
         private void Awake()
         {
-            _logoTexture = Resources.Load<Texture2D>(TexturePath);
+            _logoTexture = Resources.Load<Texture2D>(EditorGUIUtility.isProSkin? TexturePathDarkTheme : TexturePathLightTheme);
         }
 
         public override void OnInspectorGUI()
@@ -23,7 +25,7 @@ namespace GEAR.Localization.Editor
         {
             if (_logoTexture)
             {
-                GUILayout.Box(_logoTexture, GUILayout.Width(90f), GUILayout.Height(60f), GUILayout.ExpandWidth(true));
+                GUILayout.Label(_logoTexture, GUILayout.Height(logoHeight), GUILayout.MinHeight(logoHeight), GUILayout.MaxHeight(logoHeight), GUILayout.ExpandHeight(false));
             }
         }
     }
