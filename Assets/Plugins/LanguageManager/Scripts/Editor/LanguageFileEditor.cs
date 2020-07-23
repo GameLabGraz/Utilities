@@ -18,8 +18,8 @@ namespace GEAR.Localization.Editor
             GetWindow<LanguageFileEditor>("Language Editor");
         }
         
-        private const string TexturePathDarkTheme = "images/logo_darkTheme";
-        private const string TexturePathLightTheme = "images/logo_lightTheme";
+        private const string TexturePathDarkTheme = "images/LM_logo_darkTheme";
+        private const string TexturePathLightTheme = "images/LM_logo_lightTheme";
         private Texture2D logo = null;
         
         Vector2 scrollPositionContent = Vector2.zero;

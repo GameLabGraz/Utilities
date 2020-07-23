@@ -6,8 +6,8 @@ namespace GEAR.LimeSurvey.Editor
     [CustomEditor(typeof(LimeSurveyUploader))]
     public class LimeSurveyUploaderEditor : UnityEditor.Editor
     {
-        private const string TexturePathDarkTheme = "images/logo_darkTheme";
-        private const string TexturePathLightTheme = "images/logo_lightTheme";
+        private const string TexturePathDarkTheme = "images/LIME_logo_darkTheme";
+        private const string TexturePathLightTheme = "images/LIME_logo_lightTheme";
         private const float logoHeight = 48;
         private Texture2D _logoTexture;
 
