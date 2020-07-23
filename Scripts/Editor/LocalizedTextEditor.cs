@@ -8,9 +8,9 @@ namespace GEAR.Localization
     [CustomEditor(typeof(LocalizedTextBase), true)]
     public class LocalizedTextEditor : UnityEditor.Editor
     {
-        private const string TexturePathDarkTheme = "images/logo_darkTheme";
-        private const string TexturePathLightTheme = "images/logo_lightTheme";
-        private const float logoHeight = 40;
+        private const string TexturePathDarkTheme = "images/LM_logo_darkTheme";
+        private const string TexturePathLightTheme = "images/LM_logo_lightTheme";
+        private const float logoHeight = 48;
         private Texture2D logo = null;
         
         SerializedProperty keyProperty;
