@@ -8,7 +8,7 @@ namespace GEAR.Localization
     {
         private TMP_Text _text;
 
-        private void Start()
+        private new void Start()
         {
             _text = GetComponent<TMP_Text>();
             base.Start();
