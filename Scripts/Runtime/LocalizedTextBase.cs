@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GEAR.Localization
 {
-    public class LocalizedTextBase : MonoBehaviour
+    public abstract class LocalizedTextBase : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The key that should be used to get the text from the language file.")]
@@ -31,10 +29,8 @@ namespace GEAR.Localization
 
             UpdateLocalizedText();
         }
-        
-        public virtual void UpdateLocalizedText()
-        {
-        }
+
+        public abstract void UpdateLocalizedText();
 
         protected string GetText()
         {

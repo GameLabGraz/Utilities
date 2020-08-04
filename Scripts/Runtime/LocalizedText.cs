@@ -8,10 +8,9 @@ namespace GEAR.Localization
     {
         private Text _text;
         
-        protected void Start()
+        protected new void Start()
         {
             _text = GetComponent<Text>();
-
             base.Start();
         }
 
