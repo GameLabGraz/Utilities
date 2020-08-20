@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace GEAR.Localization
+namespace GEAR.Localization.Text
 {
     [RequireComponent(typeof(TMP_Text))]
     public class LocalizedTMP : LocalizedTextBase

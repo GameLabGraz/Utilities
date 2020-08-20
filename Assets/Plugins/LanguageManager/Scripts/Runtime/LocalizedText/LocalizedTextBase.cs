@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GEAR.Localization
+namespace GEAR.Localization.Text
 {
     public abstract class LocalizedTextBase : MonoBehaviour
     {
