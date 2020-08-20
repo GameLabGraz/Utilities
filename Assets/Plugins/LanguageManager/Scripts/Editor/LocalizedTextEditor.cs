@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using GEAR.Localization.Text;
 using RotaryHeart.Lib.AutoComplete;
 using UnityEditor;
 using UnityEngine;
 
-namespace GEAR.Localization
+namespace GEAR.Localization.Editor
 {
     [CustomEditor(typeof(LocalizedTextBase), true)]
     public class LocalizedTextEditor : UnityEditor.Editor

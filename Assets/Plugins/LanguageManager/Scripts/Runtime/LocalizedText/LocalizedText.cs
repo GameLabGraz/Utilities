@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
-namespace GEAR.Localization
+namespace GEAR.Localization.Text
 {
-    [RequireComponent(typeof(Text))]
+    [RequireComponent(typeof(UnityEngine.UI.Text))]
     public class LocalizedText : LocalizedTextBase
     {
-        private Text _text;
+        private UnityEngine.UI.Text _text;
         
         protected new void Start()
         {
-            _text = GetComponent<Text>();
+            _text = GetComponent<UnityEngine.UI.Text>();
             base.Start();
         }
 
