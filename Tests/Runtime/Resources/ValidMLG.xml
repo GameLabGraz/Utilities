@@ -15,8 +15,7 @@
         <Translation Key="EscapedMicroSign">
             <English>\u00B5</English>
             <German>\u00B5</German>
-        
-    </Translation>
+        </Translation>
 		
     </Translations>
 </LanguageManager>
