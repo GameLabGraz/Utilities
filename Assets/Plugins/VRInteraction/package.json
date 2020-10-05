@@ -1,0 +1,11 @@
+{
+	"name": "com.gear.vrinteraction",
+	"displayName": "VR Interaction Plugin",
+	"version": "1.0.0",
+	"unity": "2018.4",
+	"author": "TUG GEAR Group",
+	"description": "This package offers some helpful features for Virtual Reality development.",
+	"dependencies": {
+		"com.unity.textmeshpro": "1.4.1"
+	}
+}

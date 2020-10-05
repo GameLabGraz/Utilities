@@ -2,7 +2,8 @@
     "name": "GEAR.VRInteraction",
     "references": [
         "Unity.TextMeshPro",
-        "RotaryHeart"
+        "SteamVR",
+        "Valve.VR"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
