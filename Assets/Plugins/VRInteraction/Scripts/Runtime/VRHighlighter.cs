@@ -29,6 +29,20 @@ namespace GEAR.VRInteraction
                 hoverButton.onButtonUp.AddListener(OnButtonUp);
             }
             
+            var snapZone = GetComponent<VRSnapDropZone>();
+            if (snapZone)
+            {
+                Debug.Log("We have a snap zone");
+                ColorObj(snapZone.HighlightedObject);
+                if (snapZone.HighlightedObject)
+                {
+                    snapZone.onSnapZoneEnter.AddListener(sz => sz.HighlightedObject.SetActive(true));
+                    snapZone.onUnsnap.AddListener((sz, obj) => sz.HighlightedObject.SetActive(true));
+                    snapZone.onSnapZoneExit.AddListener(sz => sz.HighlightedObject.SetActive(false));
+                    snapZone.onSnap.AddListener((sz, obj) => sz.HighlightedObject.SetActive(false));
+                }
+            }
+            
             var hoverEvents = GetComponent<InteractableHoverEvents>();
             if(hoverEvents){
                 hoverEvents.onHandHoverBegin.AddListener(() => { 
@@ -67,6 +81,30 @@ namespace GEAR.VRInteraction
             foreach (var t in renderers)
             {
                 t.material.color = newColor;
+            }
+        }
+        
+        // Only used for snap zone -> we never need to change the obj color back
+        private void ColorObj(GameObject obj)
+        {
+            if (!obj) return;
+            var renderers = obj.GetComponentsInChildren<Renderer>();
+            foreach (var r in renderers)
+                SetRendererPermanentHighlightColor(r);
+            renderers = obj.GetComponents<Renderer>();
+            foreach (var r in renderers)
+                SetRendererPermanentHighlightColor(r);
+        }
+
+        private void SetRendererPermanentHighlightColor(Renderer r)
+        {
+            foreach (var mat in r.materials)
+            {
+                var oldCol = mat.color;
+                mat.color = new Color(oldCol.r * highlightColor.r, oldCol.g * highlightColor.g,
+                    oldCol.b * highlightColor.b, highlightColor.a);
+                
+                Debug.Log("new Col: " + mat.color);
             }
         }
     }

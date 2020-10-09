@@ -8829,7 +8829,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 461366064}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.25, y: 0, z: 0}
+  m_LocalPosition: {x: -2.25, y: -0.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 785237989}
@@ -11205,6 +11205,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7c27a46b80a6445bffe44ea9e91cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &583447257 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000010777624494, guid: fb710a001890d9a44bb74a8ce4f20cc0,
+    type: 3}
+  m_PrefabInstance: {fileID: 754953094}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &588419827
 GameObject:
   m_ObjectHideFlags: 0
@@ -21948,7 +21954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 428928, guid: 73ac470d3d909d645a6c89a4664b6849, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.515
       objectReference: {fileID: 0}
     - target: {fileID: 428928, guid: 73ac470d3d909d645a6c89a4664b6849, type: 3}
       propertyPath: m_LocalPosition.z
@@ -29832,6 +29838,7 @@ GameObject:
   - component: {fileID: 1558021388}
   - component: {fileID: 1558021390}
   - component: {fileID: 1558021389}
+  - component: {fileID: 1558021391}
   m_Layer: 0
   m_Name: SnapZone
   m_TagString: Untagged
@@ -29847,7 +29854,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558021387}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.33, y: 1.035, z: -0.113}
+  m_LocalPosition: {x: -0.33, y: 1.328, z: -0.113}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 461366065}
@@ -29879,6 +29886,84 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snappedObject: {fileID: 0}
+  highlightedObject: {fileID: 583447257}
+  allowedTags: []
+  setScaleOnSnap: 0
+  localScale: {x: 1, y: 1, z: 1}
+  allowUnsnap: 1
+  createNewOnUnsnap: 0
+  onSnapZoneEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 594734156}
+        m_MethodName: set_text
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: snap zone enter
+          m_BoolArgument: 0
+        m_CallState: 2
+  onSnapZoneExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 594734156}
+        m_MethodName: set_text
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: snap zone exit
+          m_BoolArgument: 0
+        m_CallState: 2
+  onSnap:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 594734156}
+        m_MethodName: set_text
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: on snap
+          m_BoolArgument: 0
+        m_CallState: 2
+  onUnSnap:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 594734156}
+        m_MethodName: set_text
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: on unsnap
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1558021391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558021387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b674a463018e054fa800d1850cbd170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 0, g: 1, b: 1, a: 0.5019608}
+  pressedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  attachedColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1560889153
 GameObject:
   m_ObjectHideFlags: 0
@@ -37938,7 +38023,7 @@ MonoBehaviour:
     needsReinit: 0
   allowToggleTo2D: 1
   snapTurnGameObject: {fileID: 1000013036390824}
-  allowSnapTurns: 0
+  allowSnapTurns: 1
   showController: 1
   animateWithController: 1
 --- !u!1 &1893162014

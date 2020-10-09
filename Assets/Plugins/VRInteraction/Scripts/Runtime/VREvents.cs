@@ -1,4 +1,5 @@
-﻿using UnityEngine.Events;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace GEAR.VRInteraction
 {
@@ -17,4 +18,13 @@ namespace GEAR.VRInteraction
     {
     }
 
+    [System.Serializable]
+    public class SnapZoneEvent : UnityEvent<VRSnapDropZone>
+    {
+    }
+    
+    [System.Serializable]
+    public class SnapUnsnapEvent : UnityEvent<VRSnapDropZone, GameObject>
+    {
+    }
 }
