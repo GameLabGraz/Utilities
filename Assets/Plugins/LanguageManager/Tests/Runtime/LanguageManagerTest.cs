@@ -16,7 +16,7 @@ public class LanguageManagerTest
     [TearDown]
     public void Teardown()
     {
-        Object.Destroy(_languageManager.gameObject);
+        Object.DestroyImmediate(_languageManager.gameObject);
     }
 
     [TestCase("ValidMLG", true)]
