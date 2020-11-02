@@ -34,13 +34,16 @@ namespace GEAR.VRInteraction
             {
                 Debug.Log("We have a snap zone");
                 ColorObj(snapZone.HighlightedObject);
-                if (snapZone.HighlightedObject)
+                Debug.Log("We have a highlighted obj");
+                snapZone.onStartHighlight.AddListener(sz =>
                 {
-                    snapZone.onSnapZoneEnter.AddListener(sz => sz.HighlightedObject.SetActive(true));
-                    snapZone.onUnsnap.AddListener((sz, obj) => sz.HighlightedObject.SetActive(true));
-                    snapZone.onSnapZoneExit.AddListener(sz => sz.HighlightedObject.SetActive(false));
-                    snapZone.onSnap.AddListener((sz, obj) => sz.HighlightedObject.SetActive(false));
-                }
+                    Debug.Log("Highlighter: onStartHighlight");
+                    sz.HighlightedObject?.SetActive(true);
+                });                    
+                snapZone.onEndHighlight.AddListener(sz => {
+                    Debug.Log("Highlighter: onEndHighlight");
+                    sz.HighlightedObject?.SetActive(false);
+                });
             }
             
             var hoverEvents = GetComponent<InteractableHoverEvents>();

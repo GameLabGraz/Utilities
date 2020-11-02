@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
@@ -40,13 +42,22 @@ namespace GEAR.VRInteraction
         public SnapUnsnapEvent onSnap;
         public SnapUnsnapEvent onUnsnap;
         public SnapUnsnapEvent onCreatedClone;
+        public SnapZoneEvent onStartHighlight;
+        public SnapZoneEvent onEndHighlight;
         
         private Transform _snappedObjectParent = null;
         private readonly Dictionary<Rigidbody, RigidBodySettings> _snappedRigidBodies = new Dictionary<Rigidbody, RigidBodySettings>();
         private GameObject _highlighter = null;
         private Vector3 _previousScale = Vector3.zero;
 
+        private List<Interactable> _objInZone = new List<Interactable>();
+
         public GameObject HighlightedObject => _highlighter;
+
+        private void Awake()
+        {
+            SetupHighlightedObject(highlightedObject);
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -55,8 +66,6 @@ namespace GEAR.VRInteraction
             {
                 Snap(snappedObject.gameObject);
             }
-
-            SetupHighlightedObject(highlightedObject);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -65,8 +74,23 @@ namespace GEAR.VRInteraction
             
             if (interactable && interactable != snappedObject && IsTagAllowed(interactable.tag))
             {
+                interactable.onAttachedToHand += SnapZoneEntered;
                 interactable.onDetachedFromHand += OnObjectDetachedFromHand;
-                onSnapZoneEnter.Invoke(this);
+                SnapZoneEntered(null);
+                
+                _objInZone.Add(interactable);
+            }
+        }
+
+        protected void SnapZoneEntered(Hand h)
+        {
+            Debug.Log("Snap Zone Entered");
+            onSnapZoneEnter.Invoke(this);
+            
+            if (snappedObject == null)
+            {
+                Debug.Log("Should start highlight");
+                onStartHighlight.Invoke(this);
             }
         }
 
@@ -80,9 +104,21 @@ namespace GEAR.VRInteraction
             var interactable = GetInteractable(other.gameObject);
             if (interactable)
             {
+                interactable.onAttachedToHand -= SnapZoneEntered;
                 interactable.onDetachedFromHand -= OnObjectDetachedFromHand;
                 
                 onSnapZoneExit.Invoke(this);
+                _objInZone.Remove(interactable);
+                
+                Debug.Log("On Trigger Exit");
+
+                if (snappedObject == null && _objInZone.Any(obj => obj.attachedToHand != null))
+                {
+                    Debug.Log("Should start highlight");
+                    onStartHighlight.Invoke(this);
+                }
+                else
+                    onEndHighlight.Invoke(this);
             }
         }
         
@@ -92,6 +128,17 @@ namespace GEAR.VRInteraction
             
             // adapt the events and add the snapped obj
             Snap(hand.currentAttachedObject);
+            
+            Debug.Log("Obj detached from hand -> highlight?");
+
+            if (snappedObject == null && _objInZone.Any(obj => obj.attachedToHand != null)) {
+                Debug.Log("Should start highlight");
+                onStartHighlight.Invoke(this);
+            }
+            else
+            {
+                onEndHighlight.Invoke(this);
+            }
         }
 
 
@@ -118,7 +165,7 @@ namespace GEAR.VRInteraction
 
             return interactable;
         }
-
+        
         protected void Snap(GameObject newSnappedObject)
         {
             var interactable = GetInteractable(newSnappedObject);
@@ -128,7 +175,8 @@ namespace GEAR.VRInteraction
             _snappedObjectParent = newSnappedObject.transform.parent;
             newSnappedObject.transform.parent = transform;
             newSnappedObject.transform.localPosition = Vector3.zero;
-            newSnappedObject.transform.localRotation = _highlighter.transform.localRotation;
+            if(_highlighter)
+                newSnappedObject.transform.localRotation = _highlighter.transform.localRotation;
             if (setScaleOnSnap)
             {
                 _previousScale = newSnappedObject.transform.localScale;
@@ -136,6 +184,7 @@ namespace GEAR.VRInteraction
             }
 
             snappedObject.onAttachedToHand += OnObjectAttachedToHand;
+            snappedObject.onAttachedToHand -= SnapZoneEntered;
             snappedObject.onDetachedFromHand -= OnObjectDetachedFromHand;
             snappedObject.onDetachedFromHand -= UpdateRigidbodyAfterHandDetached;
             
@@ -171,6 +220,7 @@ namespace GEAR.VRInteraction
 
             //adapt events
             snappedObject.onAttachedToHand -= OnObjectAttachedToHand;
+            snappedObject.onAttachedToHand += SnapZoneEntered;
             snappedObject.onDetachedFromHand += OnObjectDetachedFromHand;
             snappedObject.onDetachedFromHand += UpdateRigidbodyAfterHandDetached;
             
