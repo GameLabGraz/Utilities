@@ -45,6 +45,11 @@ namespace GEAR.VRInteraction.Editor
     {
     }
     
+    [CustomEditor(typeof(VRSnapDropZone))]
+    public class VRSnapDropZoneEditor : VRDefaultEditor
+    {
+    }
+    
     [CustomEditor(typeof(VRPlayer))]
     public class VRPlayerEditor : VRDefaultEditor
     {
