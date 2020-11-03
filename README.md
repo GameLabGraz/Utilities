@@ -13,14 +13,18 @@ To import a package into a Unity project, add the following line to your /Packag
     "com.gamelabgraz.<package name>": "https://github.com/GameLabGraz/Utilities.git#package/<package name>"
 
 ## Update package in your Unity project
-Remove the "lock" block for the package in your /Packages/manifest.json file.
+Unity 2018: Remove the "lock" block for the package in your /Packages/manifest.json file.
+
+Unity 2019 and higher: Remove the "lock" block for the package in your /Packages/packages-lock.json file.
+
 Unity will then automatically import the latest version of the package.
 
     "com.gamelabgraz.<package name>": {
       "revision": "package/<package name>",
       "hash": "<hash value>"
     }
- 
+
+
  ## Supported SDK's
 | SDK | Download Link |
 |---------------|---------------|
