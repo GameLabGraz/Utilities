@@ -76,18 +76,18 @@ namespace GEAR.VRInteraction
             {
                 interactable.onAttachedToHand += SnapZoneEntered;
                 interactable.onDetachedFromHand += OnObjectDetachedFromHand;
-                SnapZoneEntered(null);
-                
+                SnapZoneEntered(interactable.attachedToHand);
+
                 _objInZone.Add(interactable);
             }
         }
 
         protected void SnapZoneEntered(Hand h)
         {
-            Debug.Log("Snap Zone Entered");
+            Debug.Log("Snap Zone Entered - Hand: " + h);
             onSnapZoneEnter.Invoke(this);
             
-            if (snappedObject == null)
+            if (snappedObject == null && h != null)
             {
                 Debug.Log("Should start highlight");
                 onStartHighlight.Invoke(this);
