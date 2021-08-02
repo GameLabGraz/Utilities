@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Plugins/VRInteraction/Examples/VRExample.unity
+    guid: 18ac02a3710b2f84aaefdd122a651f3c
   m_configObjects: {}

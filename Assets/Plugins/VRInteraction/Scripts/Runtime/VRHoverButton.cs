@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR.InteractionSystem;
 
@@ -10,7 +12,7 @@ namespace GEAR.VRInteraction
     
     public class VRHoverButton : HoverButton
     {
-        [Header("Marron VR Specific")]
+        [Header("Maroon VR Specific")]
         public bool stayPressed = true;
         public Vector3 localPressedDistance = new Vector3(0, -0.5f, 0);
 
@@ -72,5 +74,6 @@ namespace GEAR.VRInteraction
             movingPart.localPosition = Vector3.Lerp(startPosition, endPosition, lerp);
             InvokeEvents(wasEngaged, engaged);
         }
+        
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Valve.VR.InteractionSystem;
 
 namespace GEAR.VRInteraction
@@ -17,7 +18,8 @@ namespace GEAR.VRInteraction
         public float minimum = 0f;
         public float maximum = 10f;
         public int boolIsTrueWhenValue = 1;
-        
+        public bool forceToInitialValueAfterGrabEnded = false;
+
         public ValueChangeEventFloat onValueChanged;
         public ValueChangeEventInt onValueChangedInt;
         public ValueChangeEventBool onValueChangedBool;
@@ -68,17 +70,7 @@ namespace GEAR.VRInteraction
             }
 
             _valueRange = maximum - minimum;
-            _currentValue = Mathf.Clamp(initialValue, minimum, maximum);
-            linearMapping.value = (_currentValue - minimum) / _valueRange;
-            
-            onValueChanged.Invoke(_currentValue);
-            if(useAsInteger)
-                onValueChangedInt.Invoke(Mathf.RoundToInt(_currentValue));
-            _currentValueBool = Mathf.RoundToInt(_currentValue) == boolIsTrueWhenValue;
-            if(useAsBool)
-                onValueChangedBool.Invoke(_currentValueBool);
-            
-            UpdateAll();
+            ForceToValue(initialValue);
         }
         protected override void UpdateGameObject()
         {
@@ -124,6 +116,25 @@ namespace GEAR.VRInteraction
             if (hand.IsGrabEnding(gameObject))
             {
                 hand.DetachObject(gameObject);
+
+                Debug.Log("hand Detached");
+                if(forceToInitialValueAfterGrabEnded){
+                    if ( limited )
+                    {
+                        outAngle = transform.localEulerAngles[(int)axisOfRotation];
+                        if ( forceStart )
+                        {
+                            outAngle = Mathf.Clamp( startAngle, minAngle, maxAngle );
+                        }
+                    }
+                    else
+                    {
+                        outAngle = 0.0f;
+                    }
+
+                    Debug.Log("ForceToInitialValue");
+                    ForceToValue(initialValue);
+                }
             }
         }
   
@@ -170,6 +181,25 @@ namespace GEAR.VRInteraction
                 onValueChangedBool.Invoke(_currentValueBool);
 		
             UpdateDebugText();
+        }
+
+        protected void ForceToValue(float value)
+        {
+            
+            Debug.Log("before: " + _currentValue + " - " + linearMapping.value);
+            _currentValue = Mathf.Clamp(value, minimum, maximum);
+            linearMapping.value = (_currentValue - minimum) / _valueRange;
+
+            Debug.Log("before: " + _currentValue + " - " + linearMapping.value);
+
+            onValueChanged.Invoke(_currentValue);
+            if(useAsInteger)
+                onValueChangedInt.Invoke(Mathf.RoundToInt(_currentValue));
+            _currentValueBool = Mathf.RoundToInt(_currentValue) == boolIsTrueWhenValue;
+            if(useAsBool)
+                onValueChangedBool.Invoke(_currentValueBool);
+            
+            UpdateAll();
         }
     }
 }

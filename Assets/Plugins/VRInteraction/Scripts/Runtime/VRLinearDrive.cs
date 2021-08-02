@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Valve.VR.InteractionSystem;
 
 namespace GEAR.VRInteraction
@@ -27,6 +28,7 @@ namespace GEAR.VRInteraction
 			if ( linearMapping == null )
 				linearMapping = gameObject.AddComponent<LinearMapping>();
 
+			Debug.Assert(linearMapping != null);
 			initialMappingOffset = linearMapping.value;
 
 			if ( repositionGameObject )
@@ -35,6 +37,7 @@ namespace GEAR.VRInteraction
 			_valueRange = maximum - minimum;
 			_currentValue = Mathf.Clamp(initialValue, minimum, maximum);
 			linearMapping.value = (_currentValue - minimum) / _valueRange;
+			Debug.Log("linea mapping val: " + linearMapping + " - " + linearMapping.value);
 			transform.position = Vector3.Lerp(startPosition.position, endPosition.position, linearMapping.value);
 			
 			onValueChanged.Invoke(_currentValue);

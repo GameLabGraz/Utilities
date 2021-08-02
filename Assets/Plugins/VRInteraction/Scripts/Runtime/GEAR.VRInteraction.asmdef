@@ -3,6 +3,8 @@
     "references": [
         "Unity.TextMeshPro",
         "SteamVR",
+        "SteamVR_Actions",
+        "SteamVR_Input",
         "Valve.VR"
     ],
     "optionalUnityReferences": [],

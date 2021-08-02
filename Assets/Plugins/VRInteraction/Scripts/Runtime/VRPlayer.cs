@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Valve.VR.InteractionSystem;
 
 namespace GEAR.VRInteraction
@@ -35,6 +36,34 @@ namespace GEAR.VRInteraction
                     Valve.VR.EVRSkeletalMotionRange.WithController :
                     Valve.VR.EVRSkeletalMotionRange.WithoutController);
             }
+
+            var activeRig = GetActiveRig();
+            if (activeRig)
+            {
+                var activePosTrans = activeRig.GetComponentInChildren<Camera>();
+
+                if (activePosTrans)
+                {
+                    //assuming all scales are 1:
+                    var newPosition = transform.position;
+                    var position = activePosTrans.transform.position;
+
+                    newPosition.x -= position.x;
+                    // do not change y position -> player height
+                    newPosition.z -= position.z;
+                    transform.position = newPosition;
+                }
+            }
+        }
+
+        protected GameObject GetActiveRig()
+        {
+            if (rigSteamVR.activeSelf)
+                return rigSteamVR;
+            if (rig2DFallback.activeSelf)
+                return rig2DFallback;
+
+            return null;
         }
     }
 }

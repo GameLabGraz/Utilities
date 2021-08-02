@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Valve.VR.InteractionSystem;
 
 namespace GEAR.VRInteraction
@@ -9,6 +10,7 @@ namespace GEAR.VRInteraction
         public Color pressedColor = Color.gray;
         public Color defaultColor = Color.white;
         public Color attachedColor = Color.white;
+        public List<GameObject> highlightedObjects = new List<GameObject>();
 
         private Color _defaultCol;
         private bool _isHovering = false;
@@ -32,16 +34,16 @@ namespace GEAR.VRInteraction
             var snapZone = GetComponent<VRSnapDropZone>();
             if (snapZone)
             {
-                Debug.Log("We have a snap zone");
+                //Debug.Log("We have a snap zone");
                 ColorObj(snapZone.HighlightedObject);
-                Debug.Log("We have a highlighted obj");
+                //Debug.Log("We have a highlighted obj");
                 snapZone.onStartHighlight.AddListener(sz =>
                 {
-                    Debug.Log("Highlighter: onStartHighlight");
+                    //Debug.Log("Highlighter: onStartHighlight");
                     sz.HighlightedObject?.SetActive(true);
                 });                    
                 snapZone.onEndHighlight.AddListener(sz => {
-                    Debug.Log("Highlighter: onEndHighlight");
+                    //Debug.Log("Highlighter: onEndHighlight");
                     sz.HighlightedObject?.SetActive(false);
                 });
             }
@@ -80,11 +82,33 @@ namespace GEAR.VRInteraction
 
         private void ColorSelf(Color newColor)
         {
-            var renderers = GetComponentsInChildren<Renderer>();
-            foreach (var t in renderers)
+            if (highlightedObjects.Count == 0)
             {
-                t.material.color = newColor;
+                ColorSelf(gameObject, newColor);
             }
+            else
+            {
+                foreach (var obj in highlightedObjects)
+                    ColorSelf(obj, newColor);
+            }
+        }
+
+        private void ColorSelf(GameObject obj, Color newColor)
+        {
+            var r = obj.GetComponent<Renderer>();
+            if (r)
+            {
+                foreach (var mat in r.materials)
+                    mat.color = newColor;
+            }
+
+            var renderers = obj.GetComponentsInChildren<Renderer>();
+            foreach (var rend in renderers)
+            {
+                foreach (var mat in rend.materials)
+                    mat.color = newColor;
+            }
+            
         }
         
         // Only used for snap zone -> we never need to change the obj color back
