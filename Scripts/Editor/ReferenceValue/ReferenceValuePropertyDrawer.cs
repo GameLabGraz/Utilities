@@ -101,7 +101,7 @@ namespace GEAR.Gadgets.ReferenceValue.Editor
             {
                 referenceValue.objectInfo.FieldName = fieldNames[referenceValue.index];
                 referenceValue.objectInfo.ComponentName = components.Count > 0 ? 
-                    components[referenceValue.index].GetType().Name : null;
+                    components[referenceValue.index].GetType().FullName : null;
             }
         }
 
