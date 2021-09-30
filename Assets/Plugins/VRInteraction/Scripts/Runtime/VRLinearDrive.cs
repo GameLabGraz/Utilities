@@ -37,7 +37,7 @@ namespace GEAR.VRInteraction
 			_valueRange = maximum - minimum;
 			_currentValue = Mathf.Clamp(initialValue, minimum, maximum);
 			linearMapping.value = (_currentValue - minimum) / _valueRange;
-			Debug.Log("linea mapping val: " + linearMapping + " - " + linearMapping.value);
+			// Debug.Log("linear mapping val: " + linearMapping + " - " + linearMapping.value);
 			transform.position = Vector3.Lerp(startPosition.position, endPosition.position, linearMapping.value);
 			
 			onValueChanged.Invoke(_currentValue);
@@ -92,6 +92,45 @@ namespace GEAR.VRInteraction
 				var endPos = endPosition.position;
 				transform.position = Vector3.Lerp(startPos, endPos, linearMapping.value);
 			}
+		}
+
+		public void ForceToValue(float newValue)
+		{
+			prevMapping = linearMapping.value;
+			_currentValue = Mathf.Clamp(newValue, minimum, maximum);
+			if (useAsInteger)
+				_currentValue = Mathf.RoundToInt(_currentValue);
+
+			if (useSteps)
+			{
+				var tmp = _currentValue % stepSize;
+				if (tmp > stepSize / 2)
+					_currentValue = _currentValue - tmp + stepSize;
+				else
+					_currentValue -= tmp;
+				
+				if (useAsInteger)
+					_currentValue = Mathf.RoundToInt(_currentValue);
+
+				linearMapping.value = (_currentValue - minimum) / _valueRange;
+			}
+
+			onValueChanged.Invoke(_currentValue);
+			if(useAsInteger)
+				onValueChangedInt.Invoke(Mathf.RoundToInt(_currentValue));
+			
+			mappingChangeSamples[sampleCount % mappingChangeSamples.Length] =
+				(1.0f / Time.deltaTime) * (linearMapping.value - prevMapping);
+			sampleCount++;
+
+			if (repositionGameObject && !float.IsNaN(linearMapping.value))
+			{
+				var startPos = startPosition.position;
+				var endPos = endPosition.position;
+				transform.position = Vector3.Lerp(startPos, endPos, linearMapping.value);
+			}
+			
+			
 		}
 	}
 }

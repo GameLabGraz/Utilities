@@ -570,6 +570,7 @@ PlayerSettings:
   ps5IncludedModules: []
   ps5SharedBinaryContentLabels: []
   ps5SharedBinarySystemFolders: []
+  monoEnv: 
   splashScreenBackgroundSourceLandscape: {fileID: 0}
   splashScreenBackgroundSourcePortrait: {fileID: 0}
   blurSplashScreenBackground: 1

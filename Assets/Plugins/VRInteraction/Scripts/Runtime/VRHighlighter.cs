@@ -18,19 +18,31 @@ namespace GEAR.VRInteraction
         protected void Start()
         {
             var maroonHoverBtn = GetComponent<VRHoverButton>();
-            if(maroonHoverBtn && maroonHoverBtn.stayPressed)
+            if(maroonHoverBtn)
             {
-                maroonHoverBtn.OnButtonOn.AddListener(() => { _defaultCol = pressedColor; });
-                maroonHoverBtn.OnButtonOff.AddListener(() => { _defaultCol = defaultColor; });
-            } 
-            var hoverButton = GetComponent<HoverButton>();
-            if (hoverButton)
-            {
-                _defaultCol = default;
-                hoverButton.onButtonDown.AddListener(OnButtonDown);
-                hoverButton.onButtonUp.AddListener(OnButtonUp);
+                if (maroonHoverBtn.stayPressed)
+                {
+                    maroonHoverBtn.OnButtonOn.AddListener(() => { _defaultCol = pressedColor; });
+                    maroonHoverBtn.OnButtonOff.AddListener(() => { _defaultCol = defaultColor; });
+                }
+                else
+                {
+                    _defaultCol = defaultColor;
+                    maroonHoverBtn.onButtonDown.AddListener(OnButtonDown);
+                    maroonHoverBtn.onButtonUp.AddListener(OnButtonUp);
+                }
             }
-            
+            else
+            {
+                var hoverButton = GetComponent<HoverButton>();
+                if (hoverButton)
+                {
+                    _defaultCol = default;
+                    hoverButton.onButtonDown.AddListener(OnButtonDown);
+                    hoverButton.onButtonUp.AddListener(OnButtonUp);
+                }
+            }
+
             var snapZone = GetComponent<VRSnapDropZone>();
             if (snapZone)
             {

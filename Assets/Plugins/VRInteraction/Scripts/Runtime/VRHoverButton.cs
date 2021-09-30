@@ -74,6 +74,31 @@ namespace GEAR.VRInteraction
             movingPart.localPosition = Vector3.Lerp(startPosition, endPosition, lerp);
             InvokeEvents(wasEngaged, engaged);
         }
+
+        // this function is only useful when stayPressed is true
+        public void ForceButtonState(bool isOn)
+        {
+            if (!stayPressed) return;
+            if (isOn)
+            {
+                _isPressed = true;
+                startPosition = _pressedPosition;
+                OnButtonPressed.Invoke(true);
+                OnButtonOn.Invoke();
+            }
+            else
+            {
+                _isPressed = false;
+                startPosition = _notPressedPosition;
+                OnButtonPressed.Invoke(false);
+                OnButtonOff.Invoke();
+            }
+
+            var wasEngaged = engaged;
+            _lastEngaged = engaged = false;
+            movingPart.localPosition = startPosition;
+            InvokeEvents(wasEngaged, engaged);
+        }
         
     }
 }

@@ -183,9 +183,8 @@ namespace GEAR.VRInteraction
             UpdateDebugText();
         }
 
-        protected void ForceToValue(float value)
+        public void ForceToValue(float value)
         {
-            
             Debug.Log("before: " + _currentValue + " - " + linearMapping.value);
             _currentValue = Mathf.Clamp(value, minimum, maximum);
             linearMapping.value = (_currentValue - minimum) / _valueRange;
