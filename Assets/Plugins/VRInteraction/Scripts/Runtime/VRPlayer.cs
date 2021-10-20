@@ -12,10 +12,18 @@ namespace GEAR.VRInteraction
         [Header("Maroon VR Specific")] 
         [Tooltip("The user can turn the player via the controllers.")]
         public bool allowSnapTurns = true;
+        [Tooltip("Forces the transform to stay at the start coordinates.")]
+        public bool forcePosition = true;
 
         [Header("Skeleton Settings")] 
         public bool showController = true;
         public bool animateWithController = false;
+
+        private Vector3 _position = Vector3.zero;
+
+        protected void Awake() {
+            _position = transform.position;        
+        }
 
         // Start is called before the first frame update
         protected void Start()
@@ -53,6 +61,12 @@ namespace GEAR.VRInteraction
                     newPosition.z -= position.z;
                     transform.position = newPosition;
                 }
+            }
+
+            if (forcePosition)
+            {
+                _position.y = transform.position.y;
+                transform.position = _position;
             }
         }
 

@@ -2040,7 +2040,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initializeSteamVROnAwake: 1
-  doNotDestroy: 1
+  doNotDestroy: 0
   steamvr_render: {fileID: 0}
 --- !u!114 &8372810542120936306
 MonoBehaviour:
@@ -2461,7 +2461,7 @@ MonoBehaviour:
   noSteamVRFallbackCamera: {fileID: 0}
   noSteamVRFallbackMaxDistanceNoItem: 10
   noSteamVRFallbackMaxDistanceWithItem: 0.5
-  renderModelPrefab: {fileID: 1000011547835092, guid: d5082f7d9f947374197e0a97786f4e40,
+  renderModelPrefab: {fileID: 1000011547835092, guid: f971d2e9aca8ac34bb1804162e3d84a2,
     type: 3}
   renderModels: []
   mainRenderModel: {fileID: 0}
@@ -2602,7 +2602,7 @@ MonoBehaviour:
   noSteamVRFallbackCamera: {fileID: 0}
   noSteamVRFallbackMaxDistanceNoItem: 10
   noSteamVRFallbackMaxDistanceWithItem: 0.5
-  renderModelPrefab: {fileID: 1000012617731570, guid: 837f93beb9a614743ae3a2c0ada7c388,
+  renderModelPrefab: {fileID: 1000012617731570, guid: 06d91ca2611fcf14696f6a6af339ae03,
     type: 3}
   renderModels: []
   mainRenderModel: {fileID: 0}
