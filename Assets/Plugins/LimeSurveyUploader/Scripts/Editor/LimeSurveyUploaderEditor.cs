@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace GEAR.LimeSurvey.Editor
 {
+    /*
     [CustomEditor(typeof(LimeSurveyUploader))]
     public class LimeSurveyUploaderEditor : UnityEditor.Editor
     {
@@ -63,4 +64,5 @@ namespace GEAR.LimeSurvey.Editor
             }
         }
     }
+    */
 }

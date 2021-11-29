@@ -1,152 +1,95 @@
-﻿using System.Collections;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Networking;
-using GEAR.LimeSurvey.Extensions;
-using GEAR.Gadgets.Coroutine;
-using Debug = UnityEngine.Debug;
+﻿using UnityEngine;
+using System.Net;
+using System.Collections.Generic;
+using GameLabGraz.LimeSurvey.Data;
+using GameLabGraz.LimeSurvey.Extensions;
+using Unity.Plastic.Newtonsoft.Json.Linq;
 
-namespace GEAR.LimeSurvey
+namespace GameLabGraz.LimeSurvey
 {
     public class LimeSurveyUploader : MonoBehaviour
     {
-        [Header("Login")] [SerializeField] private string user;
-
+        [Header("Login")]
+        [SerializeField] private string url;
+        [SerializeField] private string user;
         [SerializeField] private string password;
-
         [SerializeField] private string surveyId;
 
-        [Header("Upload Settings")]
+        private JsonRpcClient _client;
 
-        [SerializeField] private bool excludeRecordIds = true;
+        public string SessionKey { get; private set; }
 
-        [SerializeField] private LimeSurveyInsertIdType insert = LimeSurveyInsertIdType.Ignore;
 
-        [SerializeField] private bool importAsNotFinalized;
-
-        [SerializeField] private LimeSurveyCharset charset = LimeSurveyCharset.Utf8;
-
-        private string LoginUri => "http://wlvi.iicm.edu/limesurvey/index.php/admin/authentication/sa/login";
-
-        private string UploadUri => $"http://wlvi.iicm.edu/limesurvey/index.php/admin/dataentry/sa/vvimport/surveyid/{surveyId}";
-
-        private readonly string[] _errorMessages =
+        private void Start()
         {
-            "Incorrect username and/or password!",
-            "You have exceeded the number of maximum login attempts.",
-            "Please log in first."
-        };
-
-        public bool LoggedIn { get; private set; }
-
-        private void OnEnable()
-        {
-            StartCoroutine(Login());
+            _client = new JsonRpcClient(url);
+            Login();
+            GetQuestions();
         }
 
-        private void OnDisable()
+        private void Login()
         {
-            UnityWebRequest.ClearCookieCache();
-        }
+            _client.ClearParameters();
+            _client.SetMethod(LimeSurveyMethod.GetSessionKey);
+            _client.AddParameter(LimeSurveyParameter.UserName, user);
+            _client.AddParameter(LimeSurveyParameter.Password, password);
+            _client.Post();
 
-        public void StartUpload(TextAsset data)
+            if (HandleClientResponse(_client.Response) != ErrorCode.OK)
+                return;
 
-        {
-            StartCoroutine(UploadData(data.bytes));
-        }
-
-        public void StartUpload(byte[] data)
-
-    {
-            StartCoroutine(UploadData(data));
-        }
-
-        private IEnumerator Login()
-        {
-            Debug.Log("LimeSurveyUploader::Login: Start Login ...");
-
-            var form = new WWWForm();
-            form.AddField(LimeSurveyField.User, user);
-            form.AddField(LimeSurveyField.Password, password);
-            form.AddField(LimeSurveyField.Language, LimeSurveyLanguage.Default);
-            form.AddField(LimeSurveyField.Action, LimeSurveyAction.Login);
-
-            var cd = new CoroutineWithData(this, SendData(LoginUri, form));
-            yield return cd.Coroutine;
-
-            var error = _errorMessages.FirstOrDefault(e => ((string)cd.Result).Contains(e));
-            if (!string.IsNullOrEmpty(error))
+            var response = _client.Response.result.ToString();
+            if (response.Contains("\"status\""))
             {
-                Debug.LogError($"LimeSurveyUploader::Login: {error}");
-                LoggedIn = false;
+                Debug.LogError("LimeSurveyUploader::Login: Invalid user name or password.");
             }
             else
             {
-                Debug.Log($"LimeSurveyUploader::Login: Success");
-                LoggedIn = true;
+                SessionKey = response;
+                Debug.Log($"LimeSurveyUploader::Login: Login successfully - Session Key: {SessionKey}");
             }
         }
 
-        private IEnumerator UploadData(byte[] data)
+        private ErrorCode HandleClientResponse(JsonRpcResponse response)
         {
-            if (LoggedIn)
+            if (_client.Response.StatusCode != HttpStatusCode.OK)
             {
-                Debug.Log("LimeSurveyUploader::UploadData: Start Uploading data ...");
-
-                var form = new WWWForm();
-                form.AddField(LimeSurveyField.Action, LimeSurveyAction.Import);
-                form.AddField(LimeSurveyField.SubAction, LimeSurveyAction.Upload);
-                form.AddField(LimeSurveyField.Sid, surveyId);
-
-                form.AddField(LimeSurveyField.File, "file");
-
-                if(excludeRecordIds)
-                    form.AddField(LimeSurveyField.NoId, LimeSurveyInsertIdType.NoId);
-                else
-                    form.AddField(LimeSurveyField.Insert, insert);
-                
-                if(importAsNotFinalized)
-                    form.AddField(LimeSurveyField.Finalized, "notfinalized");
-
-                form.AddField(LimeSurveyField.Charset, charset);
-
-                form.AddBinaryData(LimeSurveyField.File, data);
-
-                var cd = new CoroutineWithData(this, SendData(UploadUri, form));
-                yield return cd.Coroutine;
-
-                var error = _errorMessages.FirstOrDefault(e => ((string) cd.Result).Contains(e));
-                if (!string.IsNullOrEmpty(error))
-                {
-                    Debug.LogError($"LimeSurveyUploader::UploadData: {error}");
-                }
-                else
-                {
-                    Debug.Log("LimeSurveyUploader::UploadData: Success");
-                }
+                Debug.LogError($"LimeSurveyUploader::HandleClientResponse: Error - HTTP Status Code: {_client.Response.StatusCode}");
+                return ErrorCode.HttpStatusError;
             }
-            else
+            else if (_client.Response.error != null)
             {
-                Debug.Log("LimeSurveyUploader:UploadData: You are not logged in");
+                Debug.LogError($"LimeSurveyUploader::HandleClientResponse: Error: {_client.Response.error}");
+                return ErrorCode.ResponseError;
             }
+            return ErrorCode.OK;
         }
 
-        private IEnumerator SendData(string uri, WWWForm form)
+        public List<Question> GetQuestions()
         {
-            using (var w = UnityWebRequest.Post(uri, form))
+            _client.ClearParameters();
+            _client.SetMethod(LimeSurveyMethod.ListQuestions);
+            _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
+            _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
+            _client.Post();
+
+            if (HandleClientResponse(_client.Response) != ErrorCode.OK)
+                return null;
+
+            var questionList = new List<Question>();
+            foreach (var question in (JArray)_client.Response.result)
             {
-                yield return w.SendWebRequest();
-                if (w.isNetworkError || w.isHttpError)
-                {
-                    Debug.LogError($"LimeSurveyUploader::SendData: Error: {w.error}");
-                    yield return w.error;
-                }
-                else
-                {
-                    Debug.Log("LimeSurveyUploader::SendData: Sent data successfully");
-                    yield return w.downloadHandler.text;
-                }
+                Debug.Log(question);
+
+
+                var questionObj = JsonUtility.FromJson<Question>(question.ToString());
+                questionList.Add(questionObj);
             }
+            
+
+
+            return questionList;
         }
+
     }
 }
