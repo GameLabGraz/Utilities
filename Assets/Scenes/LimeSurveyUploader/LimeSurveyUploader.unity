@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   url: https://gamelabgraz.limesurvey.net/index.php/admin/remotecontrol
-  user: gamelabgraz
+  userName: gamelabgraz
   password: DU9bEQ%3
   surveyId: 964717
 --- !u!4 &345141192

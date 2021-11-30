@@ -11,7 +11,7 @@ namespace GameLabGraz.LimeSurvey
     {
         [Header("Login")]
         [SerializeField] private string url;
-        [SerializeField] private string user;
+        [SerializeField] private string userName;
         [SerializeField] private string password;
         [SerializeField] private string surveyId;
 
@@ -19,19 +19,17 @@ namespace GameLabGraz.LimeSurvey
 
         public string SessionKey { get; private set; }
 
-
         private void Start()
         {
             _client = new JsonRpcClient(url);
             Login();
-            GetQuestions();
         }
 
         private void Login()
         {
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.GetSessionKey);
-            _client.AddParameter(LimeSurveyParameter.UserName, user);
+            _client.AddParameter(LimeSurveyParameter.UserName, userName);
             _client.AddParameter(LimeSurveyParameter.Password, password);
             _client.Post();
 
@@ -65,7 +63,33 @@ namespace GameLabGraz.LimeSurvey
             return ErrorCode.OK;
         }
 
-        public List<Question> GetQuestions()
+        private void SetQuestionProperties(Question question)
+        {
+            _client.ClearParameters();
+            _client.SetMethod(LimeSurveyMethod.GetQuestionProperties);
+            _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
+            _client.AddParameter(LimeSurveyParameter.QuestionID, question.ID);
+            _client.Post();
+
+            if (HandleClientResponse(_client.Response) != ErrorCode.OK)
+                return;
+
+            var questionProperties = (JObject)_client.Response.result;
+            var subQuestions = questionProperties["subquestions"];
+            if (subQuestions == null)
+                return;
+
+            foreach (var subQuestion in subQuestions)
+            {
+                question.SubQuestions.Add(new SubQuestion()
+                {
+                    Title = subQuestion.First?["title"]?.ToString(),
+                    QuestionText = subQuestion.First?["question"]?.ToString()
+                });
+            }
+        }
+
+        public List<Question> GetQuestionList()
         {
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.ListQuestions);
@@ -79,17 +103,11 @@ namespace GameLabGraz.LimeSurvey
             var questionList = new List<Question>();
             foreach (var question in (JArray)_client.Response.result)
             {
-                Debug.Log(question);
-
-
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
+                SetQuestionProperties(questionObj);
                 questionList.Add(questionObj);
             }
-            
-
-
             return questionList;
         }
-
     }
 }

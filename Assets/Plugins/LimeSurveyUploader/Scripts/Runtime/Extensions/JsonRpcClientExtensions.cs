@@ -1,4 +1,5 @@
 ﻿using GEAR.Gadgets.Extensions;
+using Unity.Plastic.Newtonsoft.Json.Linq;
 
 namespace GameLabGraz.LimeSurvey.Extensions
 {
@@ -9,7 +10,7 @@ namespace GameLabGraz.LimeSurvey.Extensions
             client.Method = method.GetStringValue();
         }
 
-        public static void AddParameter(this JsonRpcClient client, LimeSurveyParameter parameter, string value)
+        public static void AddParameter(this JsonRpcClient client, LimeSurveyParameter parameter, JToken value)
         {
             client.Parameters.Add(parameter.GetStringValue(), value);
         }
