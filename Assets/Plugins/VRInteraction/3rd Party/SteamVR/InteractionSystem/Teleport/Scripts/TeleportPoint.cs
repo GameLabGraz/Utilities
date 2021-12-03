@@ -66,6 +66,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		void Awake()
 		{
+			Debug.Log("Awake Teleport Point");
 			GetRelevantComponents();
 
 			animation = GetComponent<Animation>();

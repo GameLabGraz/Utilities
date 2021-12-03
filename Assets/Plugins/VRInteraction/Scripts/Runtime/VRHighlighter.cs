@@ -28,9 +28,9 @@ namespace GEAR.VRInteraction
                 else
                 {
                     _defaultCol = defaultColor;
-                    maroonHoverBtn.onButtonDown.AddListener(OnButtonDown);
-                    maroonHoverBtn.onButtonUp.AddListener(OnButtonUp);
                 }
+                maroonHoverBtn.onButtonDown.AddListener(OnButtonDown);
+                maroonHoverBtn.onButtonUp.AddListener(OnButtonUp);
             }
             else
             {

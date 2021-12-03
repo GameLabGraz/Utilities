@@ -9,12 +9,17 @@ namespace GEAR.VRInteraction
     }
 
     [System.Serializable]
-    public class ValueChangeEventInt : UnityEvent<float>
+    public class ValueChangeEventInt : UnityEvent<int>
     {
     }
     
     [System.Serializable]
     public class ValueChangeEventBool : UnityEvent<bool>
+    {
+    }
+    
+    [System.Serializable]
+    public class ValueChangeEventVector3 : UnityEvent<Vector3>
     {
     }
 
