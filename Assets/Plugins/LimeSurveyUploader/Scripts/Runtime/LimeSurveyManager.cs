@@ -7,7 +7,7 @@ using Unity.Plastic.Newtonsoft.Json.Linq;
 
 namespace GameLabGraz.LimeSurvey
 {
-    public class LimeSurveyUploader : MonoBehaviour
+    public class LimeSurveyManager : MonoBehaviour
     {
         [Header("Login")]
         [SerializeField] private string url;
@@ -19,7 +19,20 @@ namespace GameLabGraz.LimeSurvey
 
         public string SessionKey { get; private set; }
 
-        private void Start()
+
+        private static LimeSurveyManager _instance;
+
+        public static LimeSurveyManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = FindObjectOfType<LimeSurveyManager>();
+                return _instance;
+            }
+        }
+
+        private void Awake()
         {
             _client = new JsonRpcClient(url);
             Login();

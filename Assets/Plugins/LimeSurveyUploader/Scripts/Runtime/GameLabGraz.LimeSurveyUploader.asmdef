@@ -1,14 +1,17 @@
 {
     "name": "GEAR.LimeSurveyUploader",
     "references": [
-        "GEAR.Gadgets"
+        "GEAR.Gadgets",
+        "GameLabGraz.UserInterface",
+        "Unity.TextMeshPro"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

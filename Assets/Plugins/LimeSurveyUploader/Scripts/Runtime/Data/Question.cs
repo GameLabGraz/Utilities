@@ -7,7 +7,10 @@ namespace GameLabGraz.LimeSurvey.Data
     public enum QuestionType
     {
         Text,
-        MultipleCoise,
+        MultipleChoice,
+        FivePointChoice,
+        FivePointMatrix,
+        TenPointMatrix,
         Unknown
     }
 
@@ -42,7 +45,13 @@ namespace GameLabGraz.LimeSurvey.Data
                     case "T":
                         return QuestionType.Text;
                     case "M":
-                        return QuestionType.MultipleCoise;
+                        return QuestionType.MultipleChoice;
+                    case "5":
+                        return QuestionType.FivePointChoice;
+                    case "A":
+                        return QuestionType.FivePointMatrix;
+                    case "B":
+                        return QuestionType.TenPointMatrix;
                     default:
                         return QuestionType.Unknown;
                 }
