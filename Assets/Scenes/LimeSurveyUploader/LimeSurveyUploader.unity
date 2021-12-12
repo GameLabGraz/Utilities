@@ -121,53 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &345141190
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 345141192}
-  - component: {fileID: 345141191}
-  m_Layer: 0
-  m_Name: LimeSurveyManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &345141191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345141190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfc5801bebc20d14bb2d0de349e4b6e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: https://gamelabgraz.limesurvey.net/index.php/admin/remotecontrol
-  userName: gamelabgraz
-  password: DU9bEQ%3
-  surveyId: 964717
---- !u!4 &345141192
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345141190}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 588.982, y: 212.37085, z: 666.5378}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &522973191
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,6 +705,75 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1683874032351158090
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 588.982
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 212.37085
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 666.5378
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252108, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: m_Name
+      value: LimeSurveyManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 79d106120db22c34e8db900db6c54794, type: 3}
 --- !u!114 &7002987488862053548
 MonoBehaviour:
   m_ObjectHideFlags: 0

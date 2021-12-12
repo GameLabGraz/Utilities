@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Net;
 using System.Collections.Generic;
 using GameLabGraz.LimeSurvey.Data;
@@ -52,12 +53,12 @@ namespace GameLabGraz.LimeSurvey
             var response = _client.Response.result.ToString();
             if (response.Contains("\"status\""))
             {
-                Debug.LogError("LimeSurveyUploader::Login: Invalid user name or password.");
+                Debug.LogError("LimeSurveyManager::Login: Invalid user name or password.");
             }
             else
             {
                 SessionKey = response;
-                Debug.Log($"LimeSurveyUploader::Login: Login successfully - Session Key: {SessionKey}");
+                Debug.Log($"LimeSurveyManager::Login: Login successfully - Session Key: {SessionKey}");
             }
         }
 
@@ -65,12 +66,12 @@ namespace GameLabGraz.LimeSurvey
         {
             if (_client.Response.StatusCode != HttpStatusCode.OK)
             {
-                Debug.LogError($"LimeSurveyUploader::HandleClientResponse: Error - HTTP Status Code: {_client.Response.StatusCode}");
+                Debug.LogError($"LimeSurveyManager::HandleClientResponse: Error - HTTP Status Code: {_client.Response.StatusCode}");
                 return ErrorCode.HttpStatusError;
             }
             else if (_client.Response.error != null)
             {
-                Debug.LogError($"LimeSurveyUploader::HandleClientResponse: Error: {_client.Response.error}");
+                Debug.LogError($"LimeSurveyManager::HandleClientResponse: Error: {_client.Response.error}");
                 return ErrorCode.ResponseError;
             }
             return ErrorCode.OK;
@@ -121,6 +122,38 @@ namespace GameLabGraz.LimeSurvey
                 questionList.Add(questionObj);
             }
             return questionList;
+        }
+
+        public void UploadQuestionResponses(IEnumerable<Question> questions, int responseID = -1)
+        {
+            var responseData = new JObject();
+            if (responseID != -1)
+                responseData.Add("id", responseID);
+
+            foreach (var question in questions)
+            {
+                if (question.SubQuestions.Count > 0)
+                    foreach (var subQuestion in question.SubQuestions)
+                        responseData.Add($"{surveyId}X{question.GID}X{question.ID}{subQuestion.Title}", subQuestion.Answer?.ToString());
+                else
+                    responseData.Add($"{surveyId}X{question.GID}X{question.ID}", question.Answer?.ToString());
+
+            }
+
+            Debug.Log(responseData);
+
+            _client.ClearParameters();
+            _client.SetMethod(LimeSurveyMethod.AddResponse);
+            _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
+            _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
+            _client.AddParameter(LimeSurveyParameter.ResponseData, responseData);
+            _client.Post();
+
+            if (HandleClientResponse(_client.Response) != ErrorCode.OK)
+            {
+                Debug.LogError("LimeSurveyManager::UploadQuestionResponses: Unable to upload responses.");
+                return;
+            }
         }
     }
 }

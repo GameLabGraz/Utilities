@@ -18,6 +18,7 @@ namespace GameLabGraz.LimeSurvey.Data
     {
         public string Title { get; set; }
         public string QuestionText { get; set; }
+        public object Answer { get; set; }
     }
 
     [Serializable]
@@ -25,6 +26,7 @@ namespace GameLabGraz.LimeSurvey.Data
     {
         [SerializeField] private int id;
         [SerializeField] private int sid;
+        [SerializeField] private int gid;
         [SerializeField] private string title;
         [SerializeField] private string question;
         [SerializeField] private string type;
@@ -32,10 +34,13 @@ namespace GameLabGraz.LimeSurvey.Data
 
         public int ID => id;
         public int SID => sid;
+        public int GID => gid;
         public string Title => title;
         public string QuestionText => question;
         public bool Mandatory => mandatory == "Y";
         public List<SubQuestion> SubQuestions { get; } = new List<SubQuestion>();
+        public object Answer { get; set; }
+
         public QuestionType QuestionType
         {
             get
