@@ -103,18 +103,39 @@ namespace GameLabGraz.LimeSurvey
             }
         }
 
-        public List<Question> GetQuestionList()
+        public List<QuestionGroup> GetQuestionGroups()
+        {
+            _client.ClearParameters();
+            _client.SetMethod(LimeSurveyMethod.ListGroups);
+            _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
+            _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
+            _client.Post();
+
+            var groupList = new List<QuestionGroup>();
+            foreach(var group in (JArray)_client.Response.result)
+            {
+                var groupObj = JsonUtility.FromJson<QuestionGroup>(group.ToString());
+                groupObj.Questions.AddRange(GetQuestionList(groupObj.GID));
+                groupList.Add(groupObj);
+            }
+            return groupList;
+        }
+
+        public List<Question> GetQuestionList(int? groupId = null)
         {
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.ListQuestions);
             _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
             _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
+            if (groupId != null) 
+                _client.AddParameter(LimeSurveyParameter.GroupID, groupId);
             _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
                 return null;
 
             var questionList = new List<Question>();
+            Debug.Log(_client.Response.result);
             foreach (var question in (JArray)_client.Response.result)
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());

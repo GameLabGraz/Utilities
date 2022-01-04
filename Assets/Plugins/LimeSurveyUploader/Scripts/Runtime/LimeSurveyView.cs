@@ -13,14 +13,22 @@ namespace GameLabGraz.LimeSurvey
         [SerializeField] private TMP_Text questionText;
         [SerializeField] private GameObject questionContent;
 
-        private List<Question> _questions;
+        private readonly Dictionary<int, QuestionGroup> _questionGroups = new Dictionary<int, QuestionGroup>();
+        private readonly List<Question> _questions = new List<Question>();
 
         private int _questionIndex;
+
+        private QuestionGroup CurrentGroup => _questionGroups[CurrentQuestion.GID];
         private Question CurrentQuestion => _questions[_questionIndex];
 
         private void Start()
         {
-            _questions =  LimeSurveyManager.Instance.GetQuestionList();
+            foreach(var questionGroup in LimeSurveyManager.Instance.GetQuestionGroups())
+            {
+                _questionGroups[questionGroup.GID] = questionGroup;
+                _questions.AddRange(questionGroup.Questions);
+            }
+
             ShowQuestion(0);
         }
 
@@ -31,7 +39,8 @@ namespace GameLabGraz.LimeSurvey
 
             ClearQuestionContent();
 
-            questionText.text = CurrentQuestion.Mandatory ? $"* {CurrentQuestion.QuestionText}" : CurrentQuestion.QuestionText;
+            questionText.text = $"{CurrentGroup.GroupName}\n";
+            questionText.text += CurrentQuestion.Mandatory ? $"* {CurrentQuestion.QuestionText}" : CurrentQuestion.QuestionText;
 
             switch (CurrentQuestion.QuestionType)
             {

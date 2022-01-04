@@ -481,8 +481,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8694087571515102313, guid: 9d017c4997c1e8742adebbb340f4d597,
         type: 3}
+      propertyPath: m_text
+      value: 'Group Name
+
+        Question Title'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8694087571515102313, guid: 9d017c4997c1e8742adebbb340f4d597,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 8694087571515102313, guid: 9d017c4997c1e8742adebbb340f4d597,
+        type: 3}
       propertyPath: m_textAlignment
       value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 8694087571515102313, guid: 9d017c4997c1e8742adebbb340f4d597,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d017c4997c1e8742adebbb340f4d597, type: 3}
@@ -720,17 +737,17 @@ PrefabInstance:
     - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 588.982
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 212.37085
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 666.5378
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1683874032679252098, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
