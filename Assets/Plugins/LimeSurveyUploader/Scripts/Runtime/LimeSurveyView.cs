@@ -47,6 +47,9 @@ namespace GameLabGraz.LimeSurvey
                 case QuestionType.Text:
                     CreateFreeText();
                     break;
+                case QuestionType.ListRadio:
+                    CreateListRadio();
+                    break;
                 case QuestionType.MultipleChoice:
                     CreateMultipleChoice();
                     break;
@@ -79,6 +82,56 @@ namespace GameLabGraz.LimeSurvey
             {
                 CurrentQuestion.Answer = answer;
             } ));
+        }
+
+        private void CreateListRadio()
+        {
+            var options = new List<Toggle>();
+            foreach (var answerOption in CurrentQuestion.AnswerOptions)
+            {
+                var option = ((GameObject)Instantiate(UIContent.RadioButtonPrefab, questionContent.transform)).GetComponent<Toggle>();
+                option.GetComponentInChildren<TMP_Text>().text = answerOption.AnswerText;
+                options.Add(option);
+            }
+            if (!CurrentQuestion.Mandatory)
+            {
+                var option = ((GameObject)Instantiate(UIContent.RadioButtonPrefab, questionContent.transform)).GetComponent<Toggle>();
+                option.GetComponentInChildren<TMP_Text>().text = "NA";
+
+                if (string.IsNullOrEmpty(CurrentQuestion.Answer?.ToString()))
+                    option.isOn = true;
+
+                options.Add(option);
+            }
+
+            foreach (var option in options)
+            {
+                var answer = option.GetComponentInChildren<TMP_Text>().text;
+
+                if(CurrentQuestion.Answer != null && (string)CurrentQuestion.Answer == answer)
+                    option.isOn = true;
+
+                option.onValueChanged.AddListener(value =>
+                {
+                    if(value)
+                    {
+                        if (!CurrentQuestion.Mandatory && answer == "NA")
+                        {
+                            CurrentQuestion.Answer = string.Empty;
+                        }
+                        else
+                        {
+                            CurrentQuestion.Answer = answer;
+                        }
+                    }
+
+                    var toggle = options.Find(op => op != option && op.isOn);
+                    if (toggle != null)
+                        toggle.isOn = false;
+                    else if (value == false)
+                        option.isOn = true;
+                });
+            }
         }
 
         private void CreateMultipleChoice()
@@ -225,8 +278,21 @@ namespace GameLabGraz.LimeSurvey
                 submitButton.onClick.AddListener(() =>
                 {
                     LimeSurveyManager.Instance.UploadQuestionResponses(_questions);
+                    ShowThanks();
                 });
             }
+        }
+
+        private void ShowThanks()
+        {
+            ClearQuestionContent();
+            questionText.text = "Thank you for submitting.";
+            var closeButton = ((GameObject)Instantiate(UIContent.ButtonPrefab, questionContent.transform)).GetComponent<Button>();
+            closeButton.GetComponentInChildren<TMP_Text>().text = "Close";
+            closeButton.onClick.AddListener(() =>
+            {
+                Destroy(gameObject);
+            });
         }
 
         private void ClearQuestionContent()

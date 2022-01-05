@@ -89,17 +89,19 @@ namespace GameLabGraz.LimeSurvey
                 return;
 
             var questionProperties = (JObject)_client.Response.result;
-            var subQuestions = questionProperties["subquestions"];
-            if (subQuestions == null)
-                return;
 
+            var subQuestions = questionProperties["subquestions"];
             foreach (var subQuestion in subQuestions)
             {
-                question.SubQuestions.Add(new SubQuestion()
-                {
-                    Title = subQuestion.First?["title"]?.ToString(),
-                    QuestionText = subQuestion.First?["question"]?.ToString()
-                });
+                var subQuestionObj = JsonUtility.FromJson<SubQuestion>(subQuestion.First.ToString());
+                question.SubQuestions.Add(subQuestionObj);
+            }
+
+            var answerOptions = questionProperties["answeroptions"];
+            foreach(var answerOption in answerOptions)
+            {
+                var answerOptionObj = JsonUtility.FromJson<AnswerOption>(answerOption.First.ToString());
+                question.AnswerOptions.Add(answerOptionObj);
             }
         }
 
@@ -135,7 +137,7 @@ namespace GameLabGraz.LimeSurvey
                 return null;
 
             var questionList = new List<Question>();
-            Debug.Log(_client.Response.result);
+            //Debug.Log(_client.Response.result);
             foreach (var question in (JArray)_client.Response.result)
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());

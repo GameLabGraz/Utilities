@@ -449,6 +449,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LimeSurveyPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 3705742483353184937, guid: 9d017c4997c1e8742adebbb340f4d597,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7923028768714039449, guid: 9d017c4997c1e8742adebbb340f4d597,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -788,6 +793,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LimeSurveyManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683874032679252109, guid: 79d106120db22c34e8db900db6c54794,
+        type: 3}
+      propertyPath: surveyId
+      value: 964717
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79d106120db22c34e8db900db6c54794, type: 3}

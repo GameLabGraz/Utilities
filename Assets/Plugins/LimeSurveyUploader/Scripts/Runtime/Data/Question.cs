@@ -7,18 +7,13 @@ namespace GameLabGraz.LimeSurvey.Data
     public enum QuestionType
     {
         Text,
+        ListDropdown,
+        ListRadio,
         MultipleChoice,
         FivePointChoice,
         FivePointMatrix,
         TenPointMatrix,
         Unknown
-    }
-
-    public class SubQuestion
-    {
-        public string Title { get; set; }
-        public string QuestionText { get; set; }
-        public object Answer { get; set; }
     }
 
     [Serializable]
@@ -39,6 +34,7 @@ namespace GameLabGraz.LimeSurvey.Data
         public string QuestionText => question;
         public bool Mandatory => mandatory == "Y";
         public List<SubQuestion> SubQuestions { get; } = new List<SubQuestion>();
+        public List<AnswerOption> AnswerOptions { get; } = new List<AnswerOption>();
         public object Answer { get; set; }
 
         public QuestionType QuestionType
@@ -49,6 +45,10 @@ namespace GameLabGraz.LimeSurvey.Data
                 {
                     case "T":
                         return QuestionType.Text;
+                    case "L":
+                        return QuestionType.ListRadio;
+                    case "!":
+                        return QuestionType.ListDropdown;
                     case "M":
                         return QuestionType.MultipleChoice;
                     case "5":
