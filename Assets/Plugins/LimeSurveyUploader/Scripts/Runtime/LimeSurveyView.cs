@@ -138,26 +138,52 @@ namespace GameLabGraz.LimeSurvey
         {
             foreach (var subQuestion in CurrentQuestion.SubQuestions)
             {
-                var toggle = ((GameObject)Instantiate(UIContent.TogglePrefab, questionContent.transform)).GetComponent<Toggle>();
+                var hGroup = Instantiate(UIContent.HorizontalLayoutGroup, questionContent.transform) as GameObject;
+
+                var toggle = ((GameObject)Instantiate(UIContent.TogglePrefab, hGroup.transform)).GetComponent<Toggle>();
                 toggle.GetComponentInChildren<TMP_Text>().text = subQuestion.QuestionText;
 
-                if (subQuestion.Answer != null)
-                    toggle.isOn = subQuestion.Answer == "Y";
-                
-                toggle.onValueChanged.AddListener(answer =>
+                if (subQuestion.Title == "other")
                 {
-                    subQuestion.Answer = answer ? "Y" : string.Empty;
-                });
+                    var inputField = ((GameObject)Instantiate(UIContent.InputPrefab, hGroup.transform)).GetComponent<InputField>();
+                    if (subQuestion.Answer != null && !string.IsNullOrWhiteSpace((string)subQuestion.Answer))
+                    {
+                        toggle.isOn = true;
+                        inputField.text = (string)subQuestion.Answer;
+                    }
+
+                    inputField.onValueChanged.AddListener(input =>
+                    {
+                        subQuestion.Answer = string.IsNullOrWhiteSpace(input) ? null : input;
+                        toggle.isOn = !string.IsNullOrWhiteSpace((string)subQuestion.Answer);
+                    });
+                    toggle.onValueChanged.AddListener(value =>
+                    {
+                        if (value && string.IsNullOrWhiteSpace(inputField.text))
+                            toggle.isOn = false;
+                    });
+                }
+                else
+                {
+                    if (subQuestion.Answer != null)
+                        toggle.isOn = (string)subQuestion.Answer == "Y";
+
+                    toggle.onValueChanged.AddListener(answer =>
+                    {
+                        subQuestion.Answer = answer ? "Y" : string.Empty;
+                    });
+                }
+
             }
         }
 
         private void CreatePointMatrix(int optionSize)
         {
-            var subQuestionGroup = Instantiate(UIContent.VerticalLayoutGroup, questionContent.transform) as GameObject;
-            if (subQuestionGroup == null) return;
-
             foreach (var subQuestion in CurrentQuestion.SubQuestions)
             {
+                var subQuestionGroup = Instantiate(UIContent.VerticalLayoutGroup, questionContent.transform) as GameObject;
+                if (subQuestionGroup == null) return;
+
                 var subQuestionObj = Instantiate(UIContent.TextPrefab, subQuestionGroup.transform) as GameObject;
                 if (subQuestionObj != null) subQuestionObj.GetComponent<TMP_Text>().text = subQuestion.QuestionText;
 

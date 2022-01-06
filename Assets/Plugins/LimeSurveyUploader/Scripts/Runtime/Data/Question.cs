@@ -13,6 +13,7 @@ namespace GameLabGraz.LimeSurvey.Data
         FivePointChoice,
         FivePointMatrix,
         TenPointMatrix,
+        Matrix,
         Unknown
     }
 
@@ -25,6 +26,7 @@ namespace GameLabGraz.LimeSurvey.Data
         [SerializeField] private string title;
         [SerializeField] private string question;
         [SerializeField] private string type;
+        [SerializeField] private string other;
         [SerializeField] private string mandatory;
 
         public int ID => id;
@@ -32,6 +34,7 @@ namespace GameLabGraz.LimeSurvey.Data
         public int GID => gid;
         public string Title => title;
         public string QuestionText => question;
+        public bool Other => other == "Y";
         public bool Mandatory => mandatory == "Y";
         public List<SubQuestion> SubQuestions { get; } = new List<SubQuestion>();
         public List<AnswerOption> AnswerOptions { get; } = new List<AnswerOption>();
@@ -57,6 +60,8 @@ namespace GameLabGraz.LimeSurvey.Data
                         return QuestionType.FivePointMatrix;
                     case "B":
                         return QuestionType.TenPointMatrix;
+                    case "F":
+                        return QuestionType.Matrix;
                     default:
                         return QuestionType.Unknown;
                 }
