@@ -20,7 +20,6 @@ namespace GameLabGraz.LimeSurvey
 
         public string SessionKey { get; private set; }
 
-
         private static LimeSurveyManager _instance;
 
         public static LimeSurveyManager Instance
@@ -89,7 +88,6 @@ namespace GameLabGraz.LimeSurvey
                 return;
 
             var questionProperties = (JObject)_client.Response.Result;
-            //Debug.Log(questionProperties);
 
             // SubQuestions
             var subQuestions = questionProperties["subquestions"];
@@ -183,7 +181,6 @@ namespace GameLabGraz.LimeSurvey
                 return null;
 
             var questionList = new List<Question>();
-            //Debug.Log(_client.Response.result);
             foreach (var question in (JArray)_client.Response.Result)
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
@@ -208,8 +205,6 @@ namespace GameLabGraz.LimeSurvey
                     responseData.Add($"{surveyId}X{question.GID}X{question.ID}", question.Answer?.ToString());
 
             }
-
-            Debug.Log(responseData);
 
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.AddResponse);
