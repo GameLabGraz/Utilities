@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.UI;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 using InputField = GameLabGraz.UI.InputField;
 
@@ -72,7 +74,7 @@ namespace GameLabGraz.LimeSurvey
 
         private void CreateFreeText()
         {
-            var inputField = ((GameObject)Instantiate(UIContent.InputPrefab, questionContent.transform)).GetComponent<InputField>();
+            var inputField = ((GameObject)Instantiate(UIContent.Input, questionContent.transform)).GetComponent<InputField>();
             inputField.GetComponent<LayoutElement>().minHeight = 300;
             inputField.lineType = TMP_InputField.LineType.MultiLineNewline;
             if (CurrentQuestion.Answer != null)
@@ -89,13 +91,13 @@ namespace GameLabGraz.LimeSurvey
             var options = new List<Toggle>();
             foreach (var answerOption in CurrentQuestion.AnswerOptions)
             {
-                var option = ((GameObject)Instantiate(UIContent.RadioButtonPrefab, questionContent.transform)).GetComponent<Toggle>();
+                var option = ((GameObject)Instantiate(UIContent.RadioButtonGroup, questionContent.transform)).GetComponent<Toggle>();
                 option.GetComponentInChildren<TMP_Text>().text = answerOption.AnswerText;
                 options.Add(option);
             }
             if (!CurrentQuestion.Mandatory)
             {
-                var option = ((GameObject)Instantiate(UIContent.RadioButtonPrefab, questionContent.transform)).GetComponent<Toggle>();
+                var option = ((GameObject)Instantiate(UIContent.RadioButtonGroup, questionContent.transform)).GetComponent<Toggle>();
                 option.GetComponentInChildren<TMP_Text>().text = "NA";
 
                 if (string.IsNullOrEmpty(CurrentQuestion.Answer?.ToString()))
@@ -140,12 +142,12 @@ namespace GameLabGraz.LimeSurvey
             {
                 var hGroup = Instantiate(UIContent.HorizontalLayoutGroup, questionContent.transform) as GameObject;
 
-                var toggle = ((GameObject)Instantiate(UIContent.TogglePrefab, hGroup.transform)).GetComponent<Toggle>();
+                var toggle = ((GameObject)Instantiate(UIContent.ToggleGroup, hGroup.transform)).GetComponent<Toggle>();
                 toggle.GetComponentInChildren<TMP_Text>().text = subQuestion.QuestionText;
 
                 if (subQuestion.Title == "other")
                 {
-                    var inputField = ((GameObject)Instantiate(UIContent.InputPrefab, hGroup.transform)).GetComponent<InputField>();
+                    var inputField = ((GameObject)Instantiate(UIContent.Input, hGroup.transform)).GetComponent<InputField>();
                     if (subQuestion.Answer != null && !string.IsNullOrWhiteSpace((string)subQuestion.Answer))
                     {
                         toggle.isOn = true;
@@ -179,15 +181,64 @@ namespace GameLabGraz.LimeSurvey
 
         private void CreatePointMatrix(int optionSize)
         {
+            var rowGroup = ((GameObject)Instantiate(UIContent.VerticalLayoutGroup, questionContent.transform)).GetComponent<VerticalLayoutGroup>();
+            rowGroup.spacing = 30;
+
+            // First Row
+            var firstColumnGroup = ((GameObject)Instantiate(UIContent.HorizontalLayoutGroup, rowGroup.transform)).GetComponent<HorizontalLayoutGroup>();
+            var placeholder = Instantiate(new GameObject(), firstColumnGroup.transform).AddComponent<LayoutElement>();
+            placeholder.minWidth = 300;
+            placeholder.preferredWidth = 300;
+            placeholder.flexibleWidth = 0;
+
+            var answerOptions = new List<AnswerOption>();
+            for (var point = 1; point <= optionSize; point++)
+            {
+                var pointLabelObj = Instantiate(UIContent.Text, firstColumnGroup.transform) as GameObject;
+                pointLabelObj.GetComponent<TMP_Text>().text = $"{point}";
+                pointLabelObj.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+                pointLabelObj.GetComponent<LayoutElement>().preferredWidth = 40;
+                pointLabelObj.GetComponent<LayoutElement>().flexibleWidth = 0;
+
+                answerOptions.Add(new AnswerOption($"{point}", $"{point}", point - 1));
+            }
+            if (!CurrentQuestion.Mandatory)
+            {
+                var naLabelObj = Instantiate(UIContent.Text, firstColumnGroup.transform) as GameObject;
+                naLabelObj.GetComponent<TMP_Text>().text = "No answer";
+                naLabelObj.GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+                naLabelObj.GetComponent<LayoutElement>().preferredWidth = 40;
+                naLabelObj.GetComponent<LayoutElement>().flexibleWidth = 0;
+
+                answerOptions.Add(new AnswerOption("NA", "NA", answerOptions.Count));
+            }
+
+            // SubQuestions
             foreach (var subQuestion in CurrentQuestion.SubQuestions)
             {
-                var subQuestionGroup = Instantiate(UIContent.VerticalLayoutGroup, questionContent.transform) as GameObject;
-                if (subQuestionGroup == null) return;
+                var columnGroup = ((GameObject)Instantiate(UIContent.HorizontalLayoutGroup, rowGroup.transform)).GetComponent<HorizontalLayoutGroup>();
+                var subQuestionObj = Instantiate(UIContent.Text, columnGroup.transform) as GameObject;
+                subQuestionObj.GetComponent<TMP_Text>().text = subQuestion.QuestionText;
+                subQuestionObj.GetComponent<LayoutElement>().minWidth = 300;
+                subQuestionObj.GetComponent<LayoutElement>().preferredWidth = 300;
+                subQuestionObj.GetComponent<LayoutElement>().flexibleWidth = 0;
 
-                var subQuestionObj = Instantiate(UIContent.TextPrefab, subQuestionGroup.transform) as GameObject;
-                if (subQuestionObj != null) subQuestionObj.GetComponent<TMP_Text>().text = subQuestion.QuestionText;
+                var toggles = new List<Toggle>();
+                for (var point = 1; point <= optionSize; point++)
+                {
+                    var toggle = ((GameObject)Instantiate(UIContent.RadioButton, columnGroup.transform)).GetComponent<Toggle>();
+                    toggles.Add(toggle);
+                }
 
-                CreatePointOptions(optionSize, subQuestion, subQuestionGroup.transform);
+                if (!CurrentQuestion.Mandatory)
+                {
+                    var toggle = ((GameObject)Instantiate(UIContent.RadioButton, columnGroup.transform)).GetComponent<Toggle>();
+                    if (string.IsNullOrEmpty(subQuestion.Answer?.ToString()))
+                        toggle.isOn = true;
+                    toggles.Add(toggle);
+                }
+
+                SetupRadioButtonOnValueChange(toggles, answerOptions, subQuestion);
             }
         }
 
@@ -199,52 +250,59 @@ namespace GameLabGraz.LimeSurvey
             var optionGroup = Instantiate(UIContent.HorizontalLayoutGroup, optionContent) as GameObject;
             if (optionGroup == null) return;
 
-            var options = new List<Toggle>();
+            var toggles = new List<Toggle>();
+            var answerOptions = new List<AnswerOption>();
+
             for (var value = 1; value <= optionSize; value++)
             {
-                var optionObj = Instantiate(UIContent.RadioButtonPrefab, optionGroup.transform) as GameObject;
+                var optionObj = Instantiate(UIContent.RadioButtonGroup, optionGroup.transform) as GameObject;
                 if (optionObj == null) continue;
 
-                var option = optionObj.GetComponent<Toggle>();
-                option.GetComponentInChildren<TMP_Text>().text = $"{value}";
-                options.Add(option);
+                var toggle = optionObj.GetComponent<Toggle>();
+                toggle.GetComponentInChildren<TMP_Text>().text = $"{value}";
+
+                toggles.Add(toggle);
+                answerOptions.Add(new AnswerOption($"{value}", $"{value}", value - 1));
             }
 
             if (!CurrentQuestion.Mandatory)
             {
-                var optionObj = Instantiate(UIContent.RadioButtonPrefab, optionGroup.transform) as GameObject;
+                var optionObj = Instantiate(UIContent.RadioButtonGroup, optionGroup.transform) as GameObject;
                 if (optionObj == null) return;
 
-                var option = optionObj.GetComponent<Toggle>();
-                option.GetComponentInChildren<TMP_Text>().text = "NA";
+                var toggle = optionObj.GetComponent<Toggle>();
+                toggle.GetComponentInChildren<TMP_Text>().text = "NA";
 
                 if (CurrentQuestion.SubQuestions.Count == 0 && string.IsNullOrEmpty(CurrentQuestion.Answer?.ToString()))
-                    option.isOn = true;
+                    toggle.isOn = true;
                 else if(subQuestion != null && string.IsNullOrEmpty(subQuestion.Answer?.ToString()))
-                    option.isOn = true;
+                    toggle.isOn = true;
 
-                options.Add(option);
+                toggles.Add(toggle);
+                answerOptions.Add(new AnswerOption("NA", "NA", answerOptions.Count));
             }
-            SetupRadioButtonOnValueChange(options, subQuestion);
+            SetupRadioButtonOnValueChange(toggles, answerOptions, subQuestion);
         }
 
-        private void SetupRadioButtonOnValueChange(List<Toggle> options, SubQuestion subQuestion = null)
+        private void SetupRadioButtonOnValueChange(List<Toggle> toggles, IReadOnlyList<AnswerOption> answersOptions, SubQuestion subQuestion = null)
         {
-            for (var optionIndex = 0; optionIndex < options.Count; optionIndex++)
+            Assert.AreEqual(toggles.Count, answersOptions.Count);
+
+            for (var optionIndex = 0; optionIndex < toggles.Count; optionIndex++)
             {
-                var option = options[optionIndex];
-                var answer = optionIndex + 1;
+                var toggle = toggles[optionIndex];
+                var answer = answersOptions[optionIndex];
 
-                if (subQuestion != null && subQuestion.Answer != null && (int)subQuestion.Answer == answer)
-                    option.isOn = true;
-                else if (CurrentQuestion.Answer != null && (int)CurrentQuestion.Answer == answer)
-                    option.isOn = true;
+                if (subQuestion != null && subQuestion.Answer != null && subQuestion.Answer == answer)
+                    toggle.isOn = true;
+                else if (CurrentQuestion.Answer != null && CurrentQuestion.Answer == answer)
+                    toggle.isOn = true;
 
-                option.onValueChanged.AddListener(value =>
+                toggle.onValueChanged.AddListener(value =>
                 {
                     if (value)
                     {
-                        if (!CurrentQuestion.Mandatory && answer == options.Count)
+                        if (!CurrentQuestion.Mandatory && answer.AnswerCode == "NA")
                         {
                             if (subQuestion == null)
                                 CurrentQuestion.Answer = string.Empty;
@@ -254,17 +312,17 @@ namespace GameLabGraz.LimeSurvey
                         else
                         {
                             if (subQuestion == null)
-                                CurrentQuestion.Answer = answer;
+                                CurrentQuestion.Answer = answer.AnswerCode;
                             else
-                                subQuestion.Answer = answer;
+                                subQuestion.Answer = answer.AnswerCode;
                         }
                     }
 
-                    var toggle = options.Find(op => op != option && op.isOn);
-                    if (toggle != null)
-                        toggle.isOn = false;
+                    var oldToggle = toggles.Find(t => t != toggle && t.isOn);
+                    if (oldToggle != null)
+                        oldToggle.isOn = false;
                     else if (value == false)
-                        option.isOn = true;
+                        toggle.isOn = true;
                 });
             }
         }
@@ -275,7 +333,7 @@ namespace GameLabGraz.LimeSurvey
             if (buttonGroup == null) return;
 
             // Previous Button
-            var prevButton = ((GameObject)Instantiate(UIContent.ButtonPrefab, buttonGroup.transform)).GetComponent<Button>();
+            var prevButton = ((GameObject)Instantiate(UIContent.Button, buttonGroup.transform)).GetComponent<Button>();
             prevButton.GetComponentInChildren<TMP_Text>().text = "Previous";
             prevButton.onClick.AddListener(() =>
             {
@@ -286,7 +344,7 @@ namespace GameLabGraz.LimeSurvey
                 prevButton.interactable = false;
 
             // Next Button
-            var nextButton = ((GameObject)Instantiate(UIContent.ButtonPrefab, buttonGroup.transform)).GetComponent<Button>();
+            var nextButton = ((GameObject)Instantiate(UIContent.Button, buttonGroup.transform)).GetComponent<Button>();
             nextButton.GetComponentInChildren<TMP_Text>().text = "Next";
             nextButton.onClick.AddListener(() =>
             {
@@ -299,7 +357,7 @@ namespace GameLabGraz.LimeSurvey
                 nextButton.interactable = false;
 
                 // Submit Button
-                var submitButton = ((GameObject)Instantiate(UIContent.ButtonPrefab, questionContent.transform)).GetComponent<Button>();
+                var submitButton = ((GameObject)Instantiate(UIContent.Button, questionContent.transform)).GetComponent<Button>();
                 submitButton.GetComponentInChildren<TMP_Text>().text = "Submit";
                 submitButton.onClick.AddListener(() =>
                 {
@@ -313,7 +371,7 @@ namespace GameLabGraz.LimeSurvey
         {
             ClearQuestionContent();
             questionText.text = "Thank you for submitting.";
-            var closeButton = ((GameObject)Instantiate(UIContent.ButtonPrefab, questionContent.transform)).GetComponent<Button>();
+            var closeButton = ((GameObject)Instantiate(UIContent.Button, questionContent.transform)).GetComponent<Button>();
             closeButton.GetComponentInChildren<TMP_Text>().text = "Close";
             closeButton.onClick.AddListener(() =>
             {

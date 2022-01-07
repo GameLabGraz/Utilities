@@ -1,7 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Net;
 using System.Collections.Generic;
+using System.Linq;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.LimeSurvey.Extensions;
 using Unity.Plastic.Newtonsoft.Json.Linq;
@@ -89,11 +89,11 @@ namespace GameLabGraz.LimeSurvey
                 return;
 
             var questionProperties = (JObject)_client.Response.result;
-            Debug.Log(questionProperties);
+            //Debug.Log(questionProperties);
 
             // SubQuestions
             var subQuestions = questionProperties["subquestions"];
-            if (subQuestions?.ToString() != "No available answers")
+            if (subQuestions != null && subQuestions.ToString() != "No available answers")
             {
                 foreach (var subQuestion in subQuestions)
                 {
@@ -109,11 +109,15 @@ namespace GameLabGraz.LimeSurvey
 
             // AnswerOptions
             var answerOptions = questionProperties["answeroptions"];
-            if (answerOptions.ToString() != "No available answer options")
+            if (answerOptions != null && answerOptions.ToString() != "No available answer options")
             {
                 foreach (var answerOption in answerOptions)
                 {
-                    var answerOptionObj = JsonUtility.FromJson<AnswerOption>(answerOption.First.ToString());
+                    var answerCode = answerOption.Path.Split('.').Last();
+                    var answerCodeJson = $"{{\"answer_code\": \"{answerCode}\"," + 
+                                         answerOption.First?.ToString().Remove(0, 1);
+
+                    var answerOptionObj = JsonUtility.FromJson<AnswerOption>(answerCodeJson);
                     question.AnswerOptions.Add(answerOptionObj);
                 }
             }
@@ -151,7 +155,7 @@ namespace GameLabGraz.LimeSurvey
                 return null;
 
             var questionList = new List<Question>();
-            Debug.Log(_client.Response.result);
+            //Debug.Log(_client.Response.result);
             foreach (var question in (JArray)_client.Response.result)
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
