@@ -18,13 +18,11 @@ namespace GameLabGraz.LimeSurvey.Data
     }
 
     [Serializable]
-    public class Question
+    public class Question : BaseQuestion
     {
         [SerializeField] private int id;
         [SerializeField] private int sid;
         [SerializeField] private int gid;
-        [SerializeField] private string title;
-        [SerializeField] private string question;
         [SerializeField] private string type;
         [SerializeField] private string other;
         [SerializeField] private string mandatory;
@@ -32,13 +30,9 @@ namespace GameLabGraz.LimeSurvey.Data
         public int ID => id;
         public int SID => sid;
         public int GID => gid;
-        public string Title => title;
-        public string QuestionText => question;
         public bool Other => other == "Y";
         public bool Mandatory => mandatory == "Y";
         public List<SubQuestion> SubQuestions { get; } = new List<SubQuestion>();
-        public List<AnswerOption> AnswerOptions { get; } = new List<AnswerOption>();
-        public object Answer { get; set; }
 
         public QuestionType QuestionType
         {
