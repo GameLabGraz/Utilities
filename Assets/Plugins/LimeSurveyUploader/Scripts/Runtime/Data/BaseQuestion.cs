@@ -13,7 +13,6 @@ namespace GameLabGraz.LimeSurvey.Data
         public string Title => title;
         public string QuestionText => question;
 
-        public List<AnswerOption> AnswerOptions { get; set; } = new List<AnswerOption>();
         public string Answer { get; set; }
     }
 }
