@@ -9,39 +9,18 @@ namespace GameLabGraz.LimeSurvey
 {
     public class JsonRpcClient
     {
-
         private int id = 0;
-        /// <summary>
-        /// Set JSON-RPC webservice URL
-        /// </summary>
         public string URL { set; get; }
-        /// <summary>
-        /// Set JSON-RPC method
-        /// </summary>
         public string Method { set; get; }
-        /// <summary>
-        /// Add JSON-RPC params
-        /// </summary>
         public JObject Parameters { set; get; }
-
-        /// <summary>
-        /// Results of the request
-        /// </summary>
         public JsonRpcResponse Response { set; get; }
 
-        /// <summary>
-        /// Create a new object of RPCclient 
-        /// </summary>
         public JsonRpcClient()
         {
             Parameters = new JObject();
             Response = null;
         }
 
-        /// <summary>
-        /// Create a new object of RPCclient
-        /// </summary>
-        /// <param name="URL"></param>
         public JsonRpcClient(string URL)
         {
             this.URL = URL;
@@ -49,10 +28,6 @@ namespace GameLabGraz.LimeSurvey
             Response = null;
         }
 
-        /// <summary>
-        /// POST the request and returns server response
-        /// </summary>
-        /// <returns></returns>
         public string Post()
         {
             try
@@ -63,9 +38,9 @@ namespace GameLabGraz.LimeSurvey
                 jobject.Add(new JProperty("method", Method));
                 jobject.Add(new JProperty("params", Parameters));
 
-                var PostData = JsonConvert.SerializeObject(jobject);
+                var postData = JsonConvert.SerializeObject(jobject);
                 var encoding = new UTF8Encoding();
-                var bytes = encoding.GetBytes(PostData);
+                var bytes = encoding.GetBytes(postData);
 
                 var request = (HttpWebRequest)WebRequest.Create(URL);
                 request.Method = "POST";
@@ -95,25 +70,22 @@ namespace GameLabGraz.LimeSurvey
 
         public void ClearParameters()
         {
-            this.Parameters = new JObject();
+            Parameters = new JObject();
         }
-
-
     }
 
     public class JsonRpcResponse
     {
-        public int id { set; get; }
-        public object result { set; get; }
-        public string error { set; get; }
+        public int Id { set; get; }
+        public object Result { set; get; }
+        public string Error { set; get; }
         public HttpStatusCode StatusCode { set; get; }
 
         public JsonRpcResponse() { }
 
         public override string ToString()
         {
-            return "{\"id\":" + id.ToString() + ",\"result\":\"" + result.ToString() + "\",\"error\":" + error + ((String.IsNullOrEmpty(error)) ? "null" : "\"" + error + "\"") + "}";
+            return "{\"id\":" + Id + ",\"result\":\"" + Result + "\",\"error\":" + Error + ((string.IsNullOrEmpty(Error)) ? "null" : "\"" + Error + "\"") + "}";
         }
     }
-
 }

@@ -50,7 +50,7 @@ namespace GameLabGraz.LimeSurvey
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
                 return;
 
-            var response = _client.Response.result.ToString();
+            var response = _client.Response.Result.ToString();
             if (response.Contains("\"status\""))
             {
                 Debug.LogError("LimeSurveyManager::Login: Invalid user name or password.");
@@ -69,9 +69,9 @@ namespace GameLabGraz.LimeSurvey
                 Debug.LogError($"LimeSurveyManager::HandleClientResponse: Error - HTTP Status Code: {_client.Response.StatusCode}");
                 return ErrorCode.HttpStatusError;
             }
-            else if (_client.Response.error != null)
+            else if (_client.Response.Error != null)
             {
-                Debug.LogError($"LimeSurveyManager::HandleClientResponse: Error: {_client.Response.error}");
+                Debug.LogError($"LimeSurveyManager::HandleClientResponse: Error: {_client.Response.Error}");
                 return ErrorCode.ResponseError;
             }
             return ErrorCode.OK;
@@ -88,7 +88,7 @@ namespace GameLabGraz.LimeSurvey
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
                 return;
 
-            var questionProperties = (JObject)_client.Response.result;
+            var questionProperties = (JObject)_client.Response.Result;
             //Debug.Log(questionProperties);
 
             // SubQuestions
@@ -121,6 +121,34 @@ namespace GameLabGraz.LimeSurvey
                     question.AnswerOptions.Add(answerOptionObj);
                 }
             }
+            switch (question.QuestionType)
+            {
+                case QuestionType.FivePointChoice:
+                case QuestionType.FivePointMatrix:
+                    SetAnswerOptionsForPointQuestion(question, 5);
+                    break;
+                case QuestionType.TenPointMatrix:
+                    SetAnswerOptionsForPointQuestion(question, 10);
+                    break;
+                case QuestionType.Matrix:
+                case QuestionType.ListRadio:
+                    AddNoAnswerOption(question);
+                    break;
+            }
+        }
+
+        private static void AddNoAnswerOption(Question question)
+        {
+            question.AnswerOptions.Add(new AnswerOption("NA", "No answer", question.AnswerOptions.Count));
+        }
+
+        private static void SetAnswerOptionsForPointQuestion(Question question, int optionSize)
+        {
+            for (var point = 1; point <= optionSize; point++)
+                question.AnswerOptions.Add(new AnswerOption($"{point}", $"{point}", point-1));
+
+            if (!question.Mandatory)
+                AddNoAnswerOption(question);
         }
 
         public List<QuestionGroup> GetQuestionGroups()
@@ -132,7 +160,7 @@ namespace GameLabGraz.LimeSurvey
             _client.Post();
 
             var groupList = new List<QuestionGroup>();
-            foreach(var group in (JArray)_client.Response.result)
+            foreach(var group in (JArray)_client.Response.Result)
             {
                 var groupObj = JsonUtility.FromJson<QuestionGroup>(group.ToString());
                 groupObj.Questions.AddRange(GetQuestionList(groupObj.GID));
@@ -156,7 +184,7 @@ namespace GameLabGraz.LimeSurvey
 
             var questionList = new List<Question>();
             //Debug.Log(_client.Response.result);
-            foreach (var question in (JArray)_client.Response.result)
+            foreach (var question in (JArray)_client.Response.Result)
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
                 SetQuestionProperties(questionObj);
