@@ -29,7 +29,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		void Update()
+		void FixedUpdate()
 		{
 			float forward = 0.0f;
 			if ( Input.GetKey( KeyCode.W ) || Input.GetKey( KeyCode.UpArrow ) )

@@ -137,8 +137,14 @@ namespace GEAR.VRInteraction
 
         private void SetRendererPermanentHighlightColor(Renderer r)
         {
+            if(!r)
+                return;
+            
             foreach (var mat in r.materials)
             {
+                if(!mat || !mat.HasProperty("_Color"))
+                    continue;
+            
                 var oldCol = mat.color;
                 mat.color = new Color(oldCol.r * highlightColor.r, oldCol.g * highlightColor.g,
                     oldCol.b * highlightColor.b, highlightColor.a);

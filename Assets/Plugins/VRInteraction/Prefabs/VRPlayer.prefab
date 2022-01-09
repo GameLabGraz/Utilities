@@ -1482,7 +1482,7 @@ GameObject:
   - component: {fileID: 8372810542115269775}
   m_Layer: 0
   m_Name: VRPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1538,6 +1538,7 @@ MonoBehaviour:
   allowToggleTo2D: 1
   snapTurnGameObject: {fileID: 8372683542969483094}
   allowSnapTurns: 1
+  forcePosition: 1
   showController: 1
   animateWithController: 1
 --- !u!1 &8372810542115272488
