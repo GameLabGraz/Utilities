@@ -1,10 +1,10 @@
 {
-	"name": "com.gear.limesurveyuploader",
+	"name": "com.gamelabgraz.limesurveyuploader",
 	"displayName": "LimeSurvey Uploader",
-	"version": "1.0.0",
-	"unity": "2018.4",
-	"author": "TUG GEAR Group",
-	"description": "This package is used to upload VV survey files to LimeSurvey.",
+	"version": "2.0.0",
+	"unity": "2019.4",
+	"author": "Game Lab Graz",
+	"description": "This package is used to upload survey files to LimeSurvey.",
 	"dependencies": {
 		"com.gear.gadgets": "1.0.0",
 		"com.gamelabgraz.userinterface": "1.0.0"

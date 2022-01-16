@@ -1,7 +1,7 @@
 {
-    "name": "GEAR.LimeSurveyUploader.Editor",
+    "name": "GameLabGraz.LimeSurveyUploader.Editor",
     "references": [
-        "GEAR.LimeSurveyUploader"
+        "GameLabGraz.LimeSurveyUploader"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
