@@ -1,37 +1,29 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace GEAR.LimeSurvey.Editor
+namespace GameLabGraz.LimeSurvey.Editor
 {
-    [CustomEditor(typeof(LimeSurveyUploader))]
-    public class LimeSurveyUploaderEditor : UnityEditor.Editor
+    [CustomEditor(typeof(LimeSurveyManager))]
+    public class LimeSurveyManagerEditor : UnityEditor.Editor
     {
         private const string TexturePathDarkTheme = "images/LIME_logo_darkTheme";
         private const string TexturePathLightTheme = "images/LIME_logo_lightTheme";
         private const float logoHeight = 48;
         private Texture2D _logoTexture;
 
-        private SerializedProperty user;
+        private SerializedProperty url;
+        private SerializedProperty userName;
         private SerializedProperty password;
         private SerializedProperty surveyId;
 
-        private SerializedProperty excludeRecordIds;
-        private SerializedProperty insert;
-        private SerializedProperty importAsNotFinalized;
-        private SerializedProperty charset;
-
         private void OnEnable()
         {
-            _logoTexture = Resources.Load<Texture2D>(EditorGUIUtility.isProSkin? TexturePathDarkTheme : TexturePathLightTheme);
+            _logoTexture = Resources.Load<Texture2D>(EditorGUIUtility.isProSkin ? TexturePathDarkTheme : TexturePathLightTheme);
 
-            user = serializedObject.FindProperty("user");
+            url = serializedObject.FindProperty("url");
+            userName = serializedObject.FindProperty("userName");
             password = serializedObject.FindProperty("password");
             surveyId = serializedObject.FindProperty("surveyId");
-
-            excludeRecordIds = serializedObject.FindProperty("excludeRecordIds");
-            insert = serializedObject.FindProperty("insert");
-            importAsNotFinalized = serializedObject.FindProperty("importAsNotFinalized");
-            charset = serializedObject.FindProperty("charset");
         }
 
         public override void OnInspectorGUI()
@@ -40,18 +32,11 @@ namespace GEAR.LimeSurvey.Editor
 
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(user);
+            EditorGUILayout.PropertyField(url);
+            EditorGUILayout.PropertyField(userName);
             password.stringValue = EditorGUILayout.PasswordField(password.displayName, password.stringValue);
             EditorGUILayout.PropertyField(surveyId);
-
-            EditorGUILayout.PropertyField(excludeRecordIds);
             
-            if(!excludeRecordIds.boolValue)
-                EditorGUILayout.PropertyField(insert);
-
-            EditorGUILayout.PropertyField(importAsNotFinalized);
-            EditorGUILayout.PropertyField(charset);
-
             serializedObject.ApplyModifiedProperties();
         }
 
