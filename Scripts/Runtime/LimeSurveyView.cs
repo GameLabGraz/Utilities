@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.UI;
 using UnityEngine;
@@ -10,10 +12,16 @@ using InputField = GameLabGraz.UI.InputField;
 
 namespace GameLabGraz.LimeSurvey
 {
+    [Serializable]
+    public class SubmissionEvent : UnityEvent<int>{}
+
     public class LimeSurveyView : MonoBehaviour
     {
         [SerializeField] private TMP_Text questionText;
         [SerializeField] private GameObject questionContent;
+        [SerializeField] private Button prevButton;
+        [SerializeField] private Button nextButton;
+        [SerializeField] private Button submitButton;
 
         private readonly Dictionary<int, QuestionGroup> _questionGroups = new Dictionary<int, QuestionGroup>();
         private readonly List<Question> _questions = new List<Question>();
@@ -23,7 +31,7 @@ namespace GameLabGraz.LimeSurvey
         private QuestionGroup CurrentGroup => _questionGroups[CurrentQuestion.GID];
         private Question CurrentQuestion => _questions[_questionIndex];
 
-        public UnityEvent OnSubmission;
+        public SubmissionEvent OnSubmission;
 
         private void Start()
         {
@@ -33,6 +41,7 @@ namespace GameLabGraz.LimeSurvey
                 _questions.AddRange(questionGroup.Questions);
             }
 
+            SetupButtons();
             ShowQuestion(0);
         }
 
@@ -70,7 +79,7 @@ namespace GameLabGraz.LimeSurvey
                     break;
             }
 
-            CreateButtons();
+            EnableButtons();
         }
 
         private void CreateFreeText()
@@ -246,25 +255,15 @@ namespace GameLabGraz.LimeSurvey
             }
         }
 
-        private void CreateButtons()
+        private void SetupButtons()
         {
-            var buttonGroup = Instantiate(UIContent.HorizontalLayoutGroup, questionContent.transform) as GameObject;
-            if (buttonGroup == null) return;
-
-            // Previous Button
-            var prevButton = ((GameObject)Instantiate(UIContent.Button, buttonGroup.transform)).GetComponent<Button>();
-            prevButton.GetComponentInChildren<TMP_Text>().text = "Previous";
+            // Prev Button
             prevButton.onClick.AddListener(() =>
             {
                 ShowQuestion(--_questionIndex);
             });
 
-            if (_questionIndex == 0)
-                prevButton.interactable = false;
-
             // Next Button
-            var nextButton = ((GameObject)Instantiate(UIContent.Button, buttonGroup.transform)).GetComponent<Button>();
-            nextButton.GetComponentInChildren<TMP_Text>().text = "Next";
             nextButton.onClick.AddListener(() =>
             {
                 if (CurrentQuestion.Mandatory && CurrentQuestion.SubQuestions.Count == 0 &&
@@ -279,19 +278,30 @@ namespace GameLabGraz.LimeSurvey
 
                 ShowQuestion(++_questionIndex);
             });
+            
+            // Submit Button
+            submitButton.onClick.AddListener(() =>
+            {
+                var responseID = LimeSurveyManager.Instance.UploadQuestionResponses(_questions);
+                if(responseID != -1)
+                    OnSubmission?.Invoke(responseID);
+                else
+                    Debug.LogError("LimeSurveyView::OnSubmission: Unable to submit responses.");
+            });
+        }
+
+        private void EnableButtons()
+        {
+            prevButton.interactable = true;
+            nextButton.interactable = true;
+            submitButton.gameObject.SetActive(false);
+
+            if (_questionIndex == 0)
+                prevButton.interactable = false;
             if (_questionIndex == _questions.Count - 1)
             {
                 nextButton.interactable = false;
-
-                // Submit Button
-                var submitButton = ((GameObject)Instantiate(UIContent.Button, questionContent.transform)).GetComponent<Button>();
-                submitButton.GetComponentInChildren<TMP_Text>().text = "Submit";
-                submitButton.onClick.AddListener(() =>
-                {
-                    LimeSurveyManager.Instance.UploadQuestionResponses(_questions);
-                    OnSubmission?.Invoke();
-                    Destroy(gameObject);
-                });
+                submitButton.gameObject.SetActive(true);
             }
         }
 

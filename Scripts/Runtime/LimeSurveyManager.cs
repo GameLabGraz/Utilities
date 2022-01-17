@@ -137,6 +137,7 @@ namespace GameLabGraz.LimeSurvey
 
         private static void AddNoAnswerOption(Question question)
         {
+            if (question.Mandatory) return;
             question.AnswerOptions.Add(new AnswerOption("NA", "No answer", question.AnswerOptions.Count));
         }
 
@@ -145,8 +146,7 @@ namespace GameLabGraz.LimeSurvey
             for (var point = 1; point <= optionSize; point++)
                 question.AnswerOptions.Add(new AnswerOption($"{point}", $"{point}", point-1));
 
-            if (!question.Mandatory)
-                AddNoAnswerOption(question);
+            AddNoAnswerOption(question);
         }
 
         public List<QuestionGroup> GetQuestionGroups()
@@ -190,7 +190,7 @@ namespace GameLabGraz.LimeSurvey
             return questionList;
         }
 
-        public void UploadQuestionResponses(IEnumerable<Question> questions, int responseID = -1)
+        public int UploadQuestionResponses(IEnumerable<Question> questions, int responseID = -1)
         {
             var responseData = new JObject();
             if (responseID != -1)
@@ -216,8 +216,10 @@ namespace GameLabGraz.LimeSurvey
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
             {
                 Debug.LogError("LimeSurveyManager::UploadQuestionResponses: Unable to upload responses.");
-                return;
+                return -1;
             }
+
+            return (int)_client.Response.Result;
         }
     }
 }
