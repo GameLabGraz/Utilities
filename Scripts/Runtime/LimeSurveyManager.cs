@@ -1,10 +1,11 @@
-﻿using UnityEngine;
-using System.Net;
+﻿using System.Collections;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.LimeSurvey.Extensions;
-using Unity.Plastic.Newtonsoft.Json.Linq;
+using GEAR.Gadgets.Coroutine;
+using Newtonsoft.Json.Linq;
 
 namespace GameLabGraz.LimeSurvey
 {
@@ -19,6 +20,8 @@ namespace GameLabGraz.LimeSurvey
         private JsonRpcClient _client;
 
         public string SessionKey { get; private set; }
+
+        public bool LoggedIn { get; private set; }
 
         private static LimeSurveyManager _instance;
 
@@ -35,19 +38,20 @@ namespace GameLabGraz.LimeSurvey
         private void Awake()
         {
             _client = new JsonRpcClient(url);
-            Login();
+            StartCoroutine(Login());
         }
 
-        private void Login()
+        private IEnumerator Login()
         {
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.GetSessionKey);
             _client.AddParameter(LimeSurveyParameter.UserName, userName);
             _client.AddParameter(LimeSurveyParameter.Password, password);
-            _client.Post();
+
+            yield return _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
-                return;
+                yield return null;
 
             var response = _client.Response.Result.ToString();
             if (response.Contains("\"status\""))
@@ -57,13 +61,14 @@ namespace GameLabGraz.LimeSurvey
             else
             {
                 SessionKey = response;
+                LoggedIn = true;
                 Debug.Log($"LimeSurveyManager::Login: Login successfully - Session Key: {SessionKey}");
             }
         }
 
         private ErrorCode HandleClientResponse(JsonRpcResponse response)
         {
-            if (_client.Response.StatusCode != HttpStatusCode.OK)
+            if (response.StatusCode != 200)
             {
                 Debug.LogError($"LimeSurveyManager::HandleClientResponse: Error - HTTP Status Code: {_client.Response.StatusCode}");
                 return ErrorCode.HttpStatusError;
@@ -76,16 +81,17 @@ namespace GameLabGraz.LimeSurvey
             return ErrorCode.OK;
         }
 
-        private void SetQuestionProperties(Question question)
+        private IEnumerator SetQuestionProperties(Question question)
         {
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.GetQuestionProperties);
             _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
             _client.AddParameter(LimeSurveyParameter.QuestionID, question.ID);
-            _client.Post();
+
+            yield return _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
-                return;
+                yield return null;
 
             var questionProperties = (JObject)_client.Response.Result;
 
@@ -149,48 +155,58 @@ namespace GameLabGraz.LimeSurvey
             AddNoAnswerOption(question);
         }
 
-        public List<QuestionGroup> GetQuestionGroups()
+        public IEnumerator GetQuestionGroups()
         {
+            while (!LoggedIn) yield return new WaitForSeconds(0.1f);
+
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.ListGroups);
             _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
             _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
-            _client.Post();
+
+            yield return _client.Post();
 
             var groupList = new List<QuestionGroup>();
             foreach(var group in (JArray)_client.Response.Result)
             {
                 var groupObj = JsonUtility.FromJson<QuestionGroup>(group.ToString());
-                groupObj.Questions.AddRange(GetQuestionList(groupObj.GID));
+
+                var cd = new CoroutineWithData(this, GetQuestionList(groupObj.ID));
+                yield return cd.Coroutine;
+                
+                groupObj.Questions.AddRange((List<Question>)cd.Result);
                 groupList.Add(groupObj);
             }
-            return groupList;
+            yield return groupList;
         }
 
-        public List<Question> GetQuestionList(int? groupId = null)
+        public IEnumerator GetQuestionList(int? groupId = null)
         {
+            while (!LoggedIn) yield return new WaitForSeconds(0.1f);
+
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.ListQuestions);
             _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
             _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
             if (groupId != null) 
                 _client.AddParameter(LimeSurveyParameter.GroupID, groupId);
-            _client.Post();
+
+            yield return _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
-                return null;
+                yield return null;
 
             var questionList = new List<Question>();
             foreach (var question in (JArray)_client.Response.Result)
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
-                SetQuestionProperties(questionObj);
+                yield return StartCoroutine(SetQuestionProperties(questionObj));
                 questionList.Add(questionObj);
             }
-            return questionList;
+            yield return questionList;
         }
 
-        public int UploadQuestionResponses(IEnumerable<Question> questions, int responseID = -1)
+        public IEnumerator UploadQuestionResponses(IEnumerable<Question> questions, int responseID = -1)
         {
             var responseData = new JObject();
             if (responseID != -1)
@@ -200,9 +216,9 @@ namespace GameLabGraz.LimeSurvey
             {
                 if (question.SubQuestions.Count > 0)
                     foreach (var subQuestion in question.SubQuestions)
-                        responseData.Add($"{surveyId}X{question.GID}X{question.ID}{subQuestion.Title}", subQuestion.Answer?.ToString());
+                        responseData.Add($"{surveyId}X{question.GID}X{question.ID}{subQuestion.Title}", subQuestion.Answer);
                 else
-                    responseData.Add($"{surveyId}X{question.GID}X{question.ID}", question.Answer?.ToString());
+                    responseData.Add($"{surveyId}X{question.GID}X{question.ID}", question.Answer);
 
             }
 
@@ -211,15 +227,16 @@ namespace GameLabGraz.LimeSurvey
             _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
             _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
             _client.AddParameter(LimeSurveyParameter.ResponseData, responseData);
-            _client.Post();
+            
+            yield return _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
             {
                 Debug.LogError("LimeSurveyManager::UploadQuestionResponses: Unable to upload responses.");
-                return -1;
+                yield return -1;
             }
 
-            return (int)_client.Response.Result;
+            yield return int.Parse(_client.Response.Result.ToString());
         }
     }
 }

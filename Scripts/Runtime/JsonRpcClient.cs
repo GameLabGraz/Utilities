@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Net;
+﻿using System.Collections;
 using System.Text;
-using Unity.Plastic.Newtonsoft.Json;
-using Unity.Plastic.Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using UnityEngine.Networking;
 
 namespace GameLabGraz.LimeSurvey
 {
@@ -28,43 +27,35 @@ namespace GameLabGraz.LimeSurvey
             Response = null;
         }
 
-        public string Post()
+        public IEnumerator Post()
         {
-            try
+            var jObject = new JObject
             {
-                var jobject = new JObject();
-                jobject.Add(new JProperty("jsonrpc", "2.0"));
-                jobject.Add(new JProperty("id", ++id));
-                jobject.Add(new JProperty("method", Method));
-                jobject.Add(new JProperty("params", Parameters));
+                new JProperty("jsonrpc", "2.0"),
+                new JProperty("id", ++id),
+                new JProperty("method", Method),
+                new JProperty("params", Parameters)
+            };
 
-                var postData = JsonConvert.SerializeObject(jobject);
-                var encoding = new UTF8Encoding();
-                var bytes = encoding.GetBytes(postData);
+            var postData = JsonConvert.SerializeObject(jObject);
 
-                var request = (HttpWebRequest)WebRequest.Create(URL);
-                request.Method = "POST";
-                request.ContentType = "application/json";
-                request.KeepAlive = true;
-                request.ContentLength = bytes.Length;
+            var request = UnityWebRequest.Post(URL, postData);
+            request.method = UnityWebRequest.kHttpVerbPOST;
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(postData));
+            request.SetRequestHeader("Content-Type", "application/json");
 
-                var writeStream = request.GetRequestStream();
-                writeStream.Write(bytes, 0, bytes.Length);
-                writeStream.Close();
-
-                var response = (HttpWebResponse)request.GetResponse();
-                var responseStream = response.GetResponseStream();
-                var readStream = new StreamReader(responseStream, Encoding.UTF8);
-
-                Response = new JsonRpcResponse();
-                Response = JsonConvert.DeserializeObject<JsonRpcResponse>(readStream.ReadToEnd());
-                Response.StatusCode = response.StatusCode;
-
-                return Response.ToString();
+            yield return request.SendWebRequest();
+            
+            if (request.isNetworkError || request.isHttpError)
+            {
+                yield return request.error;
             }
-            catch (Exception e)
+            else
             {
-                return e.ToString();
+                Response = new JsonRpcResponse();
+                Response = JsonConvert.DeserializeObject<JsonRpcResponse>(request.downloadHandler.text);
+                Response.StatusCode = request.responseCode;
             }
         }
 
@@ -79,7 +70,7 @@ namespace GameLabGraz.LimeSurvey
         public int Id { set; get; }
         public object Result { set; get; }
         public string Error { set; get; }
-        public HttpStatusCode StatusCode { set; get; }
+        public long StatusCode { set; get; }
 
         public JsonRpcResponse() { }
 

@@ -1,5 +1,5 @@
 ﻿using GEAR.Gadgets.Extensions;
-using Unity.Plastic.Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace GameLabGraz.LimeSurvey.Extensions
 {

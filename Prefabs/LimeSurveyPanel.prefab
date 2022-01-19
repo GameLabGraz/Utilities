@@ -118,7 +118,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5748860093089684409}
   m_HandleRect: {fileID: 5748860093089684408}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.5
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -194,7 +194,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -198.89677}
+  m_AnchoredPosition: {x: 0, y: -213.46344}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &5748860092806960454
@@ -827,9 +827,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Group Name
-
-    Question Title'
+  m_text: Loading Survey ....
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -864,7 +862,7 @@ MonoBehaviour:
   m_fontSizeMax: 36
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1135,6 +1133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2342ace2194c0246957f54e1e910c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  responseID: -1
   questionText: {fileID: 3597379360963977028}
   questionContent: {fileID: 5748860092806960507}
   prevButton: {fileID: 545524002064339534}
@@ -1142,7 +1141,18 @@ MonoBehaviour:
   submitButton: {fileID: 545524003026144178}
   OnSubmission:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8801897115577524612}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &5281578789330255195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1173,7 +1183,7 @@ PrefabInstance:
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
@@ -1183,17 +1193,17 @@ PrefabInstance:
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 537
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 70.59354
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
@@ -1233,12 +1243,12 @@ PrefabInstance:
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 810.5
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -35.29677
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
@@ -1292,6 +1302,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NextButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5101199158424744139, guid: 804ae9890eac3f941be98f32cab2066a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 804ae9890eac3f941be98f32cab2066a, type: 3}
 --- !u!114 &545524002116847255 stripped
@@ -1336,7 +1351,7 @@ PrefabInstance:
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
@@ -1346,17 +1361,17 @@ PrefabInstance:
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 537
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 70.59354
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
@@ -1396,12 +1411,12 @@ PrefabInstance:
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 268.5
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -35.29677
       objectReference: {fileID: 0}
     - target: {fileID: 2472079172140665120, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
@@ -1452,6 +1467,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PrevButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101199158424744139, guid: 804ae9890eac3f941be98f32cab2066a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5681846035356040140, guid: 804ae9890eac3f941be98f32cab2066a,
         type: 3}
