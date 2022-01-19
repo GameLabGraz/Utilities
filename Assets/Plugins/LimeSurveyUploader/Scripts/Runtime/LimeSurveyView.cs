@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.UI;
+using GEAR.Gadgets.Coroutine;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Assertions;
@@ -17,6 +18,8 @@ namespace GameLabGraz.LimeSurvey
 
     public class LimeSurveyView : MonoBehaviour
     {
+        [SerializeField] private int responseID = -1;
+
         [SerializeField] private TMP_Text questionText;
         [SerializeField] private GameObject questionContent;
         [SerializeField] private Button prevButton;
@@ -35,15 +38,23 @@ namespace GameLabGraz.LimeSurvey
 
         private void Start()
         {
-            foreach(var questionGroup in LimeSurveyManager.Instance.GetQuestionGroups())
+            StartCoroutine(Initialize());
+        }
+
+        private IEnumerator Initialize()
+        {
+            var cd = new CoroutineWithData(this, LimeSurveyManager.Instance.GetQuestionGroups());
+            yield return cd.Coroutine;
+
+            foreach (var questionGroup in (List<QuestionGroup>)cd.Result)
             {
                 _questionGroups[questionGroup.GID] = questionGroup;
                 _questions.AddRange(questionGroup.Questions);
             }
-
             SetupButtons();
             ShowQuestion(0);
         }
+
 
         private void ShowQuestion(int questionIndex)
         {
@@ -282,19 +293,40 @@ namespace GameLabGraz.LimeSurvey
             // Submit Button
             submitButton.onClick.AddListener(() =>
             {
-                var responseID = LimeSurveyManager.Instance.UploadQuestionResponses(_questions);
-                if(responseID != -1)
-                    OnSubmission?.Invoke(responseID);
-                else
-                    Debug.LogError("LimeSurveyView::OnSubmission: Unable to submit responses.");
+                ClearQuestionContent();
+                
+                // Disable Buttons
+                prevButton.gameObject.SetActive(false);
+                nextButton.gameObject.SetActive(false);
+                submitButton.gameObject.SetActive(false);
+
+                questionText.text = "Submitting Responses ...";
+
+                StartCoroutine(SubmitResponses());
             });
+        }
+
+        private IEnumerator SubmitResponses()
+        {
+            var cd = new CoroutineWithData(this, LimeSurveyManager.Instance.UploadQuestionResponses(_questions, responseID));
+            yield return cd.Coroutine;
+
+            responseID = (int)cd.Result;
+            if (responseID != -1)
+                OnSubmission?.Invoke(responseID);
+            else
+                Debug.LogError("LimeSurveyView::OnSubmission: Unable to submit responses.");
         }
 
         private void EnableButtons()
         {
+            prevButton.gameObject.SetActive(true);
+            nextButton.gameObject.SetActive(true);
+            submitButton.gameObject.SetActive(false);
+
             prevButton.interactable = true;
             nextButton.interactable = true;
-            submitButton.gameObject.SetActive(false);
+
 
             if (_questionIndex == 0)
                 prevButton.interactable = false;
