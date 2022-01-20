@@ -39,23 +39,24 @@ namespace GameLabGraz.LimeSurvey
 
             var postData = JsonConvert.SerializeObject(jObject);
 
-            var request = UnityWebRequest.Post(URL, postData);
-            request.method = UnityWebRequest.kHttpVerbPOST;
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(postData));
-            request.SetRequestHeader("Content-Type", "application/json");
+            using (var request = UnityWebRequest.Post(URL, string.Empty))
+            {
+                request.method = UnityWebRequest.kHttpVerbPOST;
+                request.downloadHandler = new DownloadHandlerBuffer();
+                request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(postData));
+                request.SetRequestHeader("Content-Type", "application/json");
+                yield return request.SendWebRequest();
 
-            yield return request.SendWebRequest();
-            
-            if (request.isNetworkError || request.isHttpError)
-            {
-                yield return request.error;
-            }
-            else
-            {
-                Response = new JsonRpcResponse();
-                Response = JsonConvert.DeserializeObject<JsonRpcResponse>(request.downloadHandler.text);
-                Response.StatusCode = request.responseCode;
+                if (request.isNetworkError || request.isHttpError)
+                {
+                    yield return request.error;
+                }
+                else
+                {
+                    Response = new JsonRpcResponse();
+                    Response = JsonConvert.DeserializeObject<JsonRpcResponse>(request.downloadHandler.text);
+                    Response.StatusCode = request.responseCode;
+                }
             }
         }
 
