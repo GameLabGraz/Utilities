@@ -7,6 +7,7 @@
 	"description": "This package is used to upload survey files to LimeSurvey.",
 	"dependencies": {
 		"com.gear.gadgets": "1.0.0",
-		"com.gamelabgraz.userinterface": "1.0.0"
+		"com.gamelabgraz.userinterface": "1.0.0",
+		"com.unity.nuget.newtonsoft-json": "2.0.0"
 	}
 }
