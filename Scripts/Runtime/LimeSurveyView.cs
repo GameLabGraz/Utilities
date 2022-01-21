@@ -36,6 +36,12 @@ namespace GameLabGraz.LimeSurvey
 
         public SubmissionEvent OnSubmission;
 
+        public int ResponseID
+        {
+            get => responseID;
+            set => responseID = value;
+        }
+
         private void Start()
         {
             StartCoroutine(Initialize());
