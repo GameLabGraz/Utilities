@@ -183,6 +183,12 @@ namespace GEAR.VRInteraction
             UpdateDebugText();
         }
 
+        public void ForceToAngle(float angle)
+        {
+            outAngle = angle;
+            UpdateAll();
+        }
+        
         public void ForceToValue(float value)
         {
             Debug.Log("before: " + _currentValue + " - " + linearMapping.value);

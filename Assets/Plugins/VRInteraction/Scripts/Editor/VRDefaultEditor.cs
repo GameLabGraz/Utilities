@@ -64,4 +64,15 @@ namespace GEAR.VRInteraction.Editor
     public class TextFormatterTMPEditor : VRDefaultEditor
     {
     }
+    
+    [CustomEditor(typeof(VR3DDrive))]
+    public class VR3DDriveEditor : VRDefaultEditor
+    {
+    }
+    
+        
+    [CustomEditor(typeof(VRColorPicker))]
+    public class VRColorPickerEditor : VRDefaultEditor
+    {
+    }
 }

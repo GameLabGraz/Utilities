@@ -13,7 +13,7 @@ namespace GEAR.VRInteraction
         public Transform endXPosition;
         public Transform endYPosition;
         public Transform endZPosition;
-
+        
         public bool fixXPosition = false;
         public bool fixYPosition = false;
         public bool fixZPosition = false;
@@ -21,11 +21,13 @@ namespace GEAR.VRInteraction
         public bool repositionGameObject = true;
         public bool maintainMomentum = true;
         public float momentumDampenRate = 5.0f;
+        
+        protected Hand.AttachmentFlags _attachmentFlags = Hand.AttachmentFlags.DetachFromOtherHand;
 
         public Vector3 initialValue = Vector3.zero;
 
         public ValueChangeEventVector3 onValueChanged;
-        
+
         public Vector3 CurrentMappedValue = Vector3.zero;
         protected Vector3 PrevMappedValue = Vector3.zero;
         protected Vector3 InitialMappingOffset = Vector3.zero;
@@ -35,8 +37,6 @@ namespace GEAR.VRInteraction
         protected Vector3 MappingChangeRate;
         protected int sampleCount = 0;
         
-        protected Hand.AttachmentFlags _attachmentFlags = Hand.AttachmentFlags.DetachFromOtherHand;
-
         protected Interactable _interactable;
         
         protected virtual void Awake()
@@ -50,7 +50,6 @@ namespace GEAR.VRInteraction
             InitialMappingOffset = CurrentMappedValue;
             if (repositionGameObject)
             {
-                // UpdateMapping(transform);
                 ForceToValue(initialValue);
             }
         }
@@ -103,13 +102,17 @@ namespace GEAR.VRInteraction
         
         protected void UpdateMapping(Transform updateTransform)
         {
+            Debug.Log("Update Mapping Transform: " + updateTransform.position);
+            
             PrevMappedValue = CurrentMappedValue;
-
+            
             CurrentMappedValue = InitialMappingOffset + CalculateMapping(updateTransform);
             CurrentMappedValue.x = Mathf.Clamp01(CurrentMappedValue.x);
             CurrentMappedValue.y = Mathf.Clamp01(CurrentMappedValue.y);
             CurrentMappedValue.z = Mathf.Clamp01(CurrentMappedValue.z);
             
+            Debug.Log("Update Mapping: " + CurrentMappedValue);
+
             MappingChangeSamples[sampleCount % MappingChangeSamples.Length] = ( 1.0f / Time.deltaTime ) * ( CurrentMappedValue - PrevMappedValue );
             sampleCount++;
             
@@ -136,14 +139,15 @@ namespace GEAR.VRInteraction
         {
             var value = Vector3.zero;
             
-            if (!fixXPosition)
+            if (!fixXPosition) 
                 value.x = CalculateLinearMapping(updateTransform, endXPosition);
 
             if (!fixYPosition)
-                value.x = CalculateLinearMapping(updateTransform, endYPosition);
+                value.y = CalculateLinearMapping(updateTransform, endYPosition);
 
             if (!fixZPosition)
-                value.x = CalculateLinearMapping(updateTransform, endZPosition);
+                value.z = CalculateLinearMapping(updateTransform, endZPosition);
+            
 
             return value;
         }
@@ -172,6 +176,9 @@ namespace GEAR.VRInteraction
                     var dirZ = endZPosition.position - startPosition.position;
                     pos += CurrentMappedValue.z * dirZ;
                 }
+                
+                Debug.Log("Reposition Object: " + CurrentMappedValue);
+                
                 transform.position = pos;
             }
         }
