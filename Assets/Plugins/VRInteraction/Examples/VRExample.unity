@@ -10122,30 +10122,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1957421366}
     m_Modifications:
-    - target: {fileID: 2240893781204820378, guid: 055dc41899e1a6a41bdfa8cd6f7359d7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 7139622560335826024, guid: 055dc41899e1a6a41bdfa8cd6f7359d7,
         type: 3}
       propertyPath: m_Name
       value: ColorPicker
-      objectReference: {fileID: 0}
-    - target: {fileID: 7139622560335826027, guid: 055dc41899e1a6a41bdfa8cd6f7359d7,
-        type: 3}
-      propertyPath: InitialColor.b
-      value: 0.7735849
-      objectReference: {fileID: 0}
-    - target: {fileID: 7139622560335826027, guid: 055dc41899e1a6a41bdfa8cd6f7359d7,
-        type: 3}
-      propertyPath: InitialColor.g
-      value: 0.37261653
-      objectReference: {fileID: 0}
-    - target: {fileID: 7139622560335826027, guid: 055dc41899e1a6a41bdfa8cd6f7359d7,
-        type: 3}
-      propertyPath: InitialColor.r
-      value: 0.36854753
       objectReference: {fileID: 0}
     - target: {fileID: 7520686234484528850, guid: 055dc41899e1a6a41bdfa8cd6f7359d7,
         type: 3}
