@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/LimeSurveyUploader/LimeSurveyUploader.unity
+    guid: 1d9e22d8b8c62894f8744a30baca84da
+  - enabled: 1
     path: Assets/Plugins/VRInteraction/Examples/VRExample.unity
     guid: 18ac02a3710b2f84aaefdd122a651f3c
   m_configObjects: {}
