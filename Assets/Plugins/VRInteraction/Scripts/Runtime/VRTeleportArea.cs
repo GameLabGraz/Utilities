@@ -2,7 +2,7 @@
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
 	//same as the Teleport Area with from steam without the area highlighting
     public class VRTeleportArea : TeleportArea

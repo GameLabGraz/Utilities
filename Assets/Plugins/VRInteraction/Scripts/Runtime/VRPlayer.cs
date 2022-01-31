@@ -2,7 +2,7 @@
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     public class VRPlayer : Player
     {

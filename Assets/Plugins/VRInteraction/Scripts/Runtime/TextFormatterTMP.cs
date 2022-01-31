@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     public class TextFormatterTMP : MonoBehaviour
     {

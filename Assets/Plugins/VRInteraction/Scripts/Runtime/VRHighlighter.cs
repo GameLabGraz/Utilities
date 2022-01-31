@@ -2,7 +2,7 @@
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     public class VRHighlighter : MonoBehaviour
     {
@@ -108,17 +108,33 @@ namespace GEAR.VRInteraction
         private void ColorSelf(GameObject obj, Color newColor)
         {
             var r = obj.GetComponent<Renderer>();
+            var info = obj.GetComponent<VRHighlightInfo>();
             if (r)
             {
-                foreach (var mat in r.materials)
-                    mat.color = newColor;
+                if (info && info.MaterialIndex < r.materials.Length)
+                {
+                    r.materials[info.MaterialIndex].color = newColor;
+                }
+                else
+                {
+                    foreach (var mat in r.materials)
+                        mat.color = newColor;
+                }
             }
 
             var renderers = obj.GetComponentsInChildren<Renderer>();
             foreach (var rend in renderers)
             {
-                foreach (var mat in rend.materials)
-                    mat.color = newColor;
+                var childInfo = rend.gameObject.GetComponent<VRHighlightInfo>();
+                if (childInfo && childInfo.MaterialIndex < rend.materials.Length)
+                {
+                    rend.materials[childInfo.MaterialIndex].color = newColor;
+                }
+                else
+                {
+                    foreach (var mat in rend.materials)
+                        mat.color = newColor;
+                }
             }
             
         }

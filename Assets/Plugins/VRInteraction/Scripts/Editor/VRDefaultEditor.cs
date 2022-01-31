@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace GEAR.VRInteraction.Editor
+namespace GameLabGraz.VRInteraction.Editor
 {
     public class VRDefaultEditor : UnityEditor.Editor
     {
@@ -60,6 +60,11 @@ namespace GEAR.VRInteraction.Editor
     {
     }
     
+    [CustomEditor(typeof(VRHighlightInfo))]
+    public class VRHighlightInfoEditor : VRDefaultEditor
+    {
+    }
+    
     [CustomEditor(typeof(TextFormatterTMP))]
     public class TextFormatterTMPEditor : VRDefaultEditor
     {
@@ -70,9 +75,23 @@ namespace GEAR.VRInteraction.Editor
     {
     }
     
-        
     [CustomEditor(typeof(VRColorPicker))]
     public class VRColorPickerEditor : VRDefaultEditor
+    {
+    }
+            
+    [CustomEditor(typeof(Barcode))]
+    public class BarcodeEditor : VRDefaultEditor
+    {
+    }
+            
+    [CustomEditor(typeof(BarcodeScanner))]
+    public class BarcodeScannerEditor : VRDefaultEditor
+    {
+    }
+            
+    [CustomEditor(typeof(VRColorBarcodeScanner))]
+    public class VRColorBarcodeScannerEditor : VRDefaultEditor
     {
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     [System.Serializable]
     public class ValueChangeEventFloat : UnityEvent<float>
@@ -30,6 +30,11 @@ namespace GEAR.VRInteraction
     
     [System.Serializable]
     public class SnapUnsnapEvent : UnityEvent<VRSnapDropZone, GameObject>
+    {
+    }
+    
+    [System.Serializable]
+    public class ValueChangeEventColor : UnityEvent<Color>
     {
     }
 }

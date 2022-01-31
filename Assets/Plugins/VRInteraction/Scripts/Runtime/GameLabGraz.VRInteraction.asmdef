@@ -1,5 +1,5 @@
 {
-    "name": "GEAR.VRInteraction",
+    "name": "com.gamelabgraz.vrinteraction",
     "references": [
         "Unity.TextMeshPro",
         "SteamVR",

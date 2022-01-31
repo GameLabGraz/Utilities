@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR.InteractionSystem;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     /**
+     * #TODO SteamVR
      * HINT: you may need to make all private variables and methods of HoverButton protected
      */
     

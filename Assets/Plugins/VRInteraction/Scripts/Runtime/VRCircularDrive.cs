@@ -2,7 +2,7 @@
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     public class VRCircularDrive : CircularDrive
     {
@@ -117,7 +117,7 @@ namespace GEAR.VRInteraction
             {
                 hand.DetachObject(gameObject);
 
-                Debug.Log("hand Detached");
+                // Debug.Log("hand Detached");
                 if(forceToInitialValueAfterGrabEnded){
                     if ( limited )
                     {
@@ -195,7 +195,7 @@ namespace GEAR.VRInteraction
             _currentValue = Mathf.Clamp(value, minimum, maximum);
             linearMapping.value = (_currentValue - minimum) / _valueRange;
 
-            Debug.Log("before: " + _currentValue + " - " + linearMapping.value);
+            // Debug.Log("before: " + _currentValue + " - " + linearMapping.value);
 
             onValueChanged.Invoke(_currentValue);
             if(useAsInteger)

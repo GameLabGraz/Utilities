@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     public class VRLoadingObject : MonoBehaviour
     {

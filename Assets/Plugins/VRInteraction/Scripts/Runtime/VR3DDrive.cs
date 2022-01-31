@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     [RequireComponent( typeof( Interactable ) )]
     public class VR3DDrive : MonoBehaviour
@@ -22,6 +21,9 @@ namespace GEAR.VRInteraction
         public bool maintainMomentum = true;
         public float momentumDampenRate = 5.0f;
         
+        [Tooltip( "If true, the drive will stay manipulating as long as the button is held down, if false, it will stop if the controller moves out of the collider" )]
+        public bool hoverLock = false;
+        
         protected Hand.AttachmentFlags _attachmentFlags = Hand.AttachmentFlags.DetachFromOtherHand;
 
         public Vector3 initialValue = Vector3.zero;
@@ -38,6 +40,8 @@ namespace GEAR.VRInteraction
         protected int sampleCount = 0;
         
         protected Interactable _interactable;
+        protected Hand _handHoverLocked;
+        protected GrabTypes _grabbedWithType;
         
         protected virtual void Awake()
         {
@@ -54,18 +58,46 @@ namespace GEAR.VRInteraction
             }
         }
 
+        protected void OnDisable()
+        {
+            if (_handHoverLocked)
+            {
+                _handHoverLocked.HoverUnlock(_interactable);
+                _handHoverLocked = null;
+            }
+        }
+
         protected virtual void HandHoverUpdate(Hand hand)
         {
-            GrabTypes startingGrabType = hand.GetGrabStarting();
+            var startingGrabType = hand.GetGrabStarting();
+            var isGrabEnding = hand.IsGrabbingWithType(_grabbedWithType) == false;
 
             if (_interactable.attachedToHand == null && startingGrabType != GrabTypes.None)
             {
+                _grabbedWithType = startingGrabType;
                 var handTransform = hand.transform;
                 InitialMappingOffset = CurrentMappedValue - CalculateMapping( handTransform );
                 sampleCount = 0;
                 MappingChangeRate = Vector3.zero;
 
+                if (hoverLock)
+                {
+                    hand.HoverLock(_interactable);
+                    _handHoverLocked = hand;
+                }
+                
                 hand.AttachObject(gameObject, startingGrabType, _attachmentFlags);
+            }
+            else if (_grabbedWithType != GrabTypes.None && isGrabEnding)
+            {
+                //ungrab
+                if (hoverLock)
+                {
+                    hand.HoverUnlock(_interactable);
+                    _handHoverLocked = null;
+                }
+
+                _grabbedWithType = GrabTypes.None;
             }
         }
 

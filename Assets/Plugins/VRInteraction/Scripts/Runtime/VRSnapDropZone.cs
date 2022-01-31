@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
-namespace GEAR.VRInteraction
+namespace GameLabGraz.VRInteraction
 {
     public class VRSnapDropZone : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 {
-    "name": "GEAR.VRInteraction.Editor",
+    "name": "com.gamelabgraz.vrinteraction.Editor",
     "references": [
-        "GEAR.VRInteraction"
+        "com.gamelabgraz.vrinteraction"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
