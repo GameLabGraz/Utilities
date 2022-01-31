@@ -51,11 +51,11 @@ namespace GameLabGraz.VRInteraction
                 //Debug.Log("We have a highlighted obj");
                 snapZone.onStartHighlight.AddListener(sz =>
                 {
-                    //Debug.Log("Highlighter: onStartHighlight");
+                    Debug.Log("Highlighter: onStartHighlight");
                     sz.HighlightedObject?.SetActive(true);
                 });                    
                 snapZone.onEndHighlight.AddListener(sz => {
-                    //Debug.Log("Highlighter: onEndHighlight");
+                    Debug.Log("Highlighter: onEndHighlight");
                     sz.HighlightedObject?.SetActive(false);
                 });
             }

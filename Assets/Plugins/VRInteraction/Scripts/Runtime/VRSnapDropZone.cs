@@ -35,7 +35,8 @@ namespace GameLabGraz.VRInteraction
         public Vector3 localScale = Vector3.one;
         public bool allowUnsnap = true;
         public bool cloneOnUnsnap = false;
-
+        public bool debugMessages = false;
+        
         [Header("Events")] 
         public SnapZoneEvent onSnapZoneEnter;
         public SnapZoneEvent onSnapZoneExit;
@@ -72,6 +73,9 @@ namespace GameLabGraz.VRInteraction
         {
             var interactable = GetInteractable(other.gameObject);
             
+            if (debugMessages)
+                Debug.Log("VRSnapDropZone::OnTriggerEnter: interactable '" + other.gameObject.name + "' (tag: " + interactable.tag + ")", this);
+            
             if (interactable && interactable != snappedObject && IsTagAllowed(interactable.tag))
             {
                 interactable.onAttachedToHand += SnapZoneEntered;
@@ -84,12 +88,14 @@ namespace GameLabGraz.VRInteraction
 
         protected void SnapZoneEntered(Hand h)
         {
-            Debug.Log("Snap Zone Entered - Hand: " + h);
+            if(debugMessages)
+                Debug.Log("VRSnapDropZone::SnapZoneEntered: Hand: " + h, this);
             onSnapZoneEnter.Invoke(this);
             
             if (snappedObject == null && h != null)
             {
-                Debug.Log("Should start highlight");
+                if(debugMessages)
+                    Debug.Log("VRSnapDropZone::SnapZoneEntered: starts highlighting", this);
                 onStartHighlight.Invoke(this);
             }
         }
@@ -104,17 +110,19 @@ namespace GameLabGraz.VRInteraction
             var interactable = GetInteractable(other.gameObject);
             if (interactable)
             {
+                if (debugMessages)
+                    Debug.Log("VRSnapDropZone::OnTriggerExit: interactable '" + other.gameObject.name, this);
+
                 interactable.onAttachedToHand -= SnapZoneEntered;
                 interactable.onDetachedFromHand -= OnObjectDetachedFromHand;
                 
                 onSnapZoneExit.Invoke(this);
                 _objInZone.Remove(interactable);
                 
-                Debug.Log("On Trigger Exit");
-
                 if (snappedObject == null && _objInZone.Any(obj => obj.attachedToHand != null))
                 {
-                    Debug.Log("Should start highlight");
+                    if(debugMessages)
+                        Debug.Log("VRSnapDropZone::OnTriggerExit: start highlighting", this);
                     onStartHighlight.Invoke(this);
                 }
                 else
@@ -129,10 +137,9 @@ namespace GameLabGraz.VRInteraction
             // adapt the events and add the snapped obj
             Snap(hand.currentAttachedObject);
             
-            Debug.Log("Obj detached from hand -> highlight?");
-
             if (snappedObject == null && _objInZone.Any(obj => obj.attachedToHand != null)) {
-                Debug.Log("Should start highlight");
+                if(debugMessages)
+                    Debug.Log("VRSnapDropZone::OnObjectDetachedFromHand: start highlighting", this);
                 onStartHighlight.Invoke(this);
             }
             else
@@ -170,7 +177,13 @@ namespace GameLabGraz.VRInteraction
         {
             var interactable = GetInteractable(newSnappedObject);
             if (!interactable || (snappedObject && snappedObject != interactable)) return;
+
+            Debug.Log("Snap");
+            Debug.Log("Snap with context", this);
             
+            if(debugMessages)
+                Debug.Log("VRSnapDropZone::Snap object '" + interactable.gameObject.name + "'", this);
+
             snappedObject = interactable;
             _snappedObjectParent = newSnappedObject.transform.parent;
             newSnappedObject.transform.parent = transform;
