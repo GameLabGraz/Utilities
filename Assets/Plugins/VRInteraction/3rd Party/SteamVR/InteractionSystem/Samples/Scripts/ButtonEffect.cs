@@ -20,11 +20,6 @@ namespace Valve.VR.InteractionSystem.Sample
             ColorSelf(Color.white);
         }
 
-        public void OnButtonPressed(Hand fromHand)
-        {
-            ColorSelf(Color.magenta);
-        }
-
         private void ColorSelf(Color newColor)
         {
             Renderer[] renderers = this.GetComponentsInChildren<Renderer>();

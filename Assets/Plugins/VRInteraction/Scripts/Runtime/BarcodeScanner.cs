@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace GameLabGraz.VRInteraction
 {
-    [System.Serializable]
-    public class BarcodeScanEvent : UnityEvent<Barcode>
-    {
-    }
-
     public class BarcodeScanner : MonoBehaviour
     {
         public Barcode scannedBarcode = null;

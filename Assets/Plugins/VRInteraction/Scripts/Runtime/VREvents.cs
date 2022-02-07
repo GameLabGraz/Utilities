@@ -37,4 +37,9 @@ namespace GameLabGraz.VRInteraction
     public class ValueChangeEventColor : UnityEvent<Color>
     {
     }
+    
+    [System.Serializable]
+    public class BarcodeScanEvent : UnityEvent<Barcode>
+    {
+    }
 }

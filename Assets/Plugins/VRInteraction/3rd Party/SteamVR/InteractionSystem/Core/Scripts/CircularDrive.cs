@@ -103,10 +103,10 @@ namespace Valve.VR.InteractionSystem
 
 		protected Hand handHoverLocked = null;
 
-		protected Interactable interactable;
+        protected Interactable interactable;
 
 		//-------------------------------------------------
-		private void Freeze( Hand hand )
+		protected void Freeze( Hand hand )
 		{
 			frozen = true;
 			frozenAngle = outAngle;
@@ -117,13 +117,13 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		private void UnFreeze()
+		protected void UnFreeze()
 		{
 			frozen = false;
 			frozenHandWorldPos.Set( 0.0f, 0.0f, 0.0f );
 		}
 
-        private void Awake()
+        protected void Awake()
         {
             interactable = this.GetComponent<Interactable>();
         }
@@ -195,7 +195,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		private IEnumerator HapticPulses( Hand hand, float flMagnitude, int nCount )
+		protected IEnumerator HapticPulses( Hand hand, float flMagnitude, int nCount )
 		{
 			if ( hand != null )
 			{
@@ -217,14 +217,14 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		private void OnHandHoverBegin( Hand hand )
+		protected void OnHandHoverBegin( Hand hand )
 		{
             hand.ShowGrabHint();
 		}
 
 
 		//-------------------------------------------------
-		private void OnHandHoverEnd( Hand hand )
+		protected void OnHandHoverEnd( Hand hand )
 		{
             hand.HideGrabHint();
 
@@ -286,7 +286,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		private Vector3 ComputeToTransformProjected( Transform xForm )
+		protected Vector3 ComputeToTransformProjected( Transform xForm )
 		{
 			Vector3 toTransform = ( xForm.position - transform.position ).normalized;
 			Vector3 toTransformProjected = new Vector3( 0.0f, 0.0f, 0.0f );
@@ -312,7 +312,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		private void DrawDebugPath( Transform xForm, Vector3 toTransformProjected )
+		protected void DrawDebugPath( Transform xForm, Vector3 toTransformProjected )
 		{
 			if ( dbgObjectCount == 0 )
 			{

@@ -14,6 +14,7 @@ namespace GameLabGraz.VRInteraction
         [SerializeField] protected BarcodeScanner barcodeScanner;
         [SerializeField] protected GameObject barcodeBeam;
         [SerializeField] protected TextMeshPro barcodeText;
+        [SerializeField] protected string clearBarcodeText = "Scan Barcode";
 
         // Start is called before the first frame update
         void Start()
@@ -29,16 +30,20 @@ namespace GameLabGraz.VRInteraction
             }
 
             barcodeBeam.SetActive(false);
+            barcodeText.text = clearBarcodeText;
         }
 
         protected void OnColorChanged(Color newPickedColor)
         {
             if (!barcodeScanner.HasScannedBarcode()) return;
+            
+            barcodeScanner.GetLastScannedBarcode().ChangeColor(newPickedColor);
         }
 
         protected void OnNewBarcodeScanned(Barcode newScannedObject)
         {
             barcodeText.text = newScannedObject.barcodeContent;
+            colorPicker.ForceToColor(newScannedObject.GetCurrentColor());
         }
 
         protected void OnAttachedToHand()
@@ -50,7 +55,7 @@ namespace GameLabGraz.VRInteraction
         {
             barcodeBeam.SetActive(false);
             barcodeScanner.scannedBarcode = null;
-            barcodeText.text = "";
+            barcodeText.text = clearBarcodeText;
         }
     }
 }
