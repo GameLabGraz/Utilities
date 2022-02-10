@@ -1,0 +1,11 @@
+{
+	"name": "com.gamelabgraz.vrinteraction",
+	"displayName": "VR Interaction Plugin",
+	"version": "1.0.0",
+	"unity": "2019.4",
+	"author": "Game Lab Graz",
+	"description": "This package offers some helpful features for Virtual Reality development.",
+	"dependencies": {
+		"com.unity.textmeshpro": "1.4.1"
+	}
+}
