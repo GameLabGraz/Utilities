@@ -4,6 +4,7 @@ git subtree push --prefix Assets/Plugins/SerializeProperty origin package/serial
 git subtree push --prefix Assets/Plugins/LimeSurveyUploader origin package/limesurveyuploader
 git subtree push --prefix Assets/Plugins/Gadgets origin package/gadgets
 git subtree push --prefix Assets/Plugins/UserInterface origin package/userinterface
+git subtree push --prefix Assets/Plugins/VRInteraction origin package/vrinteraction
 
 echo off
 echo Press enter to exit
