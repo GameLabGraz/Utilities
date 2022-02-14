@@ -2,13 +2,13 @@
   "source": "Unity",
   "applications": [
     {
-      "app_key": "application.generated.unity.gearutilities.exe",
+      "app_key": "application.generated.unity.maroonutilities.exe",
       "launch_type": "url",
       "url": "steam://launch/",
       "action_manifest_path": "C:\\Users\\sandr\\Documents\\MaroonUtilities\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
-          "name": "gearUtilities [Testing]"
+          "name": "MaroonUtilities [Testing]"
         }
       }
     }
