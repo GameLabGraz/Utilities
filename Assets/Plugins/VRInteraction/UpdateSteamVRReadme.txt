@@ -34,14 +34,9 @@ File: SteamVR\InteractionSystem\Core\Scripts\FallbackCameraController.cs
 File: SteamVR\InteractionSystem\Core\Scripts\HoverButton.cs
 	  Change all everything from 'private' to 'protected'
 	  
-	 
-NOT SURE: 
-File: SteamVR\InteractionSystem\Samples\Scripts\ButtonEffect.cs
-	  Add the following function:
-	    public void OnButtonPressed(Hand fromHand)
-        {
-            ColorSelf(Color.magenta);
-        }
-
+File: SteamVR\InteractionSystem\Core\Scripts\Player.cs
+	  Change all everything from 'private' to 'protected'
+	  Make the following methods 'virtual':
+		- Awake()
 	  
 	  

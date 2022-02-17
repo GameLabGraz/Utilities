@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Plugins/VRInteraction/Examples/VRExample.unity
     guid: 18ac02a3710b2f84aaefdd122a651f3c
-  m_configObjects: {}
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 7f74b82d47ba0144dab71a281f94d367,
+      type: 2}
+    Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: d2c4f9937c912d7408fa609bc9f5132b,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: f5468244b9f3b3540b1b3f39a2505212,
+      type: 2}
