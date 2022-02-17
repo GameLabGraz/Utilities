@@ -22,7 +22,8 @@ namespace GameLabGraz.VRInteraction
         private Vector3 _position = Vector3.zero;
 
         protected void Awake() {
-            _position = transform.position;        
+            _position = transform.position;  
+            base.Awake();
         }
 
         // Start is called before the first frame update
@@ -40,9 +41,9 @@ namespace GameLabGraz.VRInteraction
                 if (showController) hand.ShowController(true);
                 else hand.HideController(true);
                 
-                hand.SetSkeletonRangeOfMotion(animateWithController? 
-                    Valve.VR.EVRSkeletalMotionRange.WithController :
-                    Valve.VR.EVRSkeletalMotionRange.WithoutController);
+                // hand.SetSkeletonRangeOfMotion(animateWithController? 
+                //     Valve.VR.EVRSkeletalMotionRange.WithController :
+                //     Valve.VR.EVRSkeletalMotionRange.WithoutController);
             }
 
             var activeRig = GetActiveRig();

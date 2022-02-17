@@ -46,7 +46,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		// Singleton instance of the Player. Only one can exist at a time.
 		//-------------------------------------------------
-		private static Player _instance;
+		protected static Player _instance;
 		public static Player instance
 		{
 			get
@@ -250,7 +250,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		private void Awake()
+		protected virtual void Awake()
 		{
 			if ( trackingOriginTransform == null )
 			{
@@ -271,7 +271,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		private IEnumerator Start()
+		protected IEnumerator Start()
 		{
 			_instance = this;
 
@@ -404,7 +404,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		private void ActivateRig( GameObject rig )
+		protected void ActivateRig( GameObject rig )
 		{
 			rigSteamVR.SetActive( rig == rigSteamVR );
 			rig2DFallback.SetActive( rig == rig2DFallback );
