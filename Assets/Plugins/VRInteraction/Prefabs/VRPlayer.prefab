@@ -1546,7 +1546,7 @@ MonoBehaviour:
   allowSnapTurns: 1
   forcePosition: 1
   showController: 1
-  animateWithController: 1
+  animateWithController: 0
 --- !u!1 &8372810542115272488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,7 +1966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8372810542115084304
 Transform:
   m_ObjectHideFlags: 0
@@ -1998,9 +1998,9 @@ MonoBehaviour:
   flashColor: {r: 1, g: 0.9170069, b: 0.453, a: 0.709}
   textHintPrefab: {fileID: 140952, guid: 5fa42bb9e52706a42b8a1eaf0b54326a, type: 3}
   hapticFlash:
-    actionPath: /actions/default/out/Haptic
-    needsReinit: 0
-  autoSetWithControllerRangeOfMotion: 1
+    actionPath: 
+    needsReinit: 1
+  autoSetWithControllerRangeOfMotion: 0
   debugHints: 0
 --- !u!1 &8372810542115330608
 GameObject:
@@ -2099,7 +2099,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8372810542115112616
 Transform:
   m_ObjectHideFlags: 0
@@ -2131,9 +2131,9 @@ MonoBehaviour:
   flashColor: {r: 1, g: 0.9170069, b: 0.453, a: 0.709}
   textHintPrefab: {fileID: 140952, guid: 5fa42bb9e52706a42b8a1eaf0b54326a, type: 3}
   hapticFlash:
-    actionPath: /actions/default/out/Haptic
-    needsReinit: 0
-  autoSetWithControllerRangeOfMotion: 1
+    actionPath: 
+    needsReinit: 1
+  autoSetWithControllerRangeOfMotion: 0
   debugHints: 0
 --- !u!1 &8372810542115349720
 GameObject:

@@ -173,7 +173,7 @@ namespace GameLabGraz.VRInteraction
             return interactable;
         }
         
-        protected void Snap(GameObject newSnappedObject)
+        public void Snap(GameObject newSnappedObject)
         {
             var interactable = GetInteractable(newSnappedObject);
             if (!interactable || (snappedObject && snappedObject != interactable)) return;

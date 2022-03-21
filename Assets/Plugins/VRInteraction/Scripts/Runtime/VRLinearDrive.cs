@@ -129,8 +129,6 @@ namespace GameLabGraz.VRInteraction
 				var endPos = endPosition.position;
 				transform.position = Vector3.Lerp(startPos, endPos, linearMapping.value);
 			}
-			
-			
 		}
 	}
 }

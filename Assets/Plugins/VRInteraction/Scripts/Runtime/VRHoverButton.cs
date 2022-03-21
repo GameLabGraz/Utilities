@@ -17,6 +17,8 @@ namespace GameLabGraz.VRInteraction
         public bool stayPressed = true;
         public Vector3 localPressedDistance = new Vector3(0, -0.5f, 0);
 
+        public bool initialState = false;
+
         [Tooltip("UnityEvent(bool): When the button is pressed down. True when stays pressed, false otherwise.")]
         public ValueChangeEventBool OnButtonPressed;
         [Tooltip("UnityEvent(void): When the button is pressed down and is in its 'pressed' state.")]
@@ -35,6 +37,8 @@ namespace GameLabGraz.VRInteraction
             base.Start();
             _notPressedPosition = startPosition;
             _pressedPosition = startPosition + localPressedDistance;
+            
+            ForceButtonState(initialState);
         }
 
         protected new void HandHoverUpdate(Hand hand)
