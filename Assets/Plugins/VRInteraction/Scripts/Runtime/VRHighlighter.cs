@@ -6,6 +6,7 @@ namespace GameLabGraz.VRInteraction
 {
     public class VRHighlighter : MonoBehaviour
     {
+        public bool _showDebugMessages = false;
         public Color highlightColor = Color.cyan;
         public Color pressedColor = Color.gray;
         public Color defaultColor = Color.white;
@@ -37,7 +38,7 @@ namespace GameLabGraz.VRInteraction
                 var hoverButton = GetComponent<HoverButton>();
                 if (hoverButton)
                 {
-                    _defaultCol = default;
+                    _defaultCol = defaultColor;
                     hoverButton.onButtonDown.AddListener(OnButtonDown);
                     hoverButton.onButtonUp.AddListener(OnButtonUp);
                 }
@@ -51,11 +52,13 @@ namespace GameLabGraz.VRInteraction
                 //Debug.Log("We have a highlighted obj");
                 snapZone.onStartHighlight.AddListener(sz =>
                 {
-                    Debug.Log("Highlighter: onStartHighlight");
+                    if(_showDebugMessages)
+                        Debug.Log("Highlighter: onStartHighlight");
                     sz.HighlightedObject?.SetActive(true);
                 });                    
                 snapZone.onEndHighlight.AddListener(sz => {
-                    Debug.Log("Highlighter: onEndHighlight");
+                    if(_showDebugMessages)
+                        Debug.Log("Highlighter: onEndHighlight");
                     sz.HighlightedObject?.SetActive(false);
                 });
             }
@@ -136,7 +139,6 @@ namespace GameLabGraz.VRInteraction
                         mat.color = newColor;
                 }
             }
-            
         }
         
         // Only used for snap zone -> we never need to change the obj color back
@@ -164,8 +166,6 @@ namespace GameLabGraz.VRInteraction
                 var oldCol = mat.color;
                 mat.color = new Color(oldCol.r * highlightColor.r, oldCol.g * highlightColor.g,
                     oldCol.b * highlightColor.b, highlightColor.a);
-                
-                Debug.Log("new Col: " + mat.color);
             }
         }
     }

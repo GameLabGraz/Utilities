@@ -6,6 +6,7 @@
 	"author": "Game Lab Graz",
 	"description": "This package offers some helpful features for Virtual Reality development.",
 	"dependencies": {
-		"com.unity.textmeshpro": "1.4.1"
+		"com.unity.textmeshpro": "1.4.1",
+		"com.gear.languagemanager": "1.0.2"
 	}
 }

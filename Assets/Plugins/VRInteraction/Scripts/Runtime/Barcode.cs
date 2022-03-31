@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GEAR.Localization;
 using UnityEngine;
 
 namespace GameLabGraz.VRInteraction
@@ -18,7 +19,9 @@ namespace GameLabGraz.VRInteraction
     
     public class Barcode : MonoBehaviour
     {
-        public string barcodeContent = "display name";
+        public bool contentIsLocalizationKey = false;
+        [SerializeField]
+        protected string barcodeContent = "display name";
 
         [Header("Color Barcode")] 
         public bool allowColorChange = true;
@@ -26,6 +29,23 @@ namespace GameLabGraz.VRInteraction
         public int displayColorRendererIndex = 0;
         
         public ValueChangeEventColor onColorChanged;
+
+        private string _content = "";
+
+        public void Start()
+        {
+            _content = barcodeContent;
+            if (contentIsLocalizationKey && LanguageManager.Instance)
+            {
+                _content = LanguageManager.Instance.GetString(barcodeContent);
+                LanguageManager.Instance.OnLanguageChanged.AddListener(language => _content = LanguageManager.Instance.GetString(barcodeContent));
+            }
+        }
+
+        public string GetContentString()
+        {
+            return _content;
+        }
         
         public void ChangeColor(Color newColor)
         {

@@ -141,6 +141,11 @@ namespace GameLabGraz.VRInteraction
         
         protected override void UpdateLinearMapping()
         {
+            if (!linearMapping)
+            {
+                linearMapping = GetComponent<LinearMapping>();
+            }
+            
             if ( limited )
             {
                 // Map it to a [0, 1] value
@@ -191,7 +196,6 @@ namespace GameLabGraz.VRInteraction
         
         public void ForceToValue(float value)
         {
-            Debug.Log("before: " + _currentValue + " - " + linearMapping.value);
             _currentValue = Mathf.Clamp(value, minimum, maximum);
             linearMapping.value = (_currentValue - minimum) / _valueRange;
 

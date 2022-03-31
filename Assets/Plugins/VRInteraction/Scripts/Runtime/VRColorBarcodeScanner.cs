@@ -42,7 +42,7 @@ namespace GameLabGraz.VRInteraction
 
         protected void OnNewBarcodeScanned(Barcode newScannedObject)
         {
-            barcodeText.text = newScannedObject.barcodeContent;
+            barcodeText.text = newScannedObject.GetContentString();
             colorPicker.ForceToColor(newScannedObject.GetCurrentColor());
         }
 

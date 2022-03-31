@@ -177,9 +177,6 @@ namespace GameLabGraz.VRInteraction
         {
             var interactable = GetInteractable(newSnappedObject);
             if (!interactable || (snappedObject && snappedObject != interactable)) return;
-
-            Debug.Log("Snap");
-            Debug.Log("Snap with context", this);
             
             if(debugMessages)
                 Debug.Log("VRSnapDropZone::Snap object '" + interactable.gameObject.name + "'", this);
