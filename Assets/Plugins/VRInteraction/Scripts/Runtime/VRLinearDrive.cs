@@ -9,7 +9,7 @@ namespace GameLabGraz.VRInteraction
 	{
 		public bool _showDebugMessages = false;
 		
-		[Header("Maroon VR Specific")] public bool useSteps = true;
+		[Header("VR Interaction Plugin")] public bool useSteps = true;
 		[Range(0f, 10f)] public float stepSize = 1f;
 		public bool useAsInteger = false;
 

@@ -194,7 +194,7 @@ namespace Valve.VR
         /// <param name="inputSource">The device you would like to execute the haptic action. Any if the action is not device specific.</param>
         public void Execute(float secondsFromNow, float durationSeconds, float frequency, float amplitude)
         {
-            if (SteamVR_Input.isStartupFrame || OpenVR.Input == null)
+            if (SteamVR_Input.isStartupFrame)
                 return;
 
             timeLastExecuted = Time.realtimeSinceStartup;

@@ -64,10 +64,14 @@ namespace GameLabGraz.VRInteraction
             }
             
             var hoverEvents = GetComponent<InteractableHoverEvents>();
+            var vrInteractable = GetComponent<VRInteractable>();
             if(hoverEvents){
-                hoverEvents.onHandHoverBegin.AddListener(() => { 
-                    ColorSelf(highlightColor);
-                    _isHovering = true;
+                hoverEvents.onHandHoverBegin.AddListener(() => {
+                    if (!vrInteractable || vrInteractable.allowHandSwitching || !vrInteractable.IsAttachedToHand())
+                    {
+                        ColorSelf(highlightColor);
+                        _isHovering = true;
+                    }
                 });
                 hoverEvents.onHandHoverEnd.AddListener(() =>
                 {

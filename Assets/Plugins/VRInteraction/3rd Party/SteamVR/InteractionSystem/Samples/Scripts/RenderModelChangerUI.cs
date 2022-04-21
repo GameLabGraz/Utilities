@@ -21,12 +21,10 @@ namespace Valve.VR.InteractionSystem.Sample
 
         protected override void OnButtonClick()
         {
-            Debug.Log("OnButtonClick");
             base.OnButtonClick();
 
             if (ui != null)
             {
-                Debug.Log("SetRender Model");
                 ui.SetRenderModel(this);
             }
         }
