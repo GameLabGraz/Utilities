@@ -7,7 +7,9 @@ namespace GameLabGraz.VRInteraction
 {
 	public class VRLinearDrive : LinearDrive
 	{
-		[Header("Maroon VR Specific")] public bool useSteps = true;
+		public bool _showDebugMessages = false;
+		
+		[Header("VR Interaction Plugin")] public bool useSteps = true;
 		[Range(0f, 10f)] public float stepSize = 1f;
 		public bool useAsInteger = false;
 
@@ -96,6 +98,9 @@ namespace GameLabGraz.VRInteraction
 
 		public void ForceToValue(float newValue)
 		{
+			if(_showDebugMessages)
+				Debug.Log("VRInteraction:VRLinearDrive: Force to Value: " + newValue);
+			
 			prevMapping = linearMapping.value;
 			_currentValue = Mathf.Clamp(newValue, minimum, maximum);
 			if (useAsInteger)
@@ -111,9 +116,8 @@ namespace GameLabGraz.VRInteraction
 				
 				if (useAsInteger)
 					_currentValue = Mathf.RoundToInt(_currentValue);
-
-				linearMapping.value = (_currentValue - minimum) / _valueRange;
 			}
+			linearMapping.value = (_currentValue - minimum) / _valueRange;
 
 			onValueChanged.Invoke(_currentValue);
 			if(useAsInteger)
@@ -129,8 +133,6 @@ namespace GameLabGraz.VRInteraction
 				var endPos = endPosition.position;
 				transform.position = Vector3.Lerp(startPos, endPos, linearMapping.value);
 			}
-			
-			
 		}
 	}
 }

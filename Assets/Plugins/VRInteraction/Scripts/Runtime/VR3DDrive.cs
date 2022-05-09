@@ -8,6 +8,8 @@ namespace GameLabGraz.VRInteraction
     [RequireComponent( typeof( Interactable ) )]
     public class VR3DDrive : MonoBehaviour
     {
+        public bool _showDebugMessages = false;
+        
         public Transform startPosition;
         public Transform endXPosition;
         public Transform endYPosition;
@@ -23,9 +25,10 @@ namespace GameLabGraz.VRInteraction
         
         [Tooltip( "If true, the drive will stay manipulating as long as the button is held down, if false, it will stop if the controller moves out of the collider" )]
         public bool hoverLock = false;
-        
+        [SerializeField]
         protected Hand.AttachmentFlags _attachmentFlags = Hand.AttachmentFlags.DetachFromOtherHand;
 
+        public bool init = true;
         public Vector3 initialValue = Vector3.zero;
 
         public ValueChangeEventVector3 onValueChanged;
@@ -42,7 +45,7 @@ namespace GameLabGraz.VRInteraction
         protected Interactable _interactable;
         protected Hand _handHoverLocked;
         protected GrabTypes _grabbedWithType;
-        
+
         protected virtual void Awake()
         {
             MappingChangeSamples = new Vector3[numMappingChangeSamples];
@@ -52,9 +55,13 @@ namespace GameLabGraz.VRInteraction
         protected virtual void Start()
         {
             InitialMappingOffset = CurrentMappedValue;
-            if (repositionGameObject)
+            if (repositionGameObject && init)
             {
                 ForceToValue(initialValue);
+            }
+            else
+            {
+                CurrentMappedValue = CalculateMapping(transform);
             }
         }
 
@@ -77,6 +84,12 @@ namespace GameLabGraz.VRInteraction
                 _grabbedWithType = startingGrabType;
                 var handTransform = hand.transform;
                 InitialMappingOffset = CurrentMappedValue - CalculateMapping( handTransform );
+                if (_showDebugMessages)
+                {
+                    Debug.Log("VRInteraction::VR3DDrive: Attached to Hand: CurrentMapping" + CurrentMappedValue);
+                    Debug.Log("VRInteraction::VR3DDrive: Attached to Hand: " + InitialMappingOffset);
+                }
+
                 sampleCount = 0;
                 MappingChangeRate = Vector3.zero;
 
@@ -134,7 +147,8 @@ namespace GameLabGraz.VRInteraction
         
         protected void UpdateMapping(Transform updateTransform)
         {
-            Debug.Log("Update Mapping Transform: " + updateTransform.position);
+            if (_showDebugMessages)
+                Debug.Log("VRInteraction::VR3DDrive: Update Mapping Transform: " + updateTransform.position);
             
             PrevMappedValue = CurrentMappedValue;
             
@@ -143,7 +157,8 @@ namespace GameLabGraz.VRInteraction
             CurrentMappedValue.y = Mathf.Clamp01(CurrentMappedValue.y);
             CurrentMappedValue.z = Mathf.Clamp01(CurrentMappedValue.z);
             
-            Debug.Log("Update Mapping: " + CurrentMappedValue);
+            if(_showDebugMessages)
+                Debug.Log("VRInteraction::VR3DDrive: Update Mapping: " + CurrentMappedValue);
 
             MappingChangeSamples[sampleCount % MappingChangeSamples.Length] = ( 1.0f / Time.deltaTime ) * ( CurrentMappedValue - PrevMappedValue );
             sampleCount++;
@@ -179,8 +194,9 @@ namespace GameLabGraz.VRInteraction
 
             if (!fixZPosition)
                 value.z = CalculateLinearMapping(updateTransform, endZPosition);
-            
 
+            if(_showDebugMessages)
+                Debug.Log("VRInteraction::VR3DDrive: Calc_Mapping: " + value);
             return value;
         }
 
@@ -209,7 +225,8 @@ namespace GameLabGraz.VRInteraction
                     pos += CurrentMappedValue.z * dirZ;
                 }
                 
-                Debug.Log("Reposition Object: " + CurrentMappedValue);
+                if(_showDebugMessages)
+                    Debug.Log("VRInteraction::VR3DDrive: Reposition Object: " + CurrentMappedValue);
                 
                 transform.position = pos;
             }

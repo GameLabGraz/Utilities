@@ -1,4 +1,5 @@
 ﻿using System;
+using PrivateAccess;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
@@ -6,7 +7,7 @@ namespace GameLabGraz.VRInteraction
 {
     public class VRCircularDrive : CircularDrive
     {
-        [Header("Maroon VR Specific")] 
+        [Header("VR Interaction Plugin")] 
         public bool useStepsForValues = true;
         public bool useStepsForRotation = true;
         public bool useStepsAfterGrabEnded = true;
@@ -29,8 +30,36 @@ namespace GameLabGraz.VRInteraction
         protected float _valueRange;
         
         protected Hand.AttachmentFlags attachmentFlags = Hand.AttachmentFlags.DetachFromOtherHand;
-
-        protected override void Start()
+        
+        //#TODO Update SteamVR: remove code start (member variables are protected)
+        protected Vector3 WorldPlaneNormal
+        {
+            get => this.GetBaseFieldValue<Vector3>("worldPlaneNormal");
+            set => this.SetBaseFieldValue("worldPlaneNormal", value);
+        }
+        protected Vector3 LocalPlaneNormal
+        {
+            get => this.GetBaseFieldValue<Vector3>("localPlaneNormal");
+            set => this.SetBaseFieldValue("localPlaneNormal", value);
+        }
+        protected Quaternion start
+        {
+            get => this.GetBaseFieldValue<Quaternion>("start");
+            set => this.SetBaseFieldValue("start", value);
+        }
+        protected GrabTypes grabbedWithType
+        {
+            get => this.GetBaseFieldValue<GrabTypes>("grabbedWithType");
+            set => this.SetBaseFieldValue("grabbedWithType", value);
+        }
+        protected Interactable interactable
+        {
+            get => this.GetBaseFieldValue<Interactable>("interactable");
+            set => this.SetBaseFieldValue("interactable", value);
+        }
+        //#TODO Update SteamVR: remove code end (member variables are protected)
+                
+        protected void Start()
         {
             if ( childCollider == null )
                 childCollider = GetComponentInChildren<Collider>();
@@ -41,11 +70,11 @@ namespace GameLabGraz.VRInteraction
             if ( linearMapping == null )
                 linearMapping = gameObject.AddComponent<LinearMapping>();
 
-            worldPlaneNormal = new Vector3(0.0f, 0.0f, 0.0f) {[(int) axisOfRotation] = 1.0f};
-            localPlaneNormal = worldPlaneNormal;
+            WorldPlaneNormal = new Vector3(0.0f, 0.0f, 0.0f) {[(int) axisOfRotation] = 1.0f};
+            LocalPlaneNormal = WorldPlaneNormal;
 
             if ( transform.parent )
-                worldPlaneNormal = transform.parent.localToWorldMatrix.MultiplyVector( worldPlaneNormal ).normalized;
+                WorldPlaneNormal = transform.parent.localToWorldMatrix.MultiplyVector( WorldPlaneNormal ).normalized;
 
             if ( limited )
             {
@@ -59,7 +88,7 @@ namespace GameLabGraz.VRInteraction
             }
             else
             {
-                start = Quaternion.AngleAxis( transform.localEulerAngles[(int)axisOfRotation], localPlaneNormal );
+                start = Quaternion.AngleAxis( transform.localEulerAngles[(int)axisOfRotation], LocalPlaneNormal );
                 outAngle = 0.0f;
             }
 
@@ -72,7 +101,7 @@ namespace GameLabGraz.VRInteraction
             _valueRange = maximum - minimum;
             ForceToValue(initialValue);
         }
-        protected override void UpdateGameObject()
+        protected void UpdateGameObject()
         {
             if ( rotateGameObject )
             {
@@ -82,23 +111,25 @@ namespace GameLabGraz.VRInteraction
                     realAngle = minAngle + (maxAngle - minAngle) * linearMapping.value;
                 }
 
-                transform.localRotation = start * Quaternion.AngleAxis( realAngle, localPlaneNormal );
+                transform.localRotation = start * Quaternion.AngleAxis( realAngle, LocalPlaneNormal );
             }
         }
         
         protected bool lastGrabEnded = false;
         
-        protected override void HandHoverUpdate( Hand hand )
+        protected void HandHoverUpdate( Hand hand )
         {
             GrabTypes startingGrabType = hand.GetGrabStarting();
             bool isGrabEnding = hand.IsGrabbingWithType(grabbedWithType) == false;
             
-            base.HandHoverUpdate(hand);
+            //#TODO Update SteamVR: call HandHoverUpdate once it is protected
+            this.CallBaseMethod("HandHoverUpdate", new object[]{hand});
+            // base.HandHoverUpdate(hand);
             
             if (lastGrabEnded != isGrabEnding && isGrabEnding && useStepsAfterGrabEnded && rotateGameObject)
             {
                 var realAngle = minAngle + (maxAngle - minAngle) * linearMapping.value;
-                transform.localRotation = start * Quaternion.AngleAxis( realAngle, localPlaneNormal );
+                transform.localRotation = start * Quaternion.AngleAxis( realAngle, LocalPlaneNormal );
             }
             lastGrabEnded = isGrabEnding;
             
@@ -110,13 +141,15 @@ namespace GameLabGraz.VRInteraction
         
         protected virtual void HandAttachedUpdate(Hand hand)
         {
-            ComputeAngle(hand);
+            //#TODO Update SteamVR: call ComputeAngle once it is protected
+            this.CallBaseMethod("ComputeAngle", new object[]{hand});
+            // ComputeAngle(hand)
             UpdateAll();
-        
+            
             if (hand.IsGrabEnding(gameObject))
             {
                 hand.DetachObject(gameObject);
-
+            
                 // Debug.Log("hand Detached");
                 if(forceToInitialValueAfterGrabEnded){
                     if ( limited )
@@ -131,16 +164,20 @@ namespace GameLabGraz.VRInteraction
                     {
                         outAngle = 0.0f;
                     }
-
+            
                     Debug.Log("ForceToInitialValue");
                     ForceToValue(initialValue);
                 }
             }
         }
-  
         
-        protected override void UpdateLinearMapping()
+        protected void UpdateLinearMapping()
         {
+            if (!linearMapping)
+            {
+                linearMapping = GetComponent<LinearMapping>();
+            }
+            
             if ( limited )
             {
                 // Map it to a [0, 1] value
@@ -180,7 +217,9 @@ namespace GameLabGraz.VRInteraction
             if(useAsBool)
                 onValueChangedBool.Invoke(_currentValueBool);
 		
-            UpdateDebugText();
+            //#TODO Update SteamVR: call UpdateDebugText once it is protected
+            this.CallBaseMethod("UpdateDebugText", new object[0]);
+            // UpdateDebugText();
         }
 
         public void ForceToAngle(float angle)
@@ -191,7 +230,6 @@ namespace GameLabGraz.VRInteraction
         
         public void ForceToValue(float value)
         {
-            Debug.Log("before: " + _currentValue + " - " + linearMapping.value);
             _currentValue = Mathf.Clamp(value, minimum, maximum);
             linearMapping.value = (_currentValue - minimum) / _valueRange;
 
@@ -205,6 +243,17 @@ namespace GameLabGraz.VRInteraction
                 onValueChangedBool.Invoke(_currentValueBool);
             
             UpdateAll();
+        }
+        
+        //#TODO Update SteamVR: remove this once all functions are protected/virtual
+        protected void UpdateAll()
+        {
+            UpdateLinearMapping();
+            UpdateGameObject();
+            
+            //#TODO Update SteamVR: call UpdateDebugText once it is protected
+            this.CallBaseMethod("UpdateDebugText", new object[0]);
+            // UpdateDebugText();
         }
     }
 }
