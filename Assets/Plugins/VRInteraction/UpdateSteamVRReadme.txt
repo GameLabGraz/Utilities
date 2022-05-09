@@ -26,6 +26,7 @@ File: SteamVR\InteractionSystem\Core\Scripts\CircularDrive.cs
   
 
 File: SteamVR\InteractionSystem\Core\Scripts\HoverButton.cs
+<<<<<<< HEAD
 	- Start():
 		remove the callBaseMethod call in VRHoverButton.cs once this is protected
 	- InvokeEvents(bool, bool):
@@ -35,3 +36,13 @@ File: SteamVR\InteractionSystem\Core\Scripts\HoverButton.cs
 			* GetFieldValue function
 			* SetFieldValue function
 			* replace the setters/getters with the real variables
+=======
+	  Change all everything from 'private' to 'protected'
+	  
+File: SteamVR\InteractionSystem\Core\Scripts\Player.cs
+	  Change all everything from 'private' to 'protected'
+	  Make the following methods 'virtual':
+		- Awake()
+	  
+	  
+>>>>>>> 410dbef04e20f70e4fbe55b24530aa9ae1db5485

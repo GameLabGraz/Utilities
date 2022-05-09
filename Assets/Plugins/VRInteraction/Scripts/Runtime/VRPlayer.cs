@@ -19,7 +19,7 @@ namespace GameLabGraz.VRInteraction
         public bool animateWithController = false;
 
         protected Vector3 _position = Vector3.zero;
-        
+
         // Start is called before the first frame update
         protected void Start()
         {
