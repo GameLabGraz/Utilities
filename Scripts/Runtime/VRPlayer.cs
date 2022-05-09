@@ -6,10 +6,9 @@ namespace GameLabGraz.VRInteraction
 {
     public class VRPlayer : Player
     {
+        [Header("VR Interaction Plugin")]
         [SerializeField]
         protected GameObject snapTurnGameObject;
-
-        [Header("Maroon VR Specific")] 
         [Tooltip("The user can turn the player via the controllers.")]
         public bool allowSnapTurns = true;
         [Tooltip("Forces the transform to stay at the start coordinates.")]
@@ -19,16 +18,13 @@ namespace GameLabGraz.VRInteraction
         public bool showController = true;
         public bool animateWithController = false;
 
-        private Vector3 _position = Vector3.zero;
-
-        protected void Awake() {
-            _position = transform.position;  
-            base.Awake();
-        }
+        protected Vector3 _position = Vector3.zero;
 
         // Start is called before the first frame update
         protected void Start()
         {
+            _position = transform.position;  
+            
             if (snapTurnGameObject)
             {
                 snapTurnGameObject.SetActive(allowSnapTurns);

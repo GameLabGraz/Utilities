@@ -75,38 +75,38 @@ namespace Valve.VR.InteractionSystem
 		[Tooltip( "The output angle value of the drive in degrees, unlimited will increase or decrease without bound, take the 360 modulus to find number of rotations" )]
 		public float outAngle;
 
-		protected Quaternion start;
+		private Quaternion start;
 
-		protected Vector3 worldPlaneNormal = new Vector3( 1.0f, 0.0f, 0.0f );
-		protected Vector3 localPlaneNormal = new Vector3( 1.0f, 0.0f, 0.0f );
+		private Vector3 worldPlaneNormal = new Vector3( 1.0f, 0.0f, 0.0f );
+		private Vector3 localPlaneNormal = new Vector3( 1.0f, 0.0f, 0.0f );
 
-		protected Vector3 lastHandProjected;
+		private Vector3 lastHandProjected;
 
-		protected Color red = new Color( 1.0f, 0.0f, 0.0f );
-		protected Color green = new Color( 0.0f, 1.0f, 0.0f );
+		private Color red = new Color( 1.0f, 0.0f, 0.0f );
+		private Color green = new Color( 0.0f, 1.0f, 0.0f );
 
-		protected GameObject[] dbgHandObjects;
-		protected GameObject[] dbgProjObjects;
-		protected GameObject dbgObjectsParent;
-		protected int dbgObjectCount = 0;
-		protected int dbgObjectIndex = 0;
+		private GameObject[] dbgHandObjects;
+		private GameObject[] dbgProjObjects;
+		private GameObject dbgObjectsParent;
+		private int dbgObjectCount = 0;
+		private int dbgObjectIndex = 0;
 
-		protected bool driving = false;
+		private bool driving = false;
 
 		// If the drive is limited as is at min/max, angles greater than this are ignored
-		protected float minMaxAngularThreshold = 1.0f;
+		private float minMaxAngularThreshold = 1.0f;
 
-		protected bool frozen = false;
-		protected float frozenAngle = 0.0f;
-		protected Vector3 frozenHandWorldPos = new Vector3( 0.0f, 0.0f, 0.0f );
-		protected Vector2 frozenSqDistanceMinMaxThreshold = new Vector2( 0.0f, 0.0f );
+		private bool frozen = false;
+		private float frozenAngle = 0.0f;
+		private Vector3 frozenHandWorldPos = new Vector3( 0.0f, 0.0f, 0.0f );
+		private Vector2 frozenSqDistanceMinMaxThreshold = new Vector2( 0.0f, 0.0f );
 
-		protected Hand handHoverLocked = null;
+		private Hand handHoverLocked = null;
 
-        protected Interactable interactable;
+        private Interactable interactable;
 
 		//-------------------------------------------------
-		protected void Freeze( Hand hand )
+		private void Freeze( Hand hand )
 		{
 			frozen = true;
 			frozenAngle = outAngle;
@@ -117,19 +117,19 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		protected void UnFreeze()
+		private void UnFreeze()
 		{
 			frozen = false;
 			frozenHandWorldPos.Set( 0.0f, 0.0f, 0.0f );
 		}
 
-        protected void Awake()
+        private void Awake()
         {
             interactable = this.GetComponent<Interactable>();
         }
 
         //-------------------------------------------------
-        protected virtual void Start()
+        private void Start()
 		{
 			if ( childCollider == null )
 			{
@@ -195,7 +195,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		protected IEnumerator HapticPulses( Hand hand, float flMagnitude, int nCount )
+		private IEnumerator HapticPulses( Hand hand, float flMagnitude, int nCount )
 		{
 			if ( hand != null )
 			{
@@ -217,14 +217,14 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		protected void OnHandHoverBegin( Hand hand )
+		private void OnHandHoverBegin( Hand hand )
 		{
             hand.ShowGrabHint();
 		}
 
 
 		//-------------------------------------------------
-		protected void OnHandHoverEnd( Hand hand )
+		private void OnHandHoverEnd( Hand hand )
 		{
             hand.HideGrabHint();
 
@@ -238,9 +238,9 @@ namespace Valve.VR.InteractionSystem
 			handHoverLocked = null;
 		}
 
-        protected GrabTypes grabbedWithType;
+        private GrabTypes grabbedWithType;
 		//-------------------------------------------------
-		protected virtual void HandHoverUpdate( Hand hand )
+		private void HandHoverUpdate( Hand hand )
         {
             GrabTypes startingGrabType = hand.GetGrabStarting();
             bool isGrabEnding = hand.IsGrabbingWithType(grabbedWithType) == false;
@@ -286,7 +286,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		protected Vector3 ComputeToTransformProjected( Transform xForm )
+		private Vector3 ComputeToTransformProjected( Transform xForm )
 		{
 			Vector3 toTransform = ( xForm.position - transform.position ).normalized;
 			Vector3 toTransformProjected = new Vector3( 0.0f, 0.0f, 0.0f );
@@ -312,7 +312,7 @@ namespace Valve.VR.InteractionSystem
 
 
 		//-------------------------------------------------
-		protected void DrawDebugPath( Transform xForm, Vector3 toTransformProjected )
+		private void DrawDebugPath( Transform xForm, Vector3 toTransformProjected )
 		{
 			if ( dbgObjectCount == 0 )
 			{
@@ -388,7 +388,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		// Updates the LinearMapping value from the angle
 		//-------------------------------------------------
-		protected virtual void UpdateLinearMapping()
+		private void UpdateLinearMapping()
 		{
 			if ( limited )
 			{
@@ -409,7 +409,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		// Updates the LinearMapping value from the angle
 		//-------------------------------------------------
-		protected virtual void UpdateGameObject()
+		private void UpdateGameObject()
 		{
 			if ( rotateGameObject )
 			{
@@ -421,7 +421,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		// Updates the Debug TextMesh with the linear mapping value and the angle
 		//-------------------------------------------------
-		protected void UpdateDebugText()
+		private void UpdateDebugText()
 		{
 			if ( debugText )
 			{
@@ -433,7 +433,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		// Updates the Debug TextMesh with the linear mapping value and the angle
 		//-------------------------------------------------
-		protected void UpdateAll()
+		private void UpdateAll()
 		{
 			UpdateLinearMapping();
 			UpdateGameObject();
@@ -444,7 +444,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		// Computes the angle to rotate the game object based on the change in the transform
 		//-------------------------------------------------
-		protected void ComputeAngle( Hand hand )
+		private void ComputeAngle( Hand hand )
 		{
 			Vector3 toHandProjected = ComputeToTransformProjected( hand.hoverSphereTransform );
 

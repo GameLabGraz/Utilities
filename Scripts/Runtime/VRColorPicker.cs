@@ -6,6 +6,8 @@ namespace GameLabGraz.VRInteraction
 {
     public class VRColorPicker : MonoBehaviour
     {
+        public bool _showDebugMessages = false;
+        
         [SerializeField] protected VRCircularDrive ColorCircle;
         [SerializeField] protected VR3DDrive ColorRect;
 
@@ -22,6 +24,8 @@ namespace GameLabGraz.VRInteraction
         public ValueChangeEventColor onColorChanged;
         private static readonly int ColorAngle = Shader.PropertyToID("_ColorAngle");
 
+        private bool _init = false;
+
         // Start is called before the first frame update
         protected void Start()
         {
@@ -29,7 +33,17 @@ namespace GameLabGraz.VRInteraction
             ColorCircle.onValueChanged.AddListener(arg0 => OnColorCircleChanged());
             ColorRect.onValueChanged.AddListener(OnColorRectChanged);
 
-            ForceToColor(InitialColor);
+            // ForceToColor(InitialColor);
+        }
+
+        protected void Update()
+        {
+            if (!_init)
+            {
+                ForceToColor(InitialColor);
+                _init = true;
+            }
+            
         }
 
         protected void ChangeColor(Vector3 hsv, bool notify)
@@ -104,7 +118,8 @@ namespace GameLabGraz.VRInteraction
         public void ForceToColor(Color rgbColor)
         {
             CurrentHSV = RGBToHSV(rgbColor);
-            Debug.Log("Force to Color HSV: " + CurrentHSV);
+            if(_showDebugMessages)
+                Debug.Log("VRInteraction::VRColorPicker: Force to Color HSV: " + CurrentHSV);
 
             ColorCircle.ForceToAngle(360f - CurrentHSV.x);
             ColorRect.ForceToValue(new Vector3(CurrentHSV.y / 100f, 0f, 1f - CurrentHSV.z / 100f));

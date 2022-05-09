@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using PrivateAccess;
 using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR.InteractionSystem;
@@ -13,9 +15,11 @@ namespace GameLabGraz.VRInteraction
     
     public class VRHoverButton : HoverButton
     {
-        [Header("Maroon VR Specific")]
+        [Header("VR Interaction Plugin")]
         public bool stayPressed = true;
         public Vector3 localPressedDistance = new Vector3(0, -0.5f, 0);
+
+        public bool initialState;
 
         [Tooltip("UnityEvent(bool): When the button is pressed down. True when stays pressed, false otherwise.")]
         public ValueChangeEventBool OnButtonPressed;
@@ -24,33 +28,65 @@ namespace GameLabGraz.VRInteraction
         [Tooltip("UnityEvent(void): When the button is pressed down and is in its 'not pressed' state.")]
         public UnityEvent OnButtonOff;
         
-        private bool _isPressed = false;
-        private bool _lastEngaged = false;
-        private Vector3 _pressedPosition;
-        private Vector3 _notPressedPosition;
-        
-        // Start is called before the first frame update
-        protected new void Start()
+        protected bool _isPressed;
+        protected bool _lastEngaged;
+        protected Vector3 _pressedPosition;
+        protected Vector3 _notPressedPosition;
+
+        //#TODO Update SteamVR: remove code start (member variables are protected)
+        protected Vector3 StartPosition
         {
-            base.Start();
-            _notPressedPosition = startPosition;
-            _pressedPosition = startPosition + localPressedDistance;
+            get => this.GetBaseFieldValue<Vector3>("startPosition");
+            set => this.SetBaseFieldValue("startPosition", value);
+        }
+        protected Vector3 EndPosition
+        {
+            get => this.GetBaseFieldValue<Vector3>("endPosition");
+            set => this.SetBaseFieldValue("endPosition", value);
+        }
+        protected Vector3 HandEnteredPosition
+        {
+            get => this.GetBaseFieldValue<Vector3>("handEnteredPosition");
+            set => this.SetBaseFieldValue("handEnteredPosition", value);
+        }
+        protected bool Hovering
+        {
+            get => this.GetBaseFieldValue<bool>("hovering");
+            set => this.SetBaseFieldValue("hovering", value);
+        }
+        protected Hand LastHoveredHand
+        {
+            get => this.GetBaseFieldValue<Hand>("lastHoveredHand");
+            set => this.SetBaseFieldValue("lastHoveredHand", value);
+        }
+        //#TODO Update SteamVR: remove code end (member variables are protected)
+        
+        protected void Start()
+        {
+            //#TODO Update SteamVR: call base.Start() once it is protected
+            this.CallBaseMethod("Start", new object[0]);
+            // base.Start();
+            
+            _notPressedPosition = StartPosition;
+            _pressedPosition = _notPressedPosition + localPressedDistance;
+            
+            ForceButtonState(initialState);
         }
 
-        protected new void HandHoverUpdate(Hand hand)
+        protected void HandHoverUpdate(Hand hand)
         {
-            hovering = true;
-            lastHoveredHand = hand;
+            Hovering = true;
+            LastHoveredHand = hand;
 
             var wasEngaged = engaged;
 
-            var currentDistance = Vector3.Distance(movingPart.parent.InverseTransformPoint(hand.transform.position), endPosition);
-            var enteredDistance = Vector3.Distance(handEnteredPosition, endPosition);
+            var currentDistance = Vector3.Distance(movingPart.parent.InverseTransformPoint(hand.transform.position), EndPosition);
+            var enteredDistance = Vector3.Distance(HandEnteredPosition, EndPosition);
             
             if (currentDistance > enteredDistance)
             {
                 enteredDistance = currentDistance;
-                handEnteredPosition = movingPart.parent.InverseTransformPoint(hand.transform.position);
+                HandEnteredPosition = movingPart.parent.InverseTransformPoint(hand.transform.position);
             }
 
             var distanceDifference = enteredDistance - currentDistance;
@@ -64,7 +100,7 @@ namespace GameLabGraz.VRInteraction
             if (stayPressed && _lastEngaged != engaged && engaged)
             {
                 _isPressed = !_isPressed;
-                startPosition = _isPressed ? _pressedPosition : _notPressedPosition;
+                StartPosition = _isPressed ? _pressedPosition : _notPressedPosition;
 
                 OnButtonPressed.Invoke(_isPressed);
                 if(_isPressed) OnButtonOn.Invoke();
@@ -72,8 +108,11 @@ namespace GameLabGraz.VRInteraction
             }
             _lastEngaged = engaged;
 
-            movingPart.localPosition = Vector3.Lerp(startPosition, endPosition, lerp);
-            InvokeEvents(wasEngaged, engaged);
+            movingPart.localPosition = Vector3.Lerp(StartPosition, EndPosition, lerp);
+            
+            //#TODO Update SteamVR: call InvokeEvents once it is protected
+            this.CallBaseMethod("InvokeEvents", new object[]{wasEngaged, engaged});
+            // InvokeEvents(wasEngaged, engaged);
         }
 
         // this function is only useful when stayPressed is true
@@ -83,23 +122,25 @@ namespace GameLabGraz.VRInteraction
             if (isOn)
             {
                 _isPressed = true;
-                startPosition = _pressedPosition;
+                StartPosition = _pressedPosition;
                 OnButtonPressed.Invoke(true);
                 OnButtonOn.Invoke();
             }
             else
             {
                 _isPressed = false;
-                startPosition = _notPressedPosition;
+                StartPosition = _notPressedPosition;
                 OnButtonPressed.Invoke(false);
                 OnButtonOff.Invoke();
             }
 
             var wasEngaged = engaged;
             _lastEngaged = engaged = false;
-            movingPart.localPosition = startPosition;
-            InvokeEvents(wasEngaged, engaged);
+            movingPart.localPosition = StartPosition;
+            
+            //#TODO Update SteamVR: call InvokeEvents once it is protected
+            this.CallBaseMethod("InvokeEvents", new object[]{wasEngaged, engaged});
+            // InvokeEvents(wasEngaged, engaged);
         }
-        
     }
 }

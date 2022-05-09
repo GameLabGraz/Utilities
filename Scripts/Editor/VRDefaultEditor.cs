@@ -94,4 +94,24 @@ namespace GameLabGraz.VRInteraction.Editor
     public class VRColorBarcodeScannerEditor : VRDefaultEditor
     {
     }
+                
+    [CustomEditor(typeof(BarcodeScannerController))]
+    public class BarcodeScannerControllerEditor : VRDefaultEditor
+    {
+    }
+    
+    [CustomEditor(typeof(VRThrowable))]
+    public class VRThrowableEditor : VRDefaultEditor
+    {
+    }
+    
+    [CustomEditor(typeof(VRInteractable))]
+    public class VRInteractableEditor : VRDefaultEditor
+    {
+    }
+    
+    [CustomEditor(typeof(VRRotatable))]
+    public class VRRotatableEditor : VRDefaultEditor
+    {
+    }
 }

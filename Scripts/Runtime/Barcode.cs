@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GEAR.Localization;
 using UnityEngine;
 
 namespace GameLabGraz.VRInteraction
@@ -10,12 +11,17 @@ namespace GameLabGraz.VRInteraction
     {
         public Renderer _renderer;
         public int _materialIndex;
+
+        public bool _useShaderColorVariable;
+        public string _shaderColorVariableName;
     }
     
     
     public class Barcode : MonoBehaviour
     {
-        public string barcodeContent = "display name";
+        public bool contentIsLocalizationKey = false;
+        [SerializeField]
+        protected string barcodeContent = "display name";
 
         [Header("Color Barcode")] 
         public bool allowColorChange = true;
@@ -23,6 +29,23 @@ namespace GameLabGraz.VRInteraction
         public int displayColorRendererIndex = 0;
         
         public ValueChangeEventColor onColorChanged;
+
+        private string _content = "";
+
+        public void Start()
+        {
+            _content = barcodeContent;
+            if (contentIsLocalizationKey && LanguageManager.Instance)
+            {
+                _content = LanguageManager.Instance.GetString(barcodeContent);
+                LanguageManager.Instance.OnLanguageChanged.AddListener(language => _content = LanguageManager.Instance.GetString(barcodeContent));
+            }
+        }
+
+        public string GetContentString()
+        {
+            return _content;
+        }
         
         public void ChangeColor(Color newColor)
         {
@@ -33,7 +56,14 @@ namespace GameLabGraz.VRInteraction
             {
                 if (info._renderer != null && info._materialIndex >= 0 && info._materialIndex < info._renderer.materials.Length)
                 {
-                    info._renderer.materials[info._materialIndex].color = newColor;
+                    if (!info._useShaderColorVariable || info._shaderColorVariableName == "")
+                    {
+                        info._renderer.materials[info._materialIndex].color = newColor;
+                    }
+                    else
+                    {
+                        info._renderer.materials[info._materialIndex].SetColor(info._shaderColorVariableName, newColor);
+                    }
                 }
             }
 
@@ -48,9 +78,11 @@ namespace GameLabGraz.VRInteraction
             var info = colorChangingObjects[displayColorRendererIndex];
             if (info._renderer != null && info._materialIndex >= 0 && info._materialIndex < info._renderer.materials.Length)
             {
-                return info._renderer.materials[info._materialIndex].color;
+                if(!info._useShaderColorVariable || info._shaderColorVariableName == "")
+                    return info._renderer.materials[info._materialIndex].color;
+                return info._renderer.materials[info._materialIndex].GetColor(info._shaderColorVariableName);
             }
-
+            
             return Color.black;
         }
     }

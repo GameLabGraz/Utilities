@@ -14,7 +14,16 @@ namespace GameLabGraz.VRInteraction
 
         public void FormatString(float number)
         {
-            var text = number.ToString(format) + (addSpaceBetweenUnit ? " " : "") + unit;
+            SetText(number.ToString(format) + (addSpaceBetweenUnit ? " " : "") + unit);
+        }
+        
+        public void FormatString(Vector3 vector)
+        {
+            SetText(vector.ToString(format) + (addSpaceBetweenUnit ? " " : "") + unit);
+        }
+
+        protected void SetText(string text)
+        {
             if (GetComponent<TMP_InputField>())
                 GetComponent<TMP_InputField>().text = text;
             else if (GetComponent<TextMeshProUGUI>())
