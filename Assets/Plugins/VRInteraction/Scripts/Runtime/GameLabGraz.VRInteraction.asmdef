@@ -1,0 +1,21 @@
+{
+    "name": "com.gamelabgraz.vrinteraction",
+    "rootNamespace": "",
+    "references": [
+        "Unity.TextMeshPro",
+        "SteamVR",
+        "SteamVR_Actions",
+        "SteamVR_Input",
+        "Valve.VR",
+        "GEAR.LanguageManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

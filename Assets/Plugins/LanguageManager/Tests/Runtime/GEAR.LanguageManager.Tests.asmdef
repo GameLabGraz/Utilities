@@ -1,14 +1,13 @@
 {
     "name": "GEAR.LanguageManager.Tests",
-    "references": [],
-    "optionalUnityReferences": [],
-    "includePlatforms": [
-        "Editor",
-        "macOSStandalone",
-        "WebGL",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
+    "references": [
+        "GEAR.LanguageManager",
+        "Unity.TextMeshPro"
     ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

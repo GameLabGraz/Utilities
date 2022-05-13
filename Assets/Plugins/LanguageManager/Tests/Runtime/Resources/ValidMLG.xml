@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageManager>
+    <Translations>
+
+		<Translation Key="GER">
+            <English>German</English>
+            <German>Deutsch</German>
+        </Translation>
+
+		<Translation Key="ENG">
+            <English>English</English>
+            <German>Englisch</German>
+        </Translation>
+
+        <Translation Key="EscapedMicroSign">
+            <English>\u00B5</English>
+            <German>\u00B5</German>
+        </Translation>
+		
+    </Translations>
+</LanguageManager>

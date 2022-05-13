@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageManager>
+  <Translations>
+    <Translation Key="Test1">
+      <English>Test One.</English>
+      <German>Test Eins</German>
+    </Translation>
+    <Translation Key="Test2">
+      <English>Test Two.</English>
+      <German>Test Zwei</German>
+    </Translation>
+    <Translation Key="Test3">
+      <English>Test Three.</English>
+      <German>Test Drei</German>
+    </Translation>
+  </Translations>
+</LanguageManager>

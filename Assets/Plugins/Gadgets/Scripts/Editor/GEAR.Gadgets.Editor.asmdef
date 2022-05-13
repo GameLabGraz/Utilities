@@ -1,0 +1,16 @@
+{
+    "name": "GEAR.Gadgets.Editor",
+    "references": [
+        "GEAR.Gadgets"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

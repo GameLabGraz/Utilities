@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using GEAR.Localization;
+using GEAR.Localization.Text;
 using UnityEngine;
 using TMPro;
 

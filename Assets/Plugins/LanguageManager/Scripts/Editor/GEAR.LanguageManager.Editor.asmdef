@@ -1,13 +1,14 @@
 {
     "name": "GEAR.LanguageManager.Editor",
-    "references": [],
+    "references": [
+        "GEAR.LanguageManager",
+        "RotaryHeart.AutoCompleteTextField",
+        "RotaryHeart.AutoCompleteTextField.Editor",
+        "RotaryHeart"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [
-        "Editor",
-        "macOSStandalone",
-        "WebGL",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
