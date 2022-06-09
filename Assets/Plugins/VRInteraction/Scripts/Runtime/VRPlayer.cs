@@ -22,7 +22,6 @@ namespace GameLabGraz.VRInteraction
         public bool animateWithController = false;
 
         protected Vector3 _position = Vector3.zero;
-        
         private bool initialUpdate = true;
 
         protected void Awake()
@@ -31,7 +30,7 @@ namespace GameLabGraz.VRInteraction
             
             this.CallBaseMethod("Awake", new object[0]);
         }
-
+        
         protected override void Update()
         {
             if (initialUpdate)
