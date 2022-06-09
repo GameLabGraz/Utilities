@@ -1,5 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using PrivateAccess;
+using Valve.VR;
 using Valve.VR.InteractionSystem;
 
 namespace GameLabGraz.VRInteraction
@@ -19,44 +22,65 @@ namespace GameLabGraz.VRInteraction
         public bool animateWithController = false;
 
         protected Vector3 _position = Vector3.zero;
+        
+        private bool initialUpdate = true;
+
+        protected void Awake()
+        {
+            _position = transform.position;
+            
+            this.CallBaseMethod("Awake", new object[0]);
+        }
+
+        protected override void Update()
+        {
+            if (initialUpdate)
+            {
+                Init();
+                initialUpdate = false;
+            }
+            
+            base.Update();
+        }
 
         // Start is called before the first frame update
-        protected void Start()
+        protected void Init()
         {
-            _position = transform.position;  
-            
-            if (snapTurnGameObject)
+            if (SteamVR.instance != null)
             {
-                snapTurnGameObject.SetActive(allowSnapTurns);
-            }
-
-            foreach (var hand in instance.hands)
-            {
-                if (hand == null) continue;
-                
-                if (showController) hand.ShowController(true);
-                else hand.HideController(true);
-                
-                // hand.SetSkeletonRangeOfMotion(animateWithController? 
-                //     Valve.VR.EVRSkeletalMotionRange.WithController :
-                //     Valve.VR.EVRSkeletalMotionRange.WithoutController);
-            }
-
-            var activeRig = GetActiveRig();
-            if (activeRig)
-            {
-                var activePosTrans = activeRig.GetComponentInChildren<Camera>();
-
-                if (activePosTrans)
+                if (snapTurnGameObject)
                 {
-                    //assuming all scales are 1:
-                    var newPosition = transform.position;
-                    var position = activePosTrans.transform.position;
+                    snapTurnGameObject.SetActive(allowSnapTurns);
+                }
 
-                    newPosition.x -= position.x;
-                    // do not change y position -> player height
-                    newPosition.z -= position.z;
-                    transform.position = newPosition;
+                foreach (var hand in instance.hands)
+                {
+                    if (!hand) continue;
+
+                    if (showController) hand.ShowController(true);
+                    else hand.HideController(true);
+
+                    // hand.SetSkeletonRangeOfMotion(animateWithController? 
+                    //     Valve.VR.EVRSkeletalMotionRange.WithController :
+                    //     Valve.VR.EVRSkeletalMotionRange.WithoutController);
+                }
+
+                var activeRig = GetActiveRig();
+                if (activeRig)
+                {
+                    var activePosTrans = activeRig.GetComponentInChildren<Camera>();
+
+                    if (activePosTrans)
+                    {
+                        //assuming all scales are 1:
+                        var newPosition = transform.position;
+                        var position = activePosTrans.transform.position;
+
+                        newPosition.x -= position.x;
+                        // do not change y position -> player height
+                        newPosition.z -= position.z;
+                        transform.position = newPosition;
+                    }
                 }
             }
 
