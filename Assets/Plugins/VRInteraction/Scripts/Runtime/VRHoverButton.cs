@@ -28,6 +28,9 @@ namespace GameLabGraz.VRInteraction
         [Tooltip("UnityEvent(void): When the button is pressed down and is in its 'not pressed' state.")]
         public UnityEvent OnButtonOff;
         
+        [Tooltip("UnityEvent(bool): When the button state is changed via the force method.")]
+        public ValueChangeEventBool OnForcedButtonState;
+        
         protected bool _isPressed;
         protected bool _lastEngaged;
         protected Vector3 _pressedPosition;
@@ -141,6 +144,8 @@ namespace GameLabGraz.VRInteraction
             //#TODO Update SteamVR: call InvokeEvents once it is protected
             this.CallBaseMethod("InvokeEvents", new object[]{wasEngaged, engaged});
             // InvokeEvents(wasEngaged, engaged);
+            
+            OnForcedButtonState.Invoke(_isPressed);
         }
     }
 }
