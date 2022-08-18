@@ -25,7 +25,11 @@ namespace GameLabGraz.VRInteraction
                 {
                     maroonHoverBtn.OnButtonOn.AddListener(() => { _defaultCol = pressedColor; });
                     maroonHoverBtn.OnButtonOff.AddListener(() => { _defaultCol = defaultColor; });
-                    maroonHoverBtn.OnForcedButtonState.AddListener((isOn) => { _defaultCol = isOn ? pressedColor : defaultColor; });
+                    maroonHoverBtn.OnForcedButtonState.AddListener((isOn) =>
+                    {
+                        _defaultCol = isOn ? pressedColor : defaultColor;
+                        ColorSelf(_defaultCol);
+                    });
                 }
                 else
                 {
