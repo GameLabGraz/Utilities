@@ -25,6 +25,11 @@ namespace GameLabGraz.VRInteraction
                 {
                     maroonHoverBtn.OnButtonOn.AddListener(() => { _defaultCol = pressedColor; });
                     maroonHoverBtn.OnButtonOff.AddListener(() => { _defaultCol = defaultColor; });
+                    maroonHoverBtn.OnForcedButtonState.AddListener((isOn) =>
+                    {
+                        _defaultCol = isOn ? pressedColor : defaultColor;
+                        ColorSelf(_defaultCol);
+                    });
                 }
                 else
                 {
@@ -55,7 +60,7 @@ namespace GameLabGraz.VRInteraction
                     if(_showDebugMessages)
                         Debug.Log("Highlighter: onStartHighlight");
                     sz.HighlightedObject?.SetActive(true);
-                });                    
+                });
                 snapZone.onEndHighlight.AddListener(sz => {
                     if(_showDebugMessages)
                         Debug.Log("Highlighter: onEndHighlight");
