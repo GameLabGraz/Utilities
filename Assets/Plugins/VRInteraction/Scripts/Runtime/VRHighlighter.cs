@@ -93,7 +93,22 @@ namespace GameLabGraz.VRInteraction
                 });
             }
         }
+
+        public void Highlight()
+        {
+            ColorSelf(highlightColor);
+        }
         
+        public void Highlight(Color col)
+        {
+            ColorSelf(col);
+        }
+
+        public void ResetToDefault()
+        {
+            ColorSelf(defaultColor);
+        }
+
         public void OnButtonDown(Hand fromHand)
         {
             ColorSelf(highlightColor);
