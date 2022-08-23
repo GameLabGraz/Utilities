@@ -31,8 +31,8 @@ namespace GameLabGraz.LimeSurvey
 
         private int _questionIndex;
 
-        private QuestionGroup CurrentGroup => _questionGroups[CurrentQuestion.GID];
-        private Question CurrentQuestion => _questions[_questionIndex];
+        public QuestionGroup CurrentGroup => _questionGroups[CurrentQuestion.GID];
+        public Question CurrentQuestion => _questions[_questionIndex];
 
         public SubmissionEvent OnSubmission;
 
