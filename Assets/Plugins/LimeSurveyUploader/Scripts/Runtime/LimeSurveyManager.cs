@@ -200,10 +200,11 @@ namespace GameLabGraz.LimeSurvey
             foreach (var question in (JArray)_client.Response.Result)
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
+                if(questionObj.ParentID != 0) continue;
                 yield return StartCoroutine(SetQuestionProperties(questionObj));
                 questionList.Add(questionObj);
             }
-            yield return questionList;
+            yield return questionList.OrderBy(q => q.QuestionOrder).ToList();
         }
 
         public IEnumerator UploadQuestionResponses(IEnumerable<Question> questions, int responseID = -1)
