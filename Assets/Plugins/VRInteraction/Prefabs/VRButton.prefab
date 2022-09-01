@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 357265004733357214}
   - component: {fileID: 328281233578074606}
-  - component: {fileID: 391379085576503408}
+  - component: {fileID: 6786573246610480874}
   - component: {fileID: 7710245584005396885}
   - component: {fileID: 4704980953911477593}
   m_Layer: 0
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 358311997625966898}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &391379085576503408
+--- !u!114 &6786573246610480874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 358311997625966898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b93b6a877adcbf94c89a9d6e0c0e844d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2785f4c6d3618484ab0cb997c247b332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activateActionSetOnAttach:
@@ -95,6 +95,9 @@ MonoBehaviour:
   highlightOnHover: 1
   hideHighlight: []
   hoverPriority: 0
+  allowHandSwitching: 1
+  interactable: 1
+  hoverable: 1
 --- !u!114 &7710245584005396885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,10 +110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b674a463018e054fa800d1850cbd170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showDebugMessages: 0
   highlightColor: {r: 0, g: 1, b: 1, a: 1}
   pressedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   attachedColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightedObjects: []
 --- !u!114 &4704980953911477593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +146,7 @@ MonoBehaviour:
   buttonUp: 0
   stayPressed: 1
   localPressedDistance: {x: 0, y: -0.2, z: 0.2}
+  initialState: 0
   OnButtonPressed:
     m_PersistentCalls:
       m_Calls: []
@@ -150,10 +156,7 @@ MonoBehaviour:
   OnButtonOff:
     m_PersistentCalls:
       m_Calls: []
-  enableLoading: 0
-  loadingTime: 0
-  loadingHighlightObjects: []
-  OnLoaded:
+  OnForcedButtonState:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &359011834485981131
@@ -209,6 +212,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -233,6 +237,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!222 &359011834485981128
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -256,6 +261,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -468,6 +474,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -492,6 +499,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &4895210136678758920
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -563,6 +571,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -587,6 +596,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &7058388746427931028
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -658,6 +668,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -682,6 +693,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &174025181457505986
 MeshCollider:
   m_ObjectHideFlags: 0

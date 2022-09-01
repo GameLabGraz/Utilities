@@ -212,7 +212,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2181449871181143359}
-  - component: {fileID: 2181449871181299992}
+  - component: {fileID: 8442950603604645998}
   - component: {fileID: 2181449871181299994}
   - component: {fileID: 2181449871181299998}
   - component: {fileID: 1711274378231113663}
@@ -239,7 +239,7 @@ Transform:
   m_Father: {fileID: 7520686234484528850}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2181449871181299992
+--- !u!114 &8442950603604645998
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2181449871181299999}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b93b6a877adcbf94c89a9d6e0c0e844d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2785f4c6d3618484ab0cb997c247b332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activateActionSetOnAttach:
@@ -270,8 +270,8 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
@@ -279,8 +279,8 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -291,6 +291,9 @@ MonoBehaviour:
   highlightOnHover: 1
   hideHighlight: []
   hoverPriority: 0
+  allowHandSwitching: 1
+  interactable: 1
+  hoverable: 1
 --- !u!114 &2181449871181299994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2240893781204820378}
-  - component: {fileID: 2240893781204820383}
+  - component: {fileID: 8451066736027326366}
   - component: {fileID: 2240893781204820382}
   - component: {fileID: 2240893781204820381}
   - component: {fileID: 8430652327671787711}
@@ -430,7 +433,7 @@ Transform:
   m_Father: {fileID: 7520686234484528850}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -1, z: 0}
---- !u!114 &2240893781204820383
+--- !u!114 &8451066736027326366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -439,7 +442,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2240893781204820377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b93b6a877adcbf94c89a9d6e0c0e844d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2785f4c6d3618484ab0cb997c247b332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activateActionSetOnAttach:
@@ -461,8 +464,8 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
@@ -470,8 +473,8 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -482,6 +485,9 @@ MonoBehaviour:
   highlightOnHover: 1
   hideHighlight: []
   hoverPriority: 0
+  allowHandSwitching: 1
+  interactable: 1
+  hoverable: 1
 --- !u!114 &2240893781204820382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1392,6 +1398,8 @@ MonoBehaviour:
   hideHighlight: []
   hoverPriority: 0
   allowHandSwitching: 0
+  interactable: 1
+  hoverable: 1
 --- !u!114 &4053217223895524772
 MonoBehaviour:
   m_ObjectHideFlags: 0
