@@ -74,7 +74,7 @@ namespace Valve.VR.InteractionSystem
 
         protected virtual void HandAttachedUpdate(Hand hand)
         {
-	        UpdateLinearMapping(hand.transform);
+            UpdateLinearMapping(hand.transform);
 
             if (hand.IsGrabEnding(this.gameObject))
             {

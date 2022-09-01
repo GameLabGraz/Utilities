@@ -28952,7 +28952,7 @@ MonoBehaviour:
   hideHighlight: []
   hoverPriority: 0
   allowHandSwitching: 1
-  interactable: 0
+  interactable: 1
   hoverable: 1
 --- !u!114 &1305176387
 MonoBehaviour:
@@ -39443,7 +39443,7 @@ MonoBehaviour:
   hideHighlight: []
   hoverPriority: 0
   allowHandSwitching: 1
-  interactable: 0
+  interactable: 1
   hoverable: 1
 --- !u!114 &1764143303
 MonoBehaviour:
