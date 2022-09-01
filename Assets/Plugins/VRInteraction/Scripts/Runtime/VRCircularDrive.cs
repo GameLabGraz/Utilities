@@ -121,6 +121,12 @@ namespace GameLabGraz.VRInteraction
         {
             GrabTypes startingGrabType = hand.GetGrabStarting();
             bool isGrabEnding = hand.IsGrabbingWithType(grabbedWithType) == false;
+
+            var vrInteractable = interactable as VRInteractable;
+            if (vrInteractable != null && !vrInteractable.IsInteractable())
+            {
+                return;    
+            }
             
             //#TODO Update SteamVR: call HandHoverUpdate once it is protected
             this.CallBaseMethod("HandHoverUpdate", new object[]{hand});

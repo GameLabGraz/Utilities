@@ -358,7 +358,7 @@ namespace Valve.VR.InteractionSystem
         // flags - The flags to use for attaching the object
         // attachmentPoint - Name of the GameObject in the hierarchy of this Hand which should act as the attachment point for this GameObject
         //-------------------------------------------------
-        public void AttachObject(GameObject objectToAttach, GrabTypes grabbedWithType, AttachmentFlags flags = defaultAttachmentFlags, Transform attachmentOffset = null)
+        public virtual void AttachObject(GameObject objectToAttach, GrabTypes grabbedWithType, AttachmentFlags flags = defaultAttachmentFlags, Transform attachmentOffset = null)
         {
             AttachedObject attachedObject = new AttachedObject();
             attachedObject.attachmentFlags = flags;
