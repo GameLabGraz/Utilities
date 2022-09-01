@@ -28952,6 +28952,8 @@ MonoBehaviour:
   hideHighlight: []
   hoverPriority: 0
   allowHandSwitching: 1
+  interactable: 1
+  hoverable: 1
 --- !u!114 &1305176387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39441,6 +39443,8 @@ MonoBehaviour:
   hideHighlight: []
   hoverPriority: 0
   allowHandSwitching: 1
+  interactable: 1
+  hoverable: 1
 --- !u!114 &1764143303
 MonoBehaviour:
   m_ObjectHideFlags: 0

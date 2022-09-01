@@ -84,6 +84,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -108,6 +109,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!222 &1290566666031237679
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -131,6 +133,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -307,6 +310,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -331,6 +335,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!222 &1290566667134988287
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -354,6 +359,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -486,6 +492,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -510,6 +517,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &1290566667540462423
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -532,7 +540,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1790008312545258883}
-  - component: {fileID: 1790008312545554852}
+  - component: {fileID: 99776539119788692}
   - component: {fileID: 1790008312545554854}
   - component: {fileID: 1790008312545554850}
   - component: {fileID: 1238165476750792451}
@@ -559,7 +567,7 @@ Transform:
   m_Father: {fileID: 1790008312545258885}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
---- !u!114 &1790008312545554852
+--- !u!114 &99776539119788692
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -568,7 +576,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1790008312545554851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b93b6a877adcbf94c89a9d6e0c0e844d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2785f4c6d3618484ab0cb997c247b332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activateActionSetOnAttach:
@@ -590,8 +598,8 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
@@ -599,8 +607,8 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -611,6 +619,9 @@ MonoBehaviour:
   highlightOnHover: 1
   hideHighlight: []
   hoverPriority: 0
+  allowHandSwitching: 1
+  interactable: 1
+  hoverable: 1
 --- !u!114 &1790008312545554854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,10 +687,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b674a463018e054fa800d1850cbd170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showDebugMessages: 0
   highlightColor: {r: 0, g: 1, b: 1, a: 1}
   pressedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   attachedColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightedObjects: []
 --- !u!114 &6405110756266808236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -698,6 +711,7 @@ MonoBehaviour:
   repositionGameObject: 1
   maintainMomemntum: 0
   momemtumDampenRate: 5
+  _showDebugMessages: 0
   useSteps: 1
   stepSize: 0.5
   useAsInteger: 0
@@ -708,6 +722,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7628996401622678521}
+        m_TargetAssemblyTypeName: 
         m_MethodName: FormatString
         m_Mode: 0
         m_Arguments:
@@ -812,6 +827,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -836,3 +852,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
