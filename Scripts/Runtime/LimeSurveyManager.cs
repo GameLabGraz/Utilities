@@ -153,9 +153,18 @@ namespace GameLabGraz.LimeSurvey
             {
                 foreach (var answerOption in answerOptions)
                 {
+                    string answerCodeJson;
                     var answerCode = answerOption.Path.Split('.').Last();
-                    var answerCodeJson = $"{{\"answer_code\": \"{answerCode}\"," + 
-                                         answerOption.First?.ToString().Remove(0, 1);
+
+                    if (answerCode.StartsWith("answeroptions"))
+                    {
+                        answerCodeJson = $"{{\"answer_code\": \"{answerOption["order"]}\"," + answerOption.ToString().Remove(0,1);
+                    }
+                    else
+                    {
+                        answerCodeJson =$"{{\"answer_code\": \"{answerCode}\"," + 
+                                        answerOption.First?.ToString().Remove(0, 1);
+                    }
 
                     var answerOptionObj = JsonUtility.FromJson<AnswerOption>(answerCodeJson);
                     question.AnswerOptions.Add(answerOptionObj);
@@ -213,7 +222,7 @@ namespace GameLabGraz.LimeSurvey
                 groupObj.Questions.AddRange((List<Question>)cd.Result);
                 groupList.Add(groupObj);
             }
-            yield return groupList;
+            yield return groupList.OrderBy(g => g.GroupOrder).ToList();
         }
 
         public IEnumerator GetQuestionList(int? groupId = null)
