@@ -21,6 +21,7 @@ namespace GameLabGraz.LimeSurvey
         [SerializeField] private int responseID = -1;
 
         [SerializeField] private TMP_Text questionText;
+        [SerializeField] private ScrollRect scrollRect;
         [SerializeField] private GameObject questionContent;
         [SerializeField] private Button prevButton;
         [SerializeField] private Button nextButton;
@@ -96,7 +97,14 @@ namespace GameLabGraz.LimeSurvey
                     break;
             }
 
+            Invoke("ScrollToTop", 0.1f);
+
             EnableButtons();
+        }
+    
+        private void ScrollToTop()
+        {
+            scrollRect.verticalNormalizedPosition = 1;
         }
 
         private void CreateFreeText()
