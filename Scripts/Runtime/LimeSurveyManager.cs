@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
@@ -130,7 +131,6 @@ namespace GameLabGraz.LimeSurvey
                 yield return null;
 
             var questionProperties = (JObject)_client.Response.Result;
-
             // SubQuestions
             var subQuestions = questionProperties["subquestions"];
             if (subQuestions != null && subQuestions.ToString() != "No available answers")
@@ -246,7 +246,16 @@ namespace GameLabGraz.LimeSurvey
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
                 if(questionObj.ParentID != 0) continue;
+
+                questionObj.Randomized = question["title"].ToString().Contains("randomized");
+
                 yield return StartCoroutine(SetQuestionProperties(questionObj));
+                
+                questionObj.SubQuestions.Reverse();
+                if(questionObj.Randomized)
+                    questionObj.SubQuestions = questionObj.SubQuestions.OrderBy(a => Guid.NewGuid()).ToList();
+
+
                 questionList.Add(questionObj);
             }
             yield return questionList.OrderBy(q => q.QuestionOrder).ToList();
