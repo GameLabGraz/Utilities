@@ -291,22 +291,16 @@ namespace GameLabGraz.LimeSurvey
             // Next Button
             nextButton.onClick.AddListener(() =>
             {
-                if (CurrentQuestion.Mandatory && CurrentQuestion.SubQuestions.Count == 0 &&
-                    CurrentQuestion.Answer == null) return;
-
-                if (CurrentQuestion.Mandatory && CurrentQuestion.QuestionType == QuestionType.MultipleChoice &&
-                    CurrentQuestion.SubQuestions.TrueForAll(subQuestion => subQuestion.Answer == null)) return;
-
-                if (CurrentQuestion.Mandatory && CurrentQuestion.QuestionType != QuestionType.MultipleChoice &&
-                    !CurrentQuestion.SubQuestions.TrueForAll(subQuestion => subQuestion.Answer != null)) return;
-
-
+                if (!MandatoryOK()) return;
+                
                 ShowQuestion(++_questionIndex);
             });
             
             // Submit Button
             submitButton.onClick.AddListener(() =>
             {
+                if (!MandatoryOK()) return;
+
                 ClearQuestionContent();
                 
                 // Disable Buttons
@@ -358,6 +352,20 @@ namespace GameLabGraz.LimeSurvey
                 var content = questionContent.transform.GetChild(childIndex);
                 Destroy(content.gameObject);
             }
+        }
+
+        private bool MandatoryOK()
+        {
+            if (CurrentQuestion.Mandatory && CurrentQuestion.SubQuestions.Count == 0 &&
+                CurrentQuestion.Answer == null) return false;
+
+            if (CurrentQuestion.Mandatory && CurrentQuestion.QuestionType == QuestionType.MultipleChoice &&
+                CurrentQuestion.SubQuestions.TrueForAll(subQuestion => subQuestion.Answer == null)) return false;
+
+            if (CurrentQuestion.Mandatory && CurrentQuestion.QuestionType != QuestionType.MultipleChoice &&
+                !CurrentQuestion.SubQuestions.TrueForAll(subQuestion => subQuestion.Answer != null)) return false;
+
+            return true;
         }
     }
 }
