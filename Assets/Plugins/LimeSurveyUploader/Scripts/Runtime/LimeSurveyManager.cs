@@ -11,12 +11,21 @@ namespace GameLabGraz.LimeSurvey
 {
     public class LimeSurveyManager : MonoBehaviour
     {
-        [Header("Login")]
-        [SerializeField] private string url;
-        [SerializeField] private string userName;
-        [SerializeField] private string password;
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // Members
+
+        // -------------------------------------------------------------------------------------------------------------
+        // Server Configuration
+        private string url;
+        private string userName;
+        private string password;
+
+        // -------------------------------------------------------------------------------------------------------------
+        // Survey Configuration
         [SerializeField] private string surveyId;
 
+        // -------------------------------------------------------------------------------------------------------------
+        // Other
         private JsonRpcClient _client;
 
         public string SessionKey { get; private set; }
@@ -24,6 +33,9 @@ namespace GameLabGraz.LimeSurvey
         public bool LoggedIn { get; private set; }
 
         private static LimeSurveyManager _instance;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // Methods
 
         public static LimeSurveyManager Instance
         {
@@ -37,8 +49,32 @@ namespace GameLabGraz.LimeSurvey
 
         private void Awake()
         {
+            ReadServerConfigFile();
             _client = new JsonRpcClient(url);
             StartCoroutine(Login());
+        }
+
+        private void ReadServerConfigFile()
+        {
+            // Read file
+            TextAsset jsonFile = Resources.Load("LimeSurveyServerConfig") as TextAsset;
+
+            // Decode JSON
+            JObject jsonObject;
+            try
+            {
+                jsonObject = JObject.Parse(jsonFile.text);
+            }
+            catch(System.Exception)
+            {
+                Debug.LogError("LimeSurveyServerConfig.json format is invalid"); 
+                throw;
+            }
+            
+            // Apply values
+            this.url        = (string)jsonObject["url"];
+            this.userName   = (string)jsonObject["username"];
+            this.password   = (string)jsonObject["password"];
         }
 
         private IEnumerator Login()
