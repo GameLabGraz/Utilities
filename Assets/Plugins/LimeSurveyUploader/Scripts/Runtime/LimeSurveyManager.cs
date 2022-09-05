@@ -68,7 +68,7 @@ namespace GameLabGraz.LimeSurvey
             }
             catch(System.Exception)
             {
-                Debug.LogError("LimeSurveyServerConfig.json format is invalid"); 
+                Debug.LogError("LimeSurveyServerConfig.json not found or format is invalid"); 
                 throw;
             }
             
