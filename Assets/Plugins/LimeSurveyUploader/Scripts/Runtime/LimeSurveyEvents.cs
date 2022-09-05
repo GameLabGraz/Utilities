@@ -19,6 +19,7 @@ namespace GameLabGraz.LimeSurvey
         public UnityEvent OnStartSubmission;
         public SubmissionEvent OnSubmissionFinished;
 
+        private int cnt = 0;
         private void Awake()
         {
             if (view)

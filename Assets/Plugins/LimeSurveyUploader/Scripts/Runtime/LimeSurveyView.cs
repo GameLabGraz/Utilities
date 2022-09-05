@@ -51,6 +51,7 @@ namespace GameLabGraz.LimeSurvey
 
         private IEnumerator Initialize()
         {
+            Debug.Log("Init start");
             OnStartLoadQuestions.Invoke();
             
             var cd = new CoroutineWithData(this, LimeSurveyManager.Instance.GetQuestionGroups());
@@ -65,6 +66,7 @@ namespace GameLabGraz.LimeSurvey
             ShowQuestion(0);
             
             OnQuestionsLoaded.Invoke();
+            Debug.Log("Init end");
         }
 
 
@@ -77,10 +79,11 @@ namespace GameLabGraz.LimeSurvey
 
             questionText.text = $"{CurrentGroup.GroupName}\n";
             questionText.text += CurrentQuestion.Mandatory ? $"* {CurrentQuestion.QuestionText}" : CurrentQuestion.QuestionText;
-
+            
             switch (CurrentQuestion.QuestionType)
             {
                 case QuestionType.Text:
+                case QuestionType.ShortText:
                     CreateFreeText();
                     break;
                 case QuestionType.ListRadio:
@@ -97,10 +100,15 @@ namespace GameLabGraz.LimeSurvey
                 case QuestionType.Matrix:
                     CreateMatrix();
                     break;
+                case QuestionType.IntNumber:
+                    CreateIntNumberText();
+                    break;
                 default:
-                    var warningStr = $"Unknown Question Type: {_questions[questionIndex].QuestionType}";
-                    Debug.LogWarning("[LimeSurvey] " + warningStr);
-                    OnWarning.Invoke(warningStr);
+                    var question = _questions[questionIndex];
+                    var warningStr = $"Unknown Question Type '{question.QuestionType}'";
+                    var detailStr = $"Question '{question.Title}' uses unsupported type '{question.GetTypeString()}'.";
+                    Debug.LogWarning($"[LimeSurvey] {warningStr}: {detailStr} --- '{question.QuestionText}'");
+                    OnWarning.Invoke(warningStr, detailStr);
                     break;
             }
 
@@ -125,6 +133,31 @@ namespace GameLabGraz.LimeSurvey
             inputField.onValueChanged.AddListener((answer =>
             {
                 CurrentQuestion.Answer = answer;
+                AdaptNextButton();
+            } ));
+        }
+        
+        private void CreateIntNumberText()
+        {
+            var inputField = ((GameObject)Instantiate(UIContent.Input, questionContent.transform)).GetComponent<InputField>();
+            inputField.GetComponent<LayoutElement>().minHeight = 300;
+            inputField.lineType = TMP_InputField.LineType.SingleLine;
+            inputField.contentType = TMP_InputField.ContentType.IntegerNumber;
+            inputField.characterLimit = 10;
+
+            var placeholder = inputField.placeholder?.GetComponent<TMP_Text>();
+            if (placeholder)
+            {
+                placeholder.text = "Enter number...";
+            }
+            
+            if (CurrentQuestion.Answer != null)
+                inputField.text = CurrentQuestion.Answer;
+
+            inputField.onValueChanged.AddListener((answer =>
+            {
+                CurrentQuestion.Answer = answer;
+                AdaptNextButton();
             } ));
         }
 
@@ -168,11 +201,13 @@ namespace GameLabGraz.LimeSurvey
                     {
                         subQuestion.Answer = string.IsNullOrWhiteSpace(input) ? null : input;
                         toggle.isOn = !string.IsNullOrWhiteSpace(subQuestion.Answer);
+                        AdaptNextButton();
                     });
                     toggle.onValueChanged.AddListener(value =>
                     {
                         if (value && string.IsNullOrWhiteSpace(inputField.text))
                             toggle.isOn = false;
+                        AdaptNextButton();
                     });
                 }
                 else
@@ -183,6 +218,7 @@ namespace GameLabGraz.LimeSurvey
                     toggle.onValueChanged.AddListener(answer =>
                     {
                         subQuestion.Answer = answer ? "Y" : string.Empty;
+                        AdaptNextButton();
                     });
                 }
 
@@ -283,6 +319,8 @@ namespace GameLabGraz.LimeSurvey
                         oldToggle.isOn = false;
                     else if (value == false)
                         toggle.isOn = true;
+                    
+                    AdaptNextButton();
                 });
             }
         }
@@ -341,21 +379,22 @@ namespace GameLabGraz.LimeSurvey
 
         private void EnableButtons()
         {
-            prevButton.gameObject.SetActive(true);
-            nextButton.gameObject.SetActive(true);
-            submitButton.gameObject.SetActive(false);
+            prevButton.gameObject.SetActive(_questionIndex != 0);
+            nextButton.gameObject.SetActive(_questionIndex != _questions.Count - 1);
+            submitButton.gameObject.SetActive(_questionIndex == _questions.Count - 1);
 
-            prevButton.interactable = true;
-            nextButton.interactable = true;
+            prevButton.interactable = _questionIndex != 0;
+            nextButton.interactable = !CurrentQuestion.Mandatory || CurrentQuestion.HasAnswer();
+            submitButton.interactable = !CurrentQuestion.Mandatory || CurrentQuestion.HasAnswer();
+        }
 
-
-            if (_questionIndex == 0)
-                prevButton.interactable = false;
-            if (_questionIndex == _questions.Count - 1)
-            {
-                nextButton.interactable = false;
-                submitButton.gameObject.SetActive(true);
-            }
+        private void AdaptNextButton()
+        {
+            var nextIsInteractable = !CurrentQuestion.Mandatory || CurrentQuestion.HasAnswer();
+            if(nextButton.isActiveAndEnabled)
+                nextButton.interactable = nextIsInteractable;
+            if (submitButton.isActiveAndEnabled)
+                submitButton.interactable = nextIsInteractable;
         }
 
         private void ClearQuestionContent()

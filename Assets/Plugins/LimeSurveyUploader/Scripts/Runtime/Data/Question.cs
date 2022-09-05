@@ -7,6 +7,7 @@ namespace GameLabGraz.LimeSurvey.Data
     public enum QuestionType
     {
         Text,
+        ShortText,
         ListDropdown,
         ListRadio,
         MultipleChoice,
@@ -14,6 +15,7 @@ namespace GameLabGraz.LimeSurvey.Data
         FivePointMatrix,
         TenPointMatrix,
         Matrix,
+        IntNumber,
         Unknown
     }
 
@@ -40,6 +42,11 @@ namespace GameLabGraz.LimeSurvey.Data
         public List<SubQuestion> SubQuestions { get; set; } = new List<SubQuestion>();
         public List<AnswerOption> AnswerOptions { get; set; } = new List<AnswerOption>();
 
+        public string GetTypeString()
+        {
+            return type;
+        }
+        
         public QuestionType QuestionType
         {
             get
@@ -48,6 +55,8 @@ namespace GameLabGraz.LimeSurvey.Data
                 {
                     case "T":
                         return QuestionType.Text;
+                    case "S":
+                        return QuestionType.ShortText;
                     case "L":
                         return QuestionType.ListRadio;
                     case "!":
@@ -62,10 +71,22 @@ namespace GameLabGraz.LimeSurvey.Data
                         return QuestionType.TenPointMatrix;
                     case "F":
                         return QuestionType.Matrix;
+                    case "N":
+                        return QuestionType.IntNumber;
                     default:
                         return QuestionType.Unknown;
                 }
             }
+        }
+        
+        public SetAnswerEvent onAnswerChanged;
+        
+        public virtual bool HasAnswer()
+        {
+            if (SubQuestions.Count == 0)
+                return base.HasAnswer();
+
+            return SubQuestions.TrueForAll(sub => sub.HasAnswer());
         }
     }
 }

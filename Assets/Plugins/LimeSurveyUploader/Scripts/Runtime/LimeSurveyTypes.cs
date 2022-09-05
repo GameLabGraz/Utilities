@@ -33,6 +33,8 @@ namespace GameLabGraz.LimeSurvey
     
     [Serializable] public class SubmissionEvent : UnityEvent<int>{}
     [Serializable] public class ErrorEvent : UnityEvent<string, string>{}
-    [Serializable] public class WarningEvent : UnityEvent<string>{}
+    [Serializable] public class WarningEvent : UnityEvent<string, string>{}
     [Serializable] public class LoginEvent : UnityEvent<string>{}
+    
+    [Serializable] public class SetAnswerEvent : UnityEvent<bool>{}
 }

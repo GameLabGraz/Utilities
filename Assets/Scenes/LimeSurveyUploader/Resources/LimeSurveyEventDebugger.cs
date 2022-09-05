@@ -9,9 +9,9 @@ public class LimeSurveyEventDebugger : MonoBehaviour
         Debug.Log($"[LimeSurveyEvent] OnError: '{error}' (detail: '{errorDetail}')");
     }
 
-    public void OnWarning(string warning)
+    public void OnWarning(string warning, string warningDetail)
     {
-        Debug.Log($"[LimeSurveyEvent] OnWarning: '{warning}'");
+        Debug.Log($"[LimeSurveyEvent] OnWarning: '{warning}' (detail: '{warningDetail}')");
     }
 
     public void OnStartLogin()
