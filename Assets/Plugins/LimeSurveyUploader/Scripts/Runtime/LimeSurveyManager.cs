@@ -58,7 +58,7 @@ namespace GameLabGraz.LimeSurvey
         private void ReadServerConfigFile()
         {
             // Read file
-            TextAsset jsonFile = Resources.Load("LimeSurveyServerConfig") as TextAsset;
+            TextAsset jsonFile = Resources.Load("LimeSurveyServerConfig/LimeSurveyServerConfig") as TextAsset;
 
             // Decode JSON
             JObject jsonObject;
