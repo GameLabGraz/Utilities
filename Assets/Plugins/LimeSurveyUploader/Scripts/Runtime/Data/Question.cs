@@ -79,8 +79,6 @@ namespace GameLabGraz.LimeSurvey.Data
             }
         }
         
-        public SetAnswerEvent onAnswerChanged;
-        
         public virtual bool HasAnswer()
         {
             if (SubQuestions.Count == 0)
