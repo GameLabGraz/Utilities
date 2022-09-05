@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.UI;
@@ -13,9 +12,6 @@ using InputField = GameLabGraz.UI.InputField;
 
 namespace GameLabGraz.LimeSurvey
 {
-    [Serializable]
-    public class SubmissionEvent : UnityEvent<int>{}
-
     public class LimeSurveyView : MonoBehaviour
     {
         [SerializeField] private int responseID = -1;
@@ -35,7 +31,12 @@ namespace GameLabGraz.LimeSurvey
         public QuestionGroup CurrentGroup => _questionGroups[CurrentQuestion.GID];
         public Question CurrentQuestion => _questions[_questionIndex];
 
-        public SubmissionEvent OnSubmission;
+        [HideInInspector] public ErrorEvent OnError;
+        [HideInInspector] public WarningEvent OnWarning;
+        [HideInInspector] public UnityEvent OnStartLoadQuestions;
+        [HideInInspector] public UnityEvent OnQuestionsLoaded;
+        [HideInInspector] public UnityEvent OnStartSubmission;
+        [HideInInspector] public SubmissionEvent OnSubmissionFinished;
 
         public int ResponseID
         {
@@ -43,13 +44,15 @@ namespace GameLabGraz.LimeSurvey
             set => responseID = value;
         }
 
-        private void Start()
+        private void Awake()
         {
-            StartCoroutine(Initialize());
+            LimeSurveyManager.Instance.OnLoggedIn.AddListener((sessionKey) => { StartCoroutine(Initialize()); });
         }
 
         private IEnumerator Initialize()
         {
+            OnStartLoadQuestions.Invoke();
+            
             var cd = new CoroutineWithData(this, LimeSurveyManager.Instance.GetQuestionGroups());
             yield return cd.Coroutine;
 
@@ -60,6 +63,8 @@ namespace GameLabGraz.LimeSurvey
             }
             SetupButtons();
             ShowQuestion(0);
+            
+            OnQuestionsLoaded.Invoke();
         }
 
 
@@ -93,7 +98,9 @@ namespace GameLabGraz.LimeSurvey
                     CreateMatrix();
                     break;
                 default:
-                    Debug.LogWarning($"Unknown Question Type: {_questions[questionIndex].QuestionType}");
+                    var warningStr = $"Unknown Question Type: {_questions[questionIndex].QuestionType}";
+                    Debug.LogWarning("[LimeSurvey] " + warningStr);
+                    OnWarning.Invoke(warningStr);
                     break;
             }
 
@@ -316,14 +323,20 @@ namespace GameLabGraz.LimeSurvey
 
         private IEnumerator SubmitResponses()
         {
+            OnStartSubmission.Invoke();
+            
             var cd = new CoroutineWithData(this, LimeSurveyManager.Instance.UploadQuestionResponses(_questions, responseID));
             yield return cd.Coroutine;
 
             responseID = (int)cd.Result;
             if (responseID != -1)
-                OnSubmission?.Invoke(responseID);
+                OnSubmissionFinished?.Invoke(responseID);
             else
-                Debug.LogError("LimeSurveyView::OnSubmission: Unable to submit responses.");
+            {
+                var errorStr = "Unable to submit responses.";
+                Debug.LogError("[LimeSurvey] OnSubmission: " + errorStr);
+                OnError.Invoke(errorStr, LimeSurveyManager.Instance.GetLastError());
+            }
         }
 
         private void EnableButtons()

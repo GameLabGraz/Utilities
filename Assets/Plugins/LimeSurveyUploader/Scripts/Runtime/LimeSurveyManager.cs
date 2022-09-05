@@ -7,6 +7,7 @@ using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.LimeSurvey.Extensions;
 using GEAR.Gadgets.Coroutine;
 using Newtonsoft.Json.Linq;
+using UnityEngine.Events;
 
 namespace GameLabGraz.LimeSurvey
 {
@@ -34,6 +35,13 @@ namespace GameLabGraz.LimeSurvey
         public bool LoggedIn { get; private set; }
 
         private static LimeSurveyManager _instance;
+        
+        [HideInInspector] public ErrorEvent OnError;
+        [HideInInspector] public WarningEvent OnWarning;
+        [HideInInspector] public UnityEvent OnStartLogin;
+        [HideInInspector] public LoginEvent OnLoggedIn;
+
+        private string _lastError = "";
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Methods
@@ -68,7 +76,9 @@ namespace GameLabGraz.LimeSurvey
             }
             catch(System.Exception)
             {
-                Debug.LogError("LimeSurveyServerConfig.json format is invalid"); 
+                _lastError = "LimeSurveyServerConfig.json format is invalid.";
+                Debug.LogError("[LimeSurvey] " + _lastError); 
+                OnError.Invoke("Cannot load Lime Survey settings.", _lastError);
                 throw;
             }
             
@@ -80,6 +90,8 @@ namespace GameLabGraz.LimeSurvey
 
         private IEnumerator Login()
         {
+            OnStartLogin.Invoke();
+            
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.GetSessionKey);
             _client.AddParameter(LimeSurveyParameter.UserName, userName);
@@ -88,18 +100,25 @@ namespace GameLabGraz.LimeSurvey
             yield return _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
+            {
+                OnError.Invoke("Unable to login.", _lastError);
                 yield return null;
+            }
 
             var response = _client.Response.Result.ToString();
             if (response.Contains("\"status\""))
             {
-                Debug.LogError("LimeSurveyManager::Login: Invalid user name or password.");
+                _lastError = "Unable to login: Invalid user name or password.";
+                Debug.LogError("[LimeSurvey] Login: " + _lastError);
+                OnError.Invoke("Unable to login.", "Invalid user name or password.");
             }
             else
             {
+                _lastError = "";
                 SessionKey = response;
                 LoggedIn = true;
-                Debug.Log($"LimeSurveyManager::Login: Login successfully - Session Key: {SessionKey}");
+                Debug.Log($"[LimeSurvey] Login: Login successfully - Session Key: {SessionKey}");
+                OnLoggedIn.Invoke(SessionKey);
             }
         }
 
@@ -107,14 +126,18 @@ namespace GameLabGraz.LimeSurvey
         {
             if (response.StatusCode != 200)
             {
-                Debug.LogError($"LimeSurveyManager::HandleClientResponse: Error - HTTP Status Code: {_client.Response.StatusCode}");
+                _lastError = $"Error - HTTP Status Code: {_client.Response.StatusCode}";
+                Debug.LogError("[LimeSurvey] HandleClientResponse: " + _lastError);
                 return ErrorCode.HttpStatusError;
             }
-            else if (_client.Response.Error != null)
+            if (_client.Response.Error != null)
             {
-                Debug.LogError($"LimeSurveyManager::HandleClientResponse: Error: {_client.Response.Error}");
+                _lastError = $"Error: {_client.Response.Error}";
+                Debug.LogError("[LimeSurvey] HandleClientResponse: " + _lastError);
                 return ErrorCode.ResponseError;
             }
+
+            _lastError = "";
             return ErrorCode.OK;
         }
 
@@ -287,11 +310,16 @@ namespace GameLabGraz.LimeSurvey
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
             {
-                Debug.LogError("LimeSurveyManager::UploadQuestionResponses: Unable to upload responses.");
+                Debug.LogError("[LimeSurvey] UploadQuestionResponses: Unable to upload responses.");
                 yield return -1;
             }
 
             yield return int.Parse(_client.Response.Result.ToString());
+        }
+
+        public string GetLastError()
+        {
+            return _lastError;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using GEAR.Gadgets.Attribute;
+﻿using System;
+using GEAR.Gadgets.Attribute;
+using UnityEngine.Events;
 
 namespace GameLabGraz.LimeSurvey
 {
@@ -28,4 +30,9 @@ namespace GameLabGraz.LimeSurvey
         [StringValue("iQuestionID")] QuestionID,
         [StringValue("aResponseData")] ResponseData
     }
+    
+    [Serializable] public class SubmissionEvent : UnityEvent<int>{}
+    [Serializable] public class ErrorEvent : UnityEvent<string, string>{}
+    [Serializable] public class WarningEvent : UnityEvent<string>{}
+    [Serializable] public class LoginEvent : UnityEvent<string>{}
 }

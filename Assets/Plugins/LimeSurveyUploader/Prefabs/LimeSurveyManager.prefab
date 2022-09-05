@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1683874032679252098}
   - component: {fileID: 1683874032679252109}
+  - component: {fileID: 204850344851792848}
   m_Layer: 0
   m_Name: LimeSurveyManager
   m_TagString: Untagged
@@ -43,7 +44,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfc5801bebc20d14bb2d0de349e4b6e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: https://gamelabgraz.limesurvey.net/index.php/admin/remotecontrol
-  userName: gamelabgraz
-  password: DU9bEQ%3
   surveyId: 964717
+  OnError:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWarning:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartLogin:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLoggedIn:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &204850344851792848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683874032679252108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c596a47f04db540a4bf45169c79b74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  view: {fileID: 0}
+  OnError:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWarning:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartLogin:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLoggedIn:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartLoadQuestions:
+    m_PersistentCalls:
+      m_Calls: []
+  OnQuestionsLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartSubmission:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSubmissionFinished:
+    m_PersistentCalls:
+      m_Calls: []
