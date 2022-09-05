@@ -820,11 +820,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1683874032679252109, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
-      propertyPath: surveyId
-      value: 862735
-      objectReference: {fileID: 0}
-    - target: {fileID: 1683874032679252109, guid: 79d106120db22c34e8db900db6c54794,
-        type: 3}
       propertyPath: userName
       value: m_holly
       objectReference: {fileID: 0}
@@ -1025,7 +1020,7 @@ PrefabInstance:
     - target: {fileID: 5748860092806960504, guid: 4708caaa85d617d43ac6e70ccebf9062,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -294.79678
+      value: -294.79675
       objectReference: {fileID: 0}
     - target: {fileID: 5748860093089684408, guid: 4708caaa85d617d43ac6e70ccebf9062,
         type: 3}
