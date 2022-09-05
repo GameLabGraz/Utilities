@@ -123,7 +123,10 @@ namespace GameLabGraz.LimeSurvey.Editor
             };
 
             System.IO.File.WriteAllLines(configPath, configLines);
-            
+
+            // Trigger asset refresh so that Unity finds newly generated files
+            AssetDatabase.Refresh();
+
             // Update state
             configActive = false;
             configSaved = true;
