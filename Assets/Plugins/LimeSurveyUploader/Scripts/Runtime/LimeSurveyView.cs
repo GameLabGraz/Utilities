@@ -234,12 +234,16 @@ namespace GameLabGraz.LimeSurvey
 
             // Header
             var headerGroup = ((GameObject)Instantiate(UIContent.HorizontalLayoutGroup, rowGroup.transform)).GetComponent<HorizontalLayoutGroup>();
-            var placeholder = Instantiate(new GameObject(), headerGroup.transform).AddComponent<LayoutElement>();
-            placeholder.minWidth = 300;
-            placeholder.preferredWidth = 300;
-            placeholder.flexibleWidth = 0;
 
-            foreach(var answerOption in CurrentQuestion.AnswerOptions)
+            var placeholder = new GameObject();
+            placeholder.transform.parent = headerGroup.transform;
+
+            var placeholderLayoutElement = placeholder.AddComponent<LayoutElement>();
+            placeholderLayoutElement.minWidth = 300;
+            placeholderLayoutElement.preferredWidth = 300;
+            placeholderLayoutElement.flexibleWidth = 0;
+
+            foreach (var answerOption in CurrentQuestion.AnswerOptions)
             {
                 var optionObj = Instantiate(UIContent.Text, headerGroup.transform) as GameObject;
                 optionObj.GetComponent<TMP_Text>().text = answerOption.AnswerText;
