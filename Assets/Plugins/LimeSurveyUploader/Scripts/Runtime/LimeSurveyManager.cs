@@ -154,6 +154,14 @@ namespace GameLabGraz.LimeSurvey
                 yield return null;
 
             var questionProperties = (JObject)_client.Response.Result;
+            // Attributes
+            var attributes = questionProperties["attributes"];
+            if (attributes != null)
+            {
+                var randOrder = attributes["random_order"];
+                question.RandomOrder = randOrder != null && randOrder.ToString() == "1";
+            }
+            
             // SubQuestions
             var subQuestions = questionProperties["subquestions"];
             if (subQuestions != null && subQuestions.ToString() != "No available answers")
@@ -270,12 +278,12 @@ namespace GameLabGraz.LimeSurvey
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
                 if(questionObj.ParentID != 0) continue;
 
-                questionObj.Randomized = question["title"].ToString().Contains("randomized");
+                // questionObj.Randomized = question["title"].ToString().Contains("randomized");
 
                 yield return StartCoroutine(SetQuestionProperties(questionObj));
                 
                 questionObj.SubQuestions.Reverse();
-                if(questionObj.Randomized)
+                if(questionObj.RandomOrder)
                     questionObj.SubQuestions = questionObj.SubQuestions.OrderBy(a => Guid.NewGuid()).ToList();
 
 

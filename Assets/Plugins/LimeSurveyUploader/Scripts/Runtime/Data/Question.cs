@@ -38,7 +38,7 @@ namespace GameLabGraz.LimeSurvey.Data
         public int QuestionOrder => question_order;
         public bool Other => other == "Y";
         public bool Mandatory => mandatory == "Y";
-        public bool Randomized { get; set; } = false;
+        public bool RandomOrder { get; set; } = false;
         public List<SubQuestion> SubQuestions { get; set; } = new List<SubQuestion>();
         public List<AnswerOption> AnswerOptions { get; set; } = new List<AnswerOption>();
 
