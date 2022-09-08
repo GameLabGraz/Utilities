@@ -58,7 +58,7 @@ namespace GameLabGraz.LimeSurvey
         private void ReadServerConfigFile()
         {
             // Read file
-            TextAsset jsonFile = Resources.Load("LimeSurveyServerConfig") as TextAsset;
+            TextAsset jsonFile = Resources.Load("LimeSurveyServerConfig/LimeSurveyServerConfig") as TextAsset;
 
             // Decode JSON
             JObject jsonObject;
@@ -68,7 +68,7 @@ namespace GameLabGraz.LimeSurvey
             }
             catch(System.Exception)
             {
-                Debug.LogError("LimeSurveyServerConfig.json format is invalid"); 
+                Debug.LogError("LimeSurveyServerConfig.json not found or format is invalid"); 
                 throw;
             }
             
