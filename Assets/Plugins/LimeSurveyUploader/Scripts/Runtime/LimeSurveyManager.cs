@@ -326,8 +326,10 @@ namespace GameLabGraz.LimeSurvey
                 OnError.Invoke("Unable to upload responses", _lastError);
                 yield return -1;
             }
-
-            yield return int.Parse(_client.Response.Result.ToString());
+            else
+            {
+                yield return int.Parse(_client.Response.Result.ToString());
+            }
         }
 
         public string GetLastError()

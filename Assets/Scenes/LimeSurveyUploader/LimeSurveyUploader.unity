@@ -548,7 +548,7 @@ PrefabInstance:
     - target: {fileID: 204850344851792848, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
       propertyPath: OnError.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: set_enabled
+      value: set_interactable
       objectReference: {fileID: 0}
     - target: {fileID: 204850344851792848, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
@@ -683,7 +683,7 @@ PrefabInstance:
     - target: {fileID: 204850344851792848, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
       propertyPath: OnStartSubmission.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: set_enabled
+      value: set_interactable
       objectReference: {fileID: 0}
     - target: {fileID: 204850344851792848, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
@@ -693,7 +693,7 @@ PrefabInstance:
     - target: {fileID: 204850344851792848, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
       propertyPath: OnError.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: UnityEngine.Behaviour, UnityEngine
+      value: UnityEngine.UI.Selectable, UnityEngine.UI
       objectReference: {fileID: 0}
     - target: {fileID: 204850344851792848, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
@@ -768,7 +768,7 @@ PrefabInstance:
     - target: {fileID: 204850344851792848, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
       propertyPath: OnStartSubmission.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: UnityEngine.Behaviour, UnityEngine
+      value: UnityEngine.UI.Selectable, UnityEngine.UI
       objectReference: {fileID: 0}
     - target: {fileID: 204850344851792848, guid: 79d106120db22c34e8db900db6c54794,
         type: 3}
@@ -1137,7 +1137,7 @@ PrefabInstance:
     - target: {fileID: 5748860092806960504, guid: 4708caaa85d617d43ac6e70ccebf9062,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -294.79672
+      value: -294.79675
       objectReference: {fileID: 0}
     - target: {fileID: 5748860093089684408, guid: 4708caaa85d617d43ac6e70ccebf9062,
         type: 3}

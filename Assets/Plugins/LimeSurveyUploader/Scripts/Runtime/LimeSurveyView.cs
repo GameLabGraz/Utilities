@@ -353,7 +353,7 @@ namespace GameLabGraz.LimeSurvey
                 // Disable Buttons
                 prevButton.gameObject.SetActive(false);
                 nextButton.gameObject.SetActive(false);
-                submitButton.gameObject.SetActive(false);
+                submitButton.interactable = false;
 
                 questionText.text = "Submitting Responses ...";
 
