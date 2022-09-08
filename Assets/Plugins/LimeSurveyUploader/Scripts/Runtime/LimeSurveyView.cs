@@ -76,6 +76,8 @@ namespace GameLabGraz.LimeSurvey
                 return;
 
             ClearQuestionContent();
+            
+            Debug.Log($"new Question: {CurrentQuestion.Title}: mandatory: {CurrentQuestion.Mandatory}, type: {CurrentQuestion.QuestionType}");
 
             questionText.text = $"{CurrentGroup.GroupName}\n";
             questionText.text += CurrentQuestion.Mandatory ? $"* {CurrentQuestion.QuestionText}" : CurrentQuestion.QuestionText;
@@ -107,7 +109,7 @@ namespace GameLabGraz.LimeSurvey
                     var question = _questions[questionIndex];
                     var warningStr = $"Unknown Question Type '{question.QuestionType}'";
                     var detailStr = $"Question '{question.Title}' uses unsupported type '{question.GetTypeString()}'.";
-                    Debug.LogWarning($"[LimeSurvey] {warningStr}: {detailStr} --- '{question.QuestionText}'");
+                    Debug.Log($"[LimeSurvey] WARNING: {warningStr}: {detailStr} --- '{question.QuestionText}'");
                     OnWarning.Invoke(warningStr, detailStr);
                     break;
             }
@@ -372,7 +374,7 @@ namespace GameLabGraz.LimeSurvey
             else
             {
                 var errorStr = "Unable to submit responses.";
-                Debug.LogError("[LimeSurvey] OnSubmission: " + errorStr);
+                Debug.Log("[LimeSurvey] ERROR OnSubmission: " + errorStr);
                 OnError.Invoke(errorStr, LimeSurveyManager.Instance.GetLastError());
             }
         }

@@ -29,7 +29,7 @@ namespace GameLabGraz.LimeSurvey
                 view.OnStartLoadQuestions.AddListener(OnStartLoadQuestions.Invoke);
                 view.OnQuestionsLoaded.AddListener(OnQuestionsLoaded.Invoke);
                 view.OnStartSubmission.AddListener(OnStartSubmission.Invoke);
-                OnSubmissionFinished.AddListener(OnSubmissionFinished.Invoke);
+                view.OnSubmissionFinished.AddListener(OnSubmissionFinished.Invoke);
             }
 
             var manager = LimeSurveyManager.Instance;

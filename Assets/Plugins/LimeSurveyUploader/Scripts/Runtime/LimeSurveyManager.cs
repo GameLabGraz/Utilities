@@ -109,7 +109,7 @@ namespace GameLabGraz.LimeSurvey
             if (response.Contains("\"status\""))
             {
                 _lastError = "Unable to login: Invalid user name or password.";
-                Debug.LogError("[LimeSurvey] Login: " + _lastError);
+                Debug.Log("[LimeSurvey] ERROR: Login: " + _lastError);
                 OnError.Invoke("Unable to login.", "Invalid user name or password.");
             }
             else
@@ -127,13 +127,13 @@ namespace GameLabGraz.LimeSurvey
             if (response.StatusCode != 200)
             {
                 _lastError = $"Error - HTTP Status Code: {_client.Response.StatusCode}";
-                Debug.LogError("[LimeSurvey] HandleClientResponse: " + _lastError);
+                Debug.Log("[LimeSurvey] ERROR: HandleClientResponse: " + _lastError);
                 return ErrorCode.HttpStatusError;
             }
             if (_client.Response.Error != null)
             {
                 _lastError = $"Error: {_client.Response.Error}";
-                Debug.LogError("[LimeSurvey] HandleClientResponse: " + _lastError);
+                Debug.Log("[LimeSurvey] ERROR: HandleClientResponse: " + _lastError);
                 return ErrorCode.ResponseError;
             }
 
@@ -169,8 +169,12 @@ namespace GameLabGraz.LimeSurvey
                 foreach (var subQuestion in subQuestions)
                 {
                     var subQuestionObj = JsonUtility.FromJson<SubQuestion>(subQuestion.First?.ToString());
+                    subQuestionObj.SubquestionName = (subQuestion as JProperty)?.Name;
                     question.SubQuestions.Add(subQuestionObj);
                 }
+
+                question.SubQuestions.Sort((lhs, rhs) => String.Compare(lhs.SubquestionName, rhs.SubquestionName, StringComparison.Ordinal));
+                
                 if (question.Other)
                 {
                     var otherSubQuestion = JsonUtility.FromJson<SubQuestion>("{\"title\": \"other\", \"question\": \"Other:\"}");
@@ -282,7 +286,7 @@ namespace GameLabGraz.LimeSurvey
 
                 yield return StartCoroutine(SetQuestionProperties(questionObj));
                 
-                questionObj.SubQuestions.Reverse();
+                // questionObj.SubQuestions.Reverse();
                 if(questionObj.RandomOrder)
                     questionObj.SubQuestions = questionObj.SubQuestions.OrderBy(a => Guid.NewGuid()).ToList();
 
@@ -318,7 +322,8 @@ namespace GameLabGraz.LimeSurvey
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
             {
-                Debug.LogError("[LimeSurvey] UploadQuestionResponses: Unable to upload responses.");
+                Debug.Log("[LimeSurvey] ERROR UploadQuestionResponses: Unable to upload responses.");
+                OnError.Invoke("Unable to upload responses", _lastError);
                 yield return -1;
             }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,7 +40,7 @@ public class LimeSurveyEventDebugger : MonoBehaviour
         Debug.Log("[LimeSurveyEvent] OnStartSubmission");
     }
     
-    public void OnSubmissionFinished(int responseID)
+    public void OnSubmissionFinished(Int32 responseID)
     {
         Debug.Log($"[LimeSurveyEvent] OnSubmissionFinished: responseID='{responseID}'");
     }

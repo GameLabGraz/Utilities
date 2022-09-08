@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GameLabGraz.LimeSurvey.Data
@@ -83,6 +84,11 @@ namespace GameLabGraz.LimeSurvey.Data
         {
             if (SubQuestions.Count == 0)
                 return base.HasAnswer();
+
+            if (QuestionType == QuestionType.MultipleChoice)
+            {
+                return SubQuestions.Any(sub => sub.HasAnswer());
+            }
 
             return SubQuestions.TrueForAll(sub => sub.HasAnswer());
         }
