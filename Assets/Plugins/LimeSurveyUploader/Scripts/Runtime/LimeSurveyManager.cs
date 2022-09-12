@@ -328,7 +328,27 @@ namespace GameLabGraz.LimeSurvey
             }
             else
             {
-                yield return int.Parse(_client.Response.Result.ToString());
+                var resultString = _client.Response.Result.ToString();
+                if (int.TryParse(resultString, out var result))
+                {
+                    yield return result;
+                }
+                else
+                {
+                    if (resultString.Contains("\"status\""))
+                    {
+                        var prop = (_client.Response.Result as JObject)?.Properties().FirstOrDefault(p => p.Name.Equals("status"));
+                        if (prop != null)
+                            _lastError = prop.Value.ToString();
+                    }
+
+                    if (string.IsNullOrEmpty(_lastError))
+                        _lastError = resultString;
+
+                    Debug.Log($"[LimeSurvey] ERROR UploadQuestionResponses: Unable to parse responses: {resultString}");
+                    OnError.Invoke("Unable to parse responses", _lastError);
+                    yield return -1;
+                }
             }
         }
 
