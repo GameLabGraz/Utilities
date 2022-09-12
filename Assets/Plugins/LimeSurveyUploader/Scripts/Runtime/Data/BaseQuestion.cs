@@ -14,5 +14,10 @@ namespace GameLabGraz.LimeSurvey.Data
         public string QuestionText => question;
 
         public string Answer { get; set; }
+        
+        public virtual bool HasAnswer()
+        {
+            return !string.IsNullOrEmpty(Answer);
+        }
     }
 }

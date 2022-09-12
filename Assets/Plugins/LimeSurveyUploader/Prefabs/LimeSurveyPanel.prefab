@@ -1154,21 +1154,24 @@ MonoBehaviour:
   prevButton: {fileID: 545524002064339534}
   nextButton: {fileID: 545524002116847255}
   submitButton: {fileID: 545524003026144178}
-  OnSubmission:
+  OnError:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8801897115577524612}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  OnWarning:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartLoadQuestions:
+    m_PersistentCalls:
+      m_Calls: []
+  OnQuestionsLoaded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartSubmission:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSubmissionFinished:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &5281578789330255195
 PrefabInstance:
   m_ObjectHideFlags: 0
