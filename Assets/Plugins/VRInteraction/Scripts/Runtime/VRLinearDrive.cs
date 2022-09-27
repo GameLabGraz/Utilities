@@ -20,6 +20,9 @@ namespace GameLabGraz.VRInteraction
 		public ValueChangeEventFloat onValueChanged;
 		public ValueChangeEventInt onValueChangedInt;
 
+        public ValueChangeEventFloat onRelease;
+        public ValueChangeEventInt onReleaseInt;
+
 		protected float _currentValue;
 		protected float _valueRange;
 
@@ -74,6 +77,10 @@ namespace GameLabGraz.VRInteraction
 			if (hand.IsGrabEnding(gameObject))
 			{
 				hand.DetachObject(gameObject);
+
+				onRelease?.Invoke(_currentValue);
+				if (useAsInteger)
+					onReleaseInt?.Invoke(Mathf.RoundToInt(_currentValue));
 			}
 		}
 		
