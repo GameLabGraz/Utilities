@@ -28,7 +28,9 @@ namespace GameLabGraz.LimeSurvey
         [StringValue("iSurveyID")] SurveyID,
         [StringValue("iGroupID")] GroupID,
         [StringValue("iQuestionID")] QuestionID,
-        [StringValue("aResponseData")] ResponseData
+        [StringValue("aResponseData")] ResponseData,
+        [StringValue("sLanguage")] Language,
+        [StringValue("aQuestionSettings")] QuestionSettings,
     }
     
     [Serializable] public class SubmissionEvent : UnityEvent<int>{}
