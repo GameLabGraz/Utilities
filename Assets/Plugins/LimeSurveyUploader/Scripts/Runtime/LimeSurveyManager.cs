@@ -6,6 +6,7 @@ using System.Linq;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.LimeSurvey.Extensions;
 using GEAR.Gadgets.Coroutine;
+using GEAR.Gadgets.Extensions;
 using Newtonsoft.Json.Linq;
 using UnityEngine.Events;
 
@@ -25,6 +26,7 @@ namespace GameLabGraz.LimeSurvey
         // -------------------------------------------------------------------------------------------------------------
         // Survey Configuration
         [SerializeField] private string surveyId;
+        [SerializeField] private SystemLanguage surveyLanguage = SystemLanguage.English;
 
         // -------------------------------------------------------------------------------------------------------------
         // Other
@@ -54,6 +56,11 @@ namespace GameLabGraz.LimeSurvey
                     _instance = FindObjectOfType<LimeSurveyManager>();
                 return _instance;
             }
+        }
+
+        public void SetSurveyLanguage(SystemLanguage language)
+        {
+            surveyLanguage = language;
         }
 
         private void Awake()
@@ -147,6 +154,9 @@ namespace GameLabGraz.LimeSurvey
             _client.SetMethod(LimeSurveyMethod.GetQuestionProperties);
             _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
             _client.AddParameter(LimeSurveyParameter.QuestionID, question.ID);
+            _client.AddParameter(LimeSurveyParameter.QuestionSettings, null);
+            _client.AddParameter(LimeSurveyParameter.Language, surveyLanguage.ToLanguageCode());
+
 
             yield return _client.Post();
 
@@ -268,8 +278,8 @@ namespace GameLabGraz.LimeSurvey
             _client.SetMethod(LimeSurveyMethod.ListQuestions);
             _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
             _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
-            if (groupId != null) 
-                _client.AddParameter(LimeSurveyParameter.GroupID, groupId);
+            _client.AddParameter(LimeSurveyParameter.GroupID, groupId);
+            _client.AddParameter(LimeSurveyParameter.Language, surveyLanguage.ToLanguageCode());
 
             yield return _client.Post();
 
