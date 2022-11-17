@@ -24,6 +24,7 @@ namespace GameLabGraz.LimeSurvey.Editor
 
         // Survey
         private SerializedProperty surveyId;
+        private SerializedProperty surveyLanguage;
 
         // ------------
         // Methods
@@ -32,6 +33,7 @@ namespace GameLabGraz.LimeSurvey.Editor
         {
             _logoTexture = Resources.Load<Texture2D>(EditorGUIUtility.isProSkin ? TexturePathDarkTheme : TexturePathLightTheme);
             surveyId = serializedObject.FindProperty("surveyId");
+            surveyLanguage = serializedObject.FindProperty("surveyLanguage");
         }
 
         public override void OnInspectorGUI()
@@ -82,6 +84,7 @@ namespace GameLabGraz.LimeSurvey.Editor
             // Survey Configuration
             EditorGUILayout.LabelField("Survey Config", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(surveyId);
+            EditorGUILayout.PropertyField(surveyLanguage);
             EditorGUILayout.Space();
             
             serializedObject.ApplyModifiedProperties();
