@@ -1,28 +1,59 @@
-﻿using UnityEngine;
+﻿using System;
+using Antares.Evaluation.LearningContent;
+using GEAR.Localization;
+using GEAR.Localization.Text;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace GEAR.QuestManager
+namespace GameLabGraz.QuestManager
 {
-    public class SubQuest : IQuest
+    public class SubQuest : Quest
     {
-        [SerializeField] private GameObject finishLine;
-
         [SerializeField] private GameObject infoLogoObject;
 
+        [SerializeField] private GameObject UIAchievement;
+        
+        [SerializeField] public GameObject additionalInformationBody;
+        
         private bool hasAdditionalInformation;
-
+        
         public delegate bool QuestCheck();
         public QuestCheck questCheck;
 
         private void Start()
         {
-            OnQuestFinished.AddListener(() =>
+            if (UIAchievement)
+                UIAchievement.SetActive(false);
+        }
+
+        private new void Update()
+        {
+            if (IsHidden)
+                additionalInformationBody.SetActive(false);
+
+            if (!IsActive)
+                return;
+            if (!IsDone()) 
+                return;
+            
+            
+            IsFinished = true;
+            IsActive = false;
+            infoLogoObject.SetActive(false);
+            QuestData.IsCompleted = true;
+            if (QuestData.QuestAchievement != null)
             {
-                if (finishLine != null)
-                {
-                    finishLine.SetActive(true);
-                    finishLine.GetComponent<Renderer>().enabled = !IsHidden;
-                }
-            });
+                UIAchievement = QuestData.QuestAchievement;
+            }
+            QuestData.QuestAchievement?.SetActive(true);
+            if (UIAchievement)
+            {
+                UIAchievement?.SetActive(true);
+                UIAchievement?.GetComponentInChildren<ParticleSystem>()?.Play();
+                Destroy(UIAchievement, 3);
+            }
+            onQuestFinished.Invoke();
         }
 
         public bool HasAdditionalInformation
@@ -33,6 +64,14 @@ namespace GEAR.QuestManager
                 hasAdditionalInformation = value;
                 if (infoLogoObject != null) infoLogoObject.SetActive(true);
             }
+        }
+        
+        public void ShowAdditionalInformation()
+        {
+            Debug.Log("Show additional information");
+            foreach (var renderer in additionalInformationBody.GetComponentsInChildren<Renderer>())
+                renderer.enabled = !additionalInformationBody.activeInHierarchy;
+            additionalInformationBody.SetActive(!additionalInformationBody.activeInHierarchy);
         }
 
         protected override bool IsDone()

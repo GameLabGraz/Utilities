@@ -1,9 +1,9 @@
 {
-	"name": "com.gear.questmanager",
+	"name": "com.gamelabgraz.questmanager",
 	"displayName": "Quest Manager",
 	"version": "1.0.0",
 	"unity": "2018.4",
-	"author": "TUG GEAR Group",
+	"author": "Game Lab Graz",
 	"description": "",
 	"dependencies": {
 		"com.unity.textmeshpro": "1.4.1"
