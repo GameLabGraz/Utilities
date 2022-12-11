@@ -15,6 +15,8 @@ namespace GameLabGraz.QuestManager
         [SerializeField] private GameObject UIAchievement;
         
         [SerializeField] public GameObject additionalInformationBody;
+
+        public Transform AchievementLocation;
         
         private bool hasAdditionalInformation;
         
@@ -50,6 +52,7 @@ namespace GameLabGraz.QuestManager
             if (UIAchievement)
             {
                 UIAchievement?.SetActive(true);
+                //UIAchievement.transform.position = AchievementLocation.position;
                 UIAchievement?.GetComponentInChildren<ParticleSystem>()?.Play();
                 Destroy(UIAchievement, 3);
             }

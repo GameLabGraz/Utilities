@@ -322,7 +322,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2712796905717567462
 Transform:
   m_ObjectHideFlags: 0
@@ -331,7 +331,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1234791182839288148}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.3, y: -32, z: -38.9}
+  m_LocalPosition: {x: 699.8, y: -32, z: -38.9}
   m_LocalScale: {x: 200, y: 200, z: 200}
   m_Children:
   - {fileID: 5224627112198398036}
@@ -583,6 +583,7 @@ MonoBehaviour:
   infoLogoObject: {fileID: 5622474848853562441}
   UIAchievement: {fileID: 1234791182839288148}
   additionalInformationBody: {fileID: 242272281418916111}
+  AchievementLocation: {fileID: 0}
 --- !u!114 &7916560531241858780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5994,7 +5995,7 @@ Transform:
   m_GameObject: {fileID: 5224627112198398037}
   m_LocalRotation: {x: -0, y: 0.9990483, z: -0, w: -0.043619405}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.13000007, y: 0.13, z: 0.13000008}
+  m_LocalScale: {x: 0.13000007, y: 0.12837449, z: 0.15074953}
   m_Children:
   - {fileID: 5224627111094466244}
   - {fileID: 5224627112369546891}

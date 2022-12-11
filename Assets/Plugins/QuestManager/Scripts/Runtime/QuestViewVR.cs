@@ -23,7 +23,6 @@ namespace GameLabGraz.QuestManager
             {
                 var mainQuestBody = Instantiate(MainQuestBody, DataObjectRoot.transform);
                 mainQuestBody.name = mainQuestData.DefaultText;
-                //mainQuestBody.transform.localScale = Vector3.one;
                 mainQuestBody.transform.localPosition = mainQuestPosition;
                 mainQuestBody.GetComponentInChildren<LocalizedTMP>().Key = mainQuestData.TranslationKey;
                 mainQuestBody.GetComponentInChildren<TMP_Text>().text = LanguageManager.Instance.GetString(mainQuestData.TranslationKey);
@@ -73,10 +72,7 @@ namespace GameLabGraz.QuestManager
 
         protected override void ShowAdditionalInformation(SubQuest subQuest)
         {
-            Debug.Log("Show additional information VR");
             var additionalInfoBody = subQuest.additionalInformationBody;
-            // foreach (var renderer in additionalInfoBody.GetComponentsInChildren<Renderer>())
-            //     renderer.enabled = !additionalInfoBody.activeInHierarchy;
             additionalInfoBody.SetActive(!additionalInfoBody.activeInHierarchy);
         }
 

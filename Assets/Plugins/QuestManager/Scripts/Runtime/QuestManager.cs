@@ -20,7 +20,6 @@ namespace GameLabGraz.QuestManager
         public bool hideFinishedQuests = false;
 
         private int _currentQuestIndex = 0;
-        private int _starScore = 0;
         private int _completedQuests = 0;
         
         private const string XmlSchemaFile = "qmSchema";
@@ -30,8 +29,9 @@ namespace GameLabGraz.QuestManager
         public readonly List<QuestData> SubQuests = new List<QuestData>();
         
         public static readonly UnityEvent OnQuestsRead = new UnityEvent();
-        public static readonly UnityEvent OnStarEarned = new UnityEvent();
-        
+        public UnityEvent OnQuestCompleted = new UnityEvent();
+
+
         private void Start()
         {
             _currentQuestIndex = 0; 
@@ -42,7 +42,11 @@ namespace GameLabGraz.QuestManager
 
         private void Update()
         {
-            _completedQuests = SubQuests.Count(quest => quest.IsCompleted);
+            if (SubQuests.Count(quest => quest.IsCompleted) != _completedQuests)
+            {
+                _completedQuests++;
+                OnQuestCompleted.Invoke();
+            }
         }
 
         private void ReadQuestXml()
@@ -131,22 +135,18 @@ namespace GameLabGraz.QuestManager
             activeMainQuest.ActivateNextSubQuest();
             activeMainQuest.onQuestFinished.AddListener(() =>
             {
-                var quote = _completedQuests / MainQuests.Count;
-                
-                if ( (quote > 0.33 && _starScore == 0) || ( quote > 0.66 && _starScore == 1) || quote > 0.99 )
-                {
-                    _starScore++;
-                    OnStarEarned.Invoke();
-                }
-                
                 if (activeMainQuest.finishLine != null) 
                     activeMainQuest.finishLine.SetActive(true);
                 else
                     activeMainQuest.gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+                
+                StartCoroutine(activeMainQuest.MoveMainQuestToBottom());
 
                 if (hideFinishedQuests)
-                    activeMainQuest.HideSubQuests();
-                
+                {
+                    StartCoroutine(activeMainQuest.HideSubQuests());
+                }
+
                 ActivateNextMainQuest();
             });
         }

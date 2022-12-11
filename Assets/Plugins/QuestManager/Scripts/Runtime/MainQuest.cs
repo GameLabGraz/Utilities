@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -38,13 +39,20 @@ namespace GameLabGraz.QuestManager
                 ActivateNextSubQuest();
             });
         }
-
-        public void HideSubQuests()
+        
+        public IEnumerator HideSubQuests()
         {
+            yield return new WaitForSeconds (3);
             foreach (var subQuest in _subQuests)
             {
                 subQuest.gameObject.SetActive(!subQuest.gameObject.activeInHierarchy);
             }
+        }
+
+        public IEnumerator MoveMainQuestToBottom()
+        {
+            yield return new WaitForSeconds (3);
+            transform.SetAsLastSibling();
         }
         
         public void AddSubQuest(SubQuest subQuest)

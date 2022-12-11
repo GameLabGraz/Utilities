@@ -9,8 +9,7 @@ namespace GameLabGraz.QuestManager
         [SerializeField] protected GameObject MainQuestBody;
         [SerializeField] protected GameObject SubQuestBody;
         [SerializeField] protected GameObject DataObjectRoot;
-        [SerializeField] protected GameObject ScoreSystem;
-        
+
         private QuestManager _questManager;
 
         protected abstract void InitializeQuestView(List<QuestData> mainQuests);
@@ -20,10 +19,7 @@ namespace GameLabGraz.QuestManager
         private void Start()
         {
             _questManager = GetComponent<QuestManager>();
-            
-            if (ScoreSystem)
-                Instantiate(ScoreSystem, DataObjectRoot.transform);
-            
+
             QuestManager.OnQuestsRead.AddListener(() =>
             {
                 InitializeQuestView(_questManager.MainQuests);

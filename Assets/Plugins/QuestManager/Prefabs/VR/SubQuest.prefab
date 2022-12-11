@@ -1287,7 +1287,9 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   infoLogoObject: {fileID: 7662902857666825274}
+  UIAchievement: {fileID: 0}
   additionalInformationBody: {fileID: 5233647940369351755}
+  AchievementLocation: {fileID: 0}
 --- !u!1 &7906746178026485120
 GameObject:
   m_ObjectHideFlags: 0

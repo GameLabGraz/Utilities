@@ -11,6 +11,7 @@ namespace GameLabGraz.QuestManager
 { 
     public class QuestViewPC : QuestView
     {
+        [SerializeField] protected Transform AchievementLocation;
         protected override void InitializeQuestView(List<QuestData> mainQuests)
         {
             foreach (var mainQuestData in mainQuests)
@@ -35,6 +36,7 @@ namespace GameLabGraz.QuestManager
                     var subQuestObject = subQuestBody.GetComponent<SubQuest>();
                     subQuestData.QuestBody = subQuestObject;
                     subQuestObject.QuestData = subQuestData;
+                    subQuestObject.AchievementLocation = AchievementLocation;
 
                     var additionalInfoBtn = subQuestBody.GetComponentInChildren<Button>();
                     
