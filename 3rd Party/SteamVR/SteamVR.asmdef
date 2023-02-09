@@ -7,7 +7,8 @@
     ],
     "includePlatforms": [],
     "excludePlatforms": [
-        "Android"
+        "Android",
+        "WebGL"
     ],
     "allowUnsafeCode": false,
     "overrideReferences": false,
