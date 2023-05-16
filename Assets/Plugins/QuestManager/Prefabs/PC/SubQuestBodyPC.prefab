@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 10, y: -50}
-  m_SizeDelta: {x: 550, y: 420}
+  m_SizeDelta: {x: 400, y: 420}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1250186358549907672
 CanvasRenderer:
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
@@ -550,9 +550,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd414d48a8545f4690a82f7256e3cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeLamp: {fileID: 8394853934631334870}
-  deactiveLamp: {fileID: 6165157742790658653}
-  finishLine: {fileID: 0}
+  _activeLamp: {fileID: 8394853934631334870}
+  _deactiveLamp: {fileID: 6165157742790658653}
+  FinishLine: {fileID: 0}
   onQuestFinished:
     m_PersistentCalls:
       m_Calls:
@@ -580,10 +580,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  infoLogoObject: {fileID: 5622474848853562441}
-  UIAchievement: {fileID: 1234791182839288148}
-  additionalInformationBody: {fileID: 242272281418916111}
-  AchievementLocation: {fileID: 0}
+  _infoLogoObject: {fileID: 5622474848853562441}
+  _uIAchievement: {fileID: 1234791182839288148}
+  AdditionalInformationBody: {fileID: 242272281418916111}
 --- !u!114 &7916560531241858780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,8 +675,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 275, y: -55}
-  m_SizeDelta: {x: 550, y: 100}
+  m_AnchoredPosition: {x: 200, y: -55}
+  m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3408025410350182595
 CanvasRenderer:
@@ -901,7 +900,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.02264148, b: 0.02264148, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -6317,8 +6316,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 275, y: -260}
-  m_SizeDelta: {x: 550, y: 300}
+  m_AnchoredPosition: {x: 200, y: -260}
+  m_SizeDelta: {x: 400, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4684412004679700489
 CanvasRenderer:

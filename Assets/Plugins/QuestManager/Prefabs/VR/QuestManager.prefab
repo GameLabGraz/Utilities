@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b405c6c55e384543860e614fec2d775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  QuestFile: {fileID: 0}
-  hideFinishedQuests: 0
+  _questFile: {fileID: 0}
+  _hideCompletedQuests: 0
   OnQuestCompleted:
     m_PersistentCalls:
       m_Calls: []
@@ -167,10 +167,11 @@ MonoBehaviour:
   SubQuestBody: {fileID: 6960457176145847512, guid: f08e6eda00cab6f4ca22a31e1af1cbeb,
     type: 3}
   DataObjectRoot: {fileID: 4702103523925832652}
-  MQBodyiniOffset: {x: 0, y: -5, z: 0}
-  MQBodyOffset: {x: 0, y: -2.85, z: 0}
-  SQBodyOffset: {x: 0, y: -2, z: -0.1}
-  Cover: {fileID: 5827315811681656692}
+  MaxImageSize: {x: 800, y: 500}
+  Handle: {fileID: 7311954553688159491}
+  mQBodyiniOffset: {x: 0, y: -0.1, z: 0}
+  mQBodyOffset: {x: 0, y: -2.85, z: 0}
+  sQBodyOffset: {x: 0, y: -2, z: -0.1}
 --- !u!1 &2090330629789085714
 GameObject:
   m_ObjectHideFlags: 0

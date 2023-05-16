@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GEAR.Localization;
 using GEAR.Localization.Text;
 using TMPro;
@@ -11,14 +13,14 @@ namespace GameLabGraz.QuestManager
 {
     public class QuestViewVR : QuestView
     {
-        [SerializeField] private Vector3 MQBodyiniOffset = new Vector3(0, -5, 0);
-        [SerializeField] private Vector3 MQBodyOffset = new Vector3(0, -2.85f, 0);
-        [SerializeField] private Vector3 SQBodyOffset = new Vector3(0f, -2f, -0.1f);
-        [SerializeField] private GameObject Cover;
+        [SerializeField] protected GameObject Handle;
+        [SerializeField] private Vector3 _mQBodyiniOffset = new Vector3(0, -0.1f, 0);
+        [SerializeField] private Vector3 _mQBodyOffset = new Vector3(0, -2.85f, 0);
+        [SerializeField] private Vector3 _sQBodyOffset = new Vector3(0f, -2f, -0.1f);
 
         protected override void InitializeQuestView(List<QuestData> mainQuests)
         {
-            var mainQuestPosition = MQBodyiniOffset;
+            var mainQuestPosition = _mQBodyiniOffset;
             foreach (var mainQuestData in mainQuests)
             {
                 var mainQuestBody = Instantiate(MainQuestBody, DataObjectRoot.transform);
@@ -36,15 +38,16 @@ namespace GameLabGraz.QuestManager
                     var subQuestBody = Instantiate(SubQuestBody, mainQuestBody.transform);
                     subQuestBody.name = subQuestData.DefaultText;
                     subQuestBody.transform.localScale = Vector3.one;
-                    subQuestBody.transform.localPosition = subQuestOffsetCount * SQBodyOffset;
+                    subQuestBody.transform.localPosition = subQuestOffsetCount * _sQBodyOffset;
                     subQuestBody.GetComponentInChildren<LocalizedTMP>().Key = subQuestData.TranslationKey;
                     subQuestBody.GetComponentInChildren<TMP_Text>().text = LanguageManager.Instance.GetString(subQuestData.TranslationKey);
                     
                     var subQuestObject = subQuestBody.GetComponent<SubQuest>();
                     subQuestData.QuestBody = subQuestObject;
+                    subQuestObject.QuestData = subQuestData;
 
                     var additionalInfoBtn = subQuestObject.GetComponentInChildren<Button>();
-                    if (subQuestData.AdditionalInformation != null)
+                    if (subQuestData.AdditionalInformation != null || subQuestData.AdditionalImagePath != null)
                     {
                         subQuestObject.HasAdditionalInformation = true;
                         additionalInfoBtn.gameObject.SetActive(true);
@@ -66,13 +69,14 @@ namespace GameLabGraz.QuestManager
                     subQuestOffsetCount++;
                 }
                 mainQuestData.QuestBody = mainQuestObject;
-                mainQuestPosition += MQBodyOffset + SQBodyOffset * subQuestOffsetCount;
+                mainQuestPosition += _mQBodyOffset + _sQBodyOffset * subQuestOffsetCount;
             }
+
         }
 
         protected override void ShowAdditionalInformation(SubQuest subQuest)
         {
-            var additionalInfoBody = subQuest.additionalInformationBody;
+            var additionalInfoBody = subQuest.AdditionalInformationBody;
             additionalInfoBody.SetActive(!additionalInfoBody.activeInHierarchy);
         }
 
@@ -80,12 +84,21 @@ namespace GameLabGraz.QuestManager
         {
             var subQuest = (SubQuest)subQuestData.QuestBody;
 
-            subQuest.additionalInformationBody.GetComponentInChildren<LocalizedTMP>().Key =
-                subQuestData.AdditionalInfoTranslationKey;
-            subQuest.additionalInformationBody.GetComponentInChildren<TMP_Text>().text =
-                LanguageManager.Instance.GetString(subQuestData.AdditionalInfoTranslationKey);
+           
+            var canvas = subQuest.AdditionalInformationBody.GetComponentInChildren<Canvas>();
 
-            var canvas = subQuest.additionalInformationBody.GetComponentInChildren<Canvas>();
+            if (string.IsNullOrEmpty(subQuestData.AdditionalInformation))
+            {
+                subQuest.AdditionalInformationBody.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+                subQuest.AdditionalInformationBody.gameObject.transform.GetChild(1).transform.localPosition += new Vector3(0,0,0.003f);
+            }
+            else
+            {
+                subQuest.AdditionalInformationBody.GetComponentInChildren<LocalizedTMP>().Key =
+                subQuestData.AdditionalInfoTranslationKey;
+                subQuest.AdditionalInformationBody.GetComponentInChildren<TMP_Text>().text =
+                    LanguageManager.Instance.GetString(subQuestData.AdditionalInfoTranslationKey);
+            }
 
             if (!File.Exists(subQuestData.AdditionalImagePath))
             {
@@ -93,15 +106,44 @@ namespace GameLabGraz.QuestManager
                 return;
             }
 
-            var additionalImage = new Texture2D(100, 100);
-            additionalImage.LoadImage(File.ReadAllBytes(subQuestData.AdditionalImagePath));
-            subQuest.additionalInformationBody.GetComponentInChildren<RawImage>().texture = additionalImage;
-            // if (additionalImage.width == 0 || additionalImage.height == 0)
-            //     subQuest.additionalInformationBody.GetComponentInChildren<RawImage>().SetNativeSize();
-            // else
-            //     additionalImage.Resize(subQuestData.AdditionalImageWidth, subQuestData.AdditionalImageHeight);
-
+            if (subQuest.QuestData.AdditionalImageHeight <= 0 || subQuest.QuestData.AdditionalImageWidth <= 0
+                || subQuest.QuestData.AdditionalImageHeight > MaxImageSize.y || subQuest.QuestData.AdditionalImageWidth > MaxImageSize.x)
+            {
+                var additionalImage = new Texture2D(100, 100);
+                additionalImage.LoadImage(File.ReadAllBytes(subQuestData.AdditionalImagePath));
+                subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().texture = additionalImage;
+                subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().SetNativeSize();
+            }
+            else
+            {
+                var additionalImage = new Texture2D(subQuestData.AdditionalImageWidth, subQuestData.AdditionalImageHeight);
+                additionalImage.LoadImage(File.ReadAllBytes(subQuestData.AdditionalImagePath));
+                subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().texture = additionalImage;
+                subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().GetComponent<RectTransform>()
+                    .sizeDelta = new Vector2(subQuestData.AdditionalImageWidth, subQuestData.AdditionalImageHeight);
+            }
         }
+
+        public IEnumerator ScrollDownView(GameObject quest, float distance)
+        {
+            float scrollDuration = 2f;
+            float moveAmount = distance / scrollDuration * Time.deltaTime;
+            var mainRenderer = quest.GetComponentInChildren<MeshRenderer>();
+            var lastSQ = quest.GetComponentsInChildren<SubQuest>().LastOrDefault().gameObject;
+            var renderer = lastSQ.GetComponentInChildren<MeshRenderer>();
+
+            if (renderer == null)
+                yield return null;
+
+            while (mainRenderer.isVisible || renderer.isVisible)
+            {
+                Vector3 newPosition = Handle.transform.position - new Vector3(0, moveAmount, 0);
+                Handle.transform.position = newPosition;
+
+                yield return null;
+            }
+        }
+
     }
 }
 

@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Handle : MonoBehaviour
 {
-    [SerializeField] private GameObject dataObjectRoot;
-    [SerializeField] private float movementMultiplier = 1.0f;
+    [SerializeField] private GameObject _dataObjectRoot;
+    [SerializeField] private float _movementMultiplier = 1.0f;
 
-    private Vector3 iniPosition;
-    private Vector3 iniRootPosition;
+    private Vector3 _iniPosition;
+    private Vector3 _iniRootPosition;
 
     private void Start()
     {
-        iniPosition = transform.position;
-        iniRootPosition = dataObjectRoot.transform.position;
+        _iniPosition = transform.position;
+        _iniRootPosition = _dataObjectRoot.transform.position;
     }
 
     private void Update()
     {
-        dataObjectRoot.transform.position = iniRootPosition - (transform.position - iniPosition) * movementMultiplier;
+        _dataObjectRoot.transform.position = _iniRootPosition - (transform.position - _iniPosition) * _movementMultiplier;
     }
 }

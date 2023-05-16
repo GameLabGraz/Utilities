@@ -6,11 +6,11 @@ namespace GameLabGraz.QuestManager
 {
     public class HideQuest : MonoBehaviour
     {
-        private List<GameObject> disabledQuests = new List<GameObject>();
+        private List<GameObject> _disabledQuests = new List<GameObject>();
         private void OnTriggerEnter(Collider trigger)
         {
             if (CompareTag("AdditionalInformationBody"))
-                disabledQuests.Add(trigger.gameObject);
+                _disabledQuests.Add(trigger.gameObject);
             
             if(trigger.CompareTag("QuestBody"))
                 HideObjects(trigger.gameObject);
@@ -24,7 +24,7 @@ namespace GameLabGraz.QuestManager
 
         private void OnDisable()
         {
-            foreach (var go in disabledQuests)
+            foreach (var go in _disabledQuests)
                 RevealObjects(go);
         }
 

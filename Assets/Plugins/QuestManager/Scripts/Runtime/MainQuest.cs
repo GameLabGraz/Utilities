@@ -26,10 +26,10 @@ namespace GameLabGraz.QuestManager
             activeSubQuest.IsActive = true;
             activeSubQuest.onQuestFinished.AddListener(() =>
             {
-                if (activeSubQuest.finishLine != null)
+                if (activeSubQuest.FinishLine != null)
                 {
-                    activeSubQuest.finishLine.SetActive(true);
-                    activeSubQuest.finishLine.GetComponent<Renderer>().enabled = !IsHidden;
+                    activeSubQuest.FinishLine.SetActive(true);
+                    activeSubQuest.FinishLine.GetComponent<Renderer>().enabled = !IsHidden;
                 }
                 else
                 {
@@ -58,6 +58,11 @@ namespace GameLabGraz.QuestManager
         public void AddSubQuest(SubQuest subQuest)
         {
             _subQuests.Add(subQuest);
+        }
+
+        public int GetSubQuestCount()
+        {
+            return _subQuests.Count;
         }
     }
 }

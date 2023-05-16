@@ -15,16 +15,16 @@ namespace GameLabGraz.QuestManager
 {
     public class QuestManager : MonoBehaviour
     {
-        [SerializeField] private TextAsset QuestFile;
-
-        public bool hideFinishedQuests = false;
+        [SerializeField] private TextAsset _questFile;
+        [SerializeField] private bool _hideCompletedQuests = false;
 
         private int _currentQuestIndex = 0;
         private int _completedQuests = 0;
         
-        private const string XmlSchemaFile = "qmSchema";
+        private const string _xmlSchemaFile = "qmSchema";
         private readonly XmlSchemaSet _xmlSchemaSet = new XmlSchemaSet();
-        
+
+
         public readonly List<QuestData> MainQuests = new List<QuestData>();
         public readonly List<QuestData> SubQuests = new List<QuestData>();
         
@@ -36,7 +36,7 @@ namespace GameLabGraz.QuestManager
         {
             _currentQuestIndex = 0; 
             _xmlSchemaSet.Add("", XmlReader.Create(
-                new MemoryStream(Resources.Load<TextAsset>(XmlSchemaFile).bytes)));
+                new MemoryStream(Resources.Load<TextAsset>(_xmlSchemaFile).bytes)));
             ReadQuestXml();
         }
 
@@ -52,14 +52,14 @@ namespace GameLabGraz.QuestManager
         private void ReadQuestXml()
         {
             MainQuests.Clear();
-            if (!QuestFile)
+            if (!_questFile)
             {
-                Debug.LogError($"QuestManager::ReadQuestXML: Unable to load quest file {QuestFile.name}");
+                Debug.LogError($"QuestManager::ReadQuestXML: Unable to load quest file {_questFile.name}");
                 return;
             }
 
             var validationError = false;
-            var doc = XDocument.Load(new MemoryStream(QuestFile.bytes));
+            var doc = XDocument.Load(new MemoryStream(_questFile.bytes));
 
             doc.Validate(_xmlSchemaSet, (o, e) =>  
             {  
@@ -69,7 +69,7 @@ namespace GameLabGraz.QuestManager
 
             if (validationError)
             {
-                Debug.LogError($"QuestManager::ReadQuestXML: Validation for file {QuestFile.name} failed");
+                Debug.LogError($"QuestManager::ReadQuestXML: Validation for file {_questFile.name} failed");
                 return;
             }
 
@@ -135,16 +135,20 @@ namespace GameLabGraz.QuestManager
             activeMainQuest.ActivateNextSubQuest();
             activeMainQuest.onQuestFinished.AddListener(() =>
             {
-                if (activeMainQuest.finishLine != null) 
-                    activeMainQuest.finishLine.SetActive(true);
-                else
-                    activeMainQuest.gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
-                
-                StartCoroutine(activeMainQuest.MoveMainQuestToBottom());
-
-                if (hideFinishedQuests)
+                if (activeMainQuest.FinishLine != null)
                 {
-                    StartCoroutine(activeMainQuest.HideSubQuests());
+                    activeMainQuest.FinishLine.SetActive(true);
+                    var questCount = activeMainQuest.GetSubQuestCount();
+                    var view = this.gameObject.GetComponent<QuestViewVR>();
+                    StartCoroutine(view.ScrollDownView(activeMainQuest.gameObject, 0.25f * questCount));
+                }
+                else
+                {
+                    activeMainQuest.gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+                    StartCoroutine(activeMainQuest.MoveMainQuestToBottom());
+
+                    if (_hideCompletedQuests)
+                        StartCoroutine(activeMainQuest.HideSubQuests());
                 }
 
                 ActivateNextMainQuest();

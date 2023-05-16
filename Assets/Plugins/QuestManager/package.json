@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"unity": "2018.4",
 	"author": "Game Lab Graz",
-	"description": "",
+	"description": "This package can be used to show different main and sub quests to users.",
 	"dependencies": {
 		"com.unity.textmeshpro": "1.4.1"
 	}

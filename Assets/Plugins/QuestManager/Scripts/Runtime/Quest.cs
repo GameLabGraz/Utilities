@@ -6,10 +6,10 @@ namespace GameLabGraz.QuestManager
     public abstract class Quest : MonoBehaviour
     {
         [Header("Status Lamp")]
-        [SerializeField] private GameObject activeLamp;
-        [SerializeField] private GameObject deactiveLamp;
+        [SerializeField] private GameObject _activeLamp;
+        [SerializeField] private GameObject _deactiveLamp;
 
-        [SerializeField] public GameObject finishLine;
+        [SerializeField] public GameObject FinishLine;
         
         public UnityEvent onQuestFinished = new UnityEvent();
 
@@ -26,15 +26,15 @@ namespace GameLabGraz.QuestManager
                 QuestData?.QuestHint?.SetActive(value);
 
                _isActive = value;
-                if (deactiveLamp != null)
+                if (_deactiveLamp != null)
                 {
-                    deactiveLamp.SetActive(!value);
-                    deactiveLamp.GetComponent<Renderer>().enabled = !IsHidden;
+                    _deactiveLamp.SetActive(!value);
+                    _deactiveLamp.GetComponent<Renderer>().enabled = !IsHidden;
                 }
-                if (activeLamp != null)
+                if (_activeLamp != null)
                 {
-                    activeLamp.SetActive(value);
-                    activeLamp.GetComponent<Renderer>().enabled = !IsHidden;
+                    _activeLamp.SetActive(value);
+                    _activeLamp.GetComponent<Renderer>().enabled = !IsHidden;
                 }
             }
         }

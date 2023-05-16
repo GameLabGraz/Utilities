@@ -9,6 +9,7 @@ namespace GameLabGraz.QuestManager
         [SerializeField] protected GameObject MainQuestBody;
         [SerializeField] protected GameObject SubQuestBody;
         [SerializeField] protected GameObject DataObjectRoot;
+        [SerializeField] protected Vector2 MaxImageSize = new Vector2(800,500);
 
         private QuestManager _questManager;
 

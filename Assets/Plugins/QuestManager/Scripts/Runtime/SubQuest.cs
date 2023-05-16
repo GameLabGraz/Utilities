@@ -10,29 +10,27 @@ namespace GameLabGraz.QuestManager
 {
     public class SubQuest : Quest
     {
-        [SerializeField] private GameObject infoLogoObject;
+        [SerializeField] private GameObject _infoLogoObject;
 
-        [SerializeField] private GameObject UIAchievement;
+        [SerializeField] private GameObject _uIAchievement;
         
-        [SerializeField] public GameObject additionalInformationBody;
-
-        public Transform AchievementLocation;
+        [SerializeField] public GameObject AdditionalInformationBody;
         
-        private bool hasAdditionalInformation;
+        private bool _hasAdditionalInformation;
         
         public delegate bool QuestCheck();
         public QuestCheck questCheck;
 
         private void Start()
         {
-            if (UIAchievement)
-                UIAchievement.SetActive(false);
+            if (_uIAchievement)
+                _uIAchievement.SetActive(false);
         }
 
         private new void Update()
         {
             if (IsHidden)
-                additionalInformationBody.SetActive(false);
+                AdditionalInformationBody.SetActive(false);
 
             if (!IsActive)
                 return;
@@ -42,39 +40,38 @@ namespace GameLabGraz.QuestManager
             
             IsFinished = true;
             IsActive = false;
-            infoLogoObject.SetActive(false);
+            _infoLogoObject.SetActive(false);
+            AdditionalInformationBody.SetActive(false);
             QuestData.IsCompleted = true;
             if (QuestData.QuestAchievement != null)
             {
-                UIAchievement = QuestData.QuestAchievement;
+                _uIAchievement = QuestData.QuestAchievement;
             }
             QuestData.QuestAchievement?.SetActive(true);
-            if (UIAchievement)
+            if (_uIAchievement)
             {
-                UIAchievement?.SetActive(true);
-                //UIAchievement.transform.position = AchievementLocation.position;
-                UIAchievement?.GetComponentInChildren<ParticleSystem>()?.Play();
-                Destroy(UIAchievement, 3);
+                _uIAchievement?.SetActive(true);
+                _uIAchievement?.GetComponentInChildren<ParticleSystem>()?.Play();
+                Destroy(_uIAchievement, 3);
             }
             onQuestFinished.Invoke();
         }
 
         public bool HasAdditionalInformation
         {
-            get => hasAdditionalInformation;
+            get => _hasAdditionalInformation;
             set
             {
-                hasAdditionalInformation = value;
-                if (infoLogoObject != null) infoLogoObject.SetActive(true);
+                _hasAdditionalInformation = value;
+                if (_infoLogoObject != null) _infoLogoObject.SetActive(true);
             }
         }
         
         public void ShowAdditionalInformation()
         {
-            Debug.Log("Show additional information");
-            foreach (var renderer in additionalInformationBody.GetComponentsInChildren<Renderer>())
-                renderer.enabled = !additionalInformationBody.activeInHierarchy;
-            additionalInformationBody.SetActive(!additionalInformationBody.activeInHierarchy);
+            foreach (var renderer in AdditionalInformationBody.GetComponentsInChildren<Renderer>())
+                renderer.enabled = !AdditionalInformationBody.activeInHierarchy;
+            AdditionalInformationBody.SetActive(!AdditionalInformationBody.activeInHierarchy);
         }
 
         protected override bool IsDone()

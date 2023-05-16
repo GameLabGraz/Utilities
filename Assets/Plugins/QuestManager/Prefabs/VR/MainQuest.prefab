@@ -127,10 +127,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c770ff1cc51e0e449886ed8779b62442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeLamp: {fileID: 766972536335089817}
-  deactiveLamp: {fileID: 4610371438041639598}
-  finishLine: {fileID: 4723222648002400904}
-  OnQuestFinished:
+  _activeLamp: {fileID: 766972536335089817}
+  _deactiveLamp: {fileID: 4610371438041639598}
+  FinishLine: {fileID: 4723222648002400904}
+  onQuestFinished:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1462030625560839213

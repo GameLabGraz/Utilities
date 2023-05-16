@@ -44,7 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b405c6c55e384543860e614fec2d775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  QuestFile: {fileID: 0}
+  _questFile: {fileID: 0}
+  _hideCompletedQuests: 1
+  OnQuestCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8767443595149700145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,5 +66,4 @@ MonoBehaviour:
   SubQuestBody: {fileID: 4721635913886084926, guid: a8413a2fb0d9104419f291f55498ce03,
     type: 3}
   DataObjectRoot: {fileID: 0}
-  ScoreSystem: {fileID: 8837461120667202331, guid: 89324d7ea2e8ebe408a0e94c0dd31d06,
-    type: 3}
+  MaxImageSize: {x: 800, y: 500}

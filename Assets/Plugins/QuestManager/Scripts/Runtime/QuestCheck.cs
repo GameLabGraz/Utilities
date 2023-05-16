@@ -5,14 +5,14 @@ namespace GameLabGraz.QuestManager
     [RequireComponent(typeof(Quest))]
     public abstract class QuestCheck : MonoBehaviour
     {
-        private SubQuest _quest;
+        private SubQuest _subQuest;
 
         private void Start()
         {
             InitCheck();
 
-            _quest = GetComponent<SubQuest>();
-            _quest.questCheck = CheckCompliance;
+            _subQuest = GetComponent<SubQuest>();
+            _subQuest.questCheck = CheckCompliance;
         }
 
         protected abstract void InitCheck();
