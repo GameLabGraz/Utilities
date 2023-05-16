@@ -135,16 +135,20 @@ namespace GameLabGraz.QuestManager
             activeMainQuest.ActivateNextSubQuest();
             activeMainQuest.onQuestFinished.AddListener(() =>
             {
-                if (activeMainQuest.finishLine != null) 
-                    activeMainQuest.finishLine.SetActive(true);
-                else
-                    activeMainQuest.gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
-                
-                StartCoroutine(activeMainQuest.MoveMainQuestToBottom());
-
-                if (hideFinishedQuests)
+                if (activeMainQuest.finishLine != null)
                 {
-                    StartCoroutine(activeMainQuest.HideSubQuests());
+                    activeMainQuest.finishLine.SetActive(true);
+                    var questCount = activeMainQuest.GetSubQuestCount();
+                    var view = this.gameObject.GetComponent<QuestViewVR>();
+                    StartCoroutine(view.ScrollDownView(0.25f * questCount));
+                }
+                else
+                {
+                    activeMainQuest.gameObject.GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+                    StartCoroutine(activeMainQuest.MoveMainQuestToBottom());
+
+                    if (hideFinishedQuests)
+                        StartCoroutine(activeMainQuest.HideSubQuests());
                 }
 
                 ActivateNextMainQuest();

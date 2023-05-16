@@ -167,6 +167,8 @@ MonoBehaviour:
   SubQuestBody: {fileID: 6960457176145847512, guid: f08e6eda00cab6f4ca22a31e1af1cbeb,
     type: 3}
   DataObjectRoot: {fileID: 4702103523925832652}
+  MaxImageSize: {x: 800, y: 500}
+  Handle: {fileID: 7311954553688159491}
   MQBodyiniOffset: {x: 0, y: -5, z: 0}
   MQBodyOffset: {x: 0, y: -2.85, z: 0}
   SQBodyOffset: {x: 0, y: -2, z: -0.1}

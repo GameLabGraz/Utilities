@@ -6,18 +6,17 @@ using GEAR.Localization.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace GameLabGraz.QuestManager
 { 
     public class QuestViewPC : QuestView
     {
-        [SerializeField] protected Transform AchievementLocation;
         protected override void InitializeQuestView(List<QuestData> mainQuests)
         {
             foreach (var mainQuestData in mainQuests)
             {
                 DataObjectRoot.SetActive(true);
-                
                 var mainQuestBody = Instantiate(MainQuestBody, DataObjectRoot.transform);
                 mainQuestBody.name = mainQuestData.DefaultText;
                 mainQuestBody.GetComponentInChildren<LocalizedTMP>().Key = mainQuestData.TranslationKey;
@@ -36,11 +35,10 @@ namespace GameLabGraz.QuestManager
                     var subQuestObject = subQuestBody.GetComponent<SubQuest>();
                     subQuestData.QuestBody = subQuestObject;
                     subQuestObject.QuestData = subQuestData;
-                    subQuestObject.AchievementLocation = AchievementLocation;
 
-                    var additionalInfoBtn = subQuestBody.GetComponentInChildren<Button>();
+                    var additionalInfoBtn = subQuestBody.GetComponentInChildren<UnityEngine.UI.Button>();
                     
-                    if (subQuestData.AdditionalInformation != null)
+                    if (subQuestData.AdditionalInformation != null || subQuestData.AdditionalImagePath != null)
                     {
                         subQuestObject.HasAdditionalInformation = true;
                         additionalInfoBtn.gameObject.SetActive(true);
@@ -65,41 +63,51 @@ namespace GameLabGraz.QuestManager
 
         protected override void ShowAdditionalInformation(SubQuest subQuest)
         {
-            var additionalInfoBody = subQuest.additionalInformationBody;
+            var additionalInfoBody = subQuest.AdditionalInformationBody;
             additionalInfoBody.SetActive(!additionalInfoBody.activeInHierarchy);
-        }
-        
+        }        
+
         protected override void SetAdditionalInformation(QuestData subQuestData)
         {
             var subQuest = (SubQuest)subQuestData.QuestBody;
 
-            subQuest.additionalInformationBody.GetComponentInChildren<LocalizedTMP>().Key =
-                subQuestData.AdditionalInfoTranslationKey;
-            subQuest.additionalInformationBody.GetComponentInChildren<TMP_Text>().text =
-                LanguageManager.Instance.GetString(subQuestData.AdditionalInfoTranslationKey);
-
+           
+            if (string.IsNullOrEmpty(subQuestData.AdditionalInformation))
+            {
+                subQuest.AdditionalInformationBody.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else
+            {
+                subQuest.AdditionalInformationBody.GetComponentInChildren<LocalizedTMP>().Key =
+                    subQuestData.AdditionalInfoTranslationKey;
+                subQuest.AdditionalInformationBody.GetComponentInChildren<TMP_Text>().text =
+                    LanguageManager.Instance.GetString(subQuestData.AdditionalInfoTranslationKey);
+            }
 
             if (!File.Exists(subQuestData.AdditionalImagePath))
             {
                 subQuestData.AdditionalImagePath = null;
-                Destroy(subQuest.additionalInformationBody.GetComponentInChildren<RawImage>().gameObject);
+                Destroy(subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().gameObject);
                 return;
             }
 
-            if (subQuest.QuestData.AdditionalImageHeight == 0 || subQuest.QuestData.AdditionalImageWidth == 0)
+            if (subQuest.QuestData.AdditionalImageHeight <= 0 || subQuest.QuestData.AdditionalImageWidth <= 0 
+                || subQuest.QuestData.AdditionalImageHeight > MaxImageSize.y || subQuest.QuestData.AdditionalImageWidth > MaxImageSize.x)
             {
-                var additionalImage =
-                    new Texture2D(100,100);
+                var additionalImage = new Texture2D(100,100);
                 additionalImage.LoadImage(File.ReadAllBytes(subQuestData.AdditionalImagePath));
-                subQuest.additionalInformationBody.GetComponentInChildren<RawImage>().texture = additionalImage;
-                subQuest.additionalInformationBody.GetComponentInChildren<RawImage>().SetNativeSize();
+                subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().texture = additionalImage;
+                subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().SetNativeSize();
             }
             else
             {
                 var additionalImage = new Texture2D(subQuestData.AdditionalImageWidth, subQuestData.AdditionalImageHeight);
                 additionalImage.LoadImage(File.ReadAllBytes(subQuestData.AdditionalImagePath));
-                subQuest.additionalInformationBody.GetComponentInChildren<RawImage>().texture = additionalImage;
+                subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().texture = additionalImage;
+                subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().GetComponent<RectTransform>()
+                    .sizeDelta = new Vector2(subQuestData.AdditionalImageWidth, subQuestData.AdditionalImageHeight);
             }
+
         }
 
 

@@ -59,5 +59,10 @@ namespace GameLabGraz.QuestManager
         {
             _subQuests.Add(subQuest);
         }
+
+        public int GetSubQuestCount()
+        {
+            return _subQuests.Count;
+        }
     }
 }

@@ -14,9 +14,7 @@ namespace GameLabGraz.QuestManager
 
         [SerializeField] private GameObject UIAchievement;
         
-        [SerializeField] public GameObject additionalInformationBody;
-
-        public Transform AchievementLocation;
+        [SerializeField] public GameObject AdditionalInformationBody;
         
         private bool hasAdditionalInformation;
         
@@ -32,7 +30,7 @@ namespace GameLabGraz.QuestManager
         private new void Update()
         {
             if (IsHidden)
-                additionalInformationBody.SetActive(false);
+                AdditionalInformationBody.SetActive(false);
 
             if (!IsActive)
                 return;
@@ -43,6 +41,7 @@ namespace GameLabGraz.QuestManager
             IsFinished = true;
             IsActive = false;
             infoLogoObject.SetActive(false);
+            AdditionalInformationBody.SetActive(false);
             QuestData.IsCompleted = true;
             if (QuestData.QuestAchievement != null)
             {
@@ -52,7 +51,6 @@ namespace GameLabGraz.QuestManager
             if (UIAchievement)
             {
                 UIAchievement?.SetActive(true);
-                //UIAchievement.transform.position = AchievementLocation.position;
                 UIAchievement?.GetComponentInChildren<ParticleSystem>()?.Play();
                 Destroy(UIAchievement, 3);
             }
@@ -71,10 +69,9 @@ namespace GameLabGraz.QuestManager
         
         public void ShowAdditionalInformation()
         {
-            Debug.Log("Show additional information");
-            foreach (var renderer in additionalInformationBody.GetComponentsInChildren<Renderer>())
-                renderer.enabled = !additionalInformationBody.activeInHierarchy;
-            additionalInformationBody.SetActive(!additionalInformationBody.activeInHierarchy);
+            foreach (var renderer in AdditionalInformationBody.GetComponentsInChildren<Renderer>())
+                renderer.enabled = !AdditionalInformationBody.activeInHierarchy;
+            AdditionalInformationBody.SetActive(!AdditionalInformationBody.activeInHierarchy);
         }
 
         protected override bool IsDone()

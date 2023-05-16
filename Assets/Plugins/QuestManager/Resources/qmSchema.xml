@@ -6,12 +6,12 @@
                 <xs:element name="QuestList">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="MainQuest" maxOccurs="unbounded">
+                            <xs:element name="MainQuest" minOccurs="1" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element type="xs:string" name="TranslationKey"/>
                                         <xs:element type="xs:string" name="DefaultText"/>
-                                        <xs:element name="SubQuest" maxOccurs="unbounded">
+                                        <xs:element name="SubQuest" minOccurs="1" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element type="xs:string" name="TranslationKey"/>
@@ -22,8 +22,8 @@
                                                     <xs:element name="AdditionalInformation" minOccurs="0">
                                                         <xs:complexType>
                                                             <xs:sequence>
-                                                                <xs:element type="xs:string" name="AdditionalTranslationKey"/>
-                                                                <xs:element type="xs:string" name="DefaultText"/>
+                                                                <xs:element type="xs:string" name="AdditionalTranslationKey" minOccurs="0"/>
+                                                                <xs:element type="xs:string" name="DefaultText" minOccurs="0"/>
                                                                 <xs:element name="Image" minOccurs="0">
                                                                     <xs:complexType>
                                                                         <xs:sequence>
