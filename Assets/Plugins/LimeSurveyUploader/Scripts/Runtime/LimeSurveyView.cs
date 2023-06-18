@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.UI;
@@ -13,14 +12,12 @@ using InputField = GameLabGraz.UI.InputField;
 
 namespace GameLabGraz.LimeSurvey
 {
-    [Serializable]
-    public class SubmissionEvent : UnityEvent<int>{}
-
     public class LimeSurveyView : MonoBehaviour
     {
         [SerializeField] private int responseID = -1;
 
         [SerializeField] private TMP_Text questionText;
+        [SerializeField] private ScrollRect scrollRect;
         [SerializeField] private GameObject questionContent;
         [SerializeField] private Button prevButton;
         [SerializeField] private Button nextButton;
@@ -31,10 +28,15 @@ namespace GameLabGraz.LimeSurvey
 
         private int _questionIndex;
 
-        private QuestionGroup CurrentGroup => _questionGroups[CurrentQuestion.GID];
-        private Question CurrentQuestion => _questions[_questionIndex];
+        public QuestionGroup CurrentGroup => _questionGroups[CurrentQuestion.GID];
+        public Question CurrentQuestion => _questions[_questionIndex];
 
-        public SubmissionEvent OnSubmission;
+        [HideInInspector] public ErrorEvent OnError;
+        [HideInInspector] public WarningEvent OnWarning;
+        [HideInInspector] public UnityEvent OnStartLoadQuestions;
+        [HideInInspector] public UnityEvent OnQuestionsLoaded;
+        [HideInInspector] public UnityEvent OnStartSubmission;
+        [HideInInspector] public SubmissionEvent OnSubmissionFinished;
 
         public int ResponseID
         {
@@ -42,13 +44,16 @@ namespace GameLabGraz.LimeSurvey
             set => responseID = value;
         }
 
-        private void Start()
+        private void Awake()
         {
-            StartCoroutine(Initialize());
+            LimeSurveyManager.Instance.OnLoggedIn.AddListener((sessionKey) => { StartCoroutine(Initialize()); });
         }
 
         private IEnumerator Initialize()
         {
+            Debug.Log("Init start");
+            OnStartLoadQuestions.Invoke();
+            
             var cd = new CoroutineWithData(this, LimeSurveyManager.Instance.GetQuestionGroups());
             yield return cd.Coroutine;
 
@@ -59,6 +64,9 @@ namespace GameLabGraz.LimeSurvey
             }
             SetupButtons();
             ShowQuestion(0);
+            
+            OnQuestionsLoaded.Invoke();
+            Debug.Log("Init end");
         }
 
 
@@ -68,13 +76,16 @@ namespace GameLabGraz.LimeSurvey
                 return;
 
             ClearQuestionContent();
+            
+            Debug.Log($"new Question: {CurrentQuestion.Title}: mandatory: {CurrentQuestion.Mandatory}, type: {CurrentQuestion.QuestionType}");
 
             questionText.text = $"{CurrentGroup.GroupName}\n";
             questionText.text += CurrentQuestion.Mandatory ? $"* {CurrentQuestion.QuestionText}" : CurrentQuestion.QuestionText;
-
+            
             switch (CurrentQuestion.QuestionType)
             {
                 case QuestionType.Text:
+                case QuestionType.ShortText:
                     CreateFreeText();
                     break;
                 case QuestionType.ListRadio:
@@ -91,12 +102,26 @@ namespace GameLabGraz.LimeSurvey
                 case QuestionType.Matrix:
                     CreateMatrix();
                     break;
+                case QuestionType.IntNumber:
+                    CreateIntNumberText();
+                    break;
                 default:
-                    Debug.LogWarning($"Unknown Question Type: {_questions[questionIndex].QuestionType}");
+                    var question = _questions[questionIndex];
+                    var warningStr = $"Unknown Question Type '{question.QuestionType}'";
+                    var detailStr = $"Question '{question.Title}' uses unsupported type '{question.GetTypeString()}'.";
+                    Debug.Log($"[LimeSurvey] WARNING: {warningStr}: {detailStr} --- '{question.QuestionText}'");
+                    OnWarning.Invoke(warningStr, detailStr);
                     break;
             }
 
+            Invoke("ScrollToTop", 0.1f);
+
             EnableButtons();
+        }
+    
+        private void ScrollToTop()
+        {
+            scrollRect.verticalNormalizedPosition = 1;
         }
 
         private void CreateFreeText()
@@ -110,6 +135,31 @@ namespace GameLabGraz.LimeSurvey
             inputField.onValueChanged.AddListener((answer =>
             {
                 CurrentQuestion.Answer = answer;
+                AdaptNextButton();
+            } ));
+        }
+        
+        private void CreateIntNumberText()
+        {
+            var inputField = ((GameObject)Instantiate(UIContent.Input, questionContent.transform)).GetComponent<InputField>();
+            inputField.GetComponent<LayoutElement>().minHeight = 300;
+            inputField.lineType = TMP_InputField.LineType.SingleLine;
+            inputField.contentType = TMP_InputField.ContentType.IntegerNumber;
+            inputField.characterLimit = 10;
+
+            var placeholder = inputField.placeholder?.GetComponent<TMP_Text>();
+            if (placeholder)
+            {
+                placeholder.text = "Enter number...";
+            }
+            
+            if (CurrentQuestion.Answer != null)
+                inputField.text = CurrentQuestion.Answer;
+
+            inputField.onValueChanged.AddListener((answer =>
+            {
+                CurrentQuestion.Answer = answer;
+                AdaptNextButton();
             } ));
         }
 
@@ -153,11 +203,13 @@ namespace GameLabGraz.LimeSurvey
                     {
                         subQuestion.Answer = string.IsNullOrWhiteSpace(input) ? null : input;
                         toggle.isOn = !string.IsNullOrWhiteSpace(subQuestion.Answer);
+                        AdaptNextButton();
                     });
                     toggle.onValueChanged.AddListener(value =>
                     {
                         if (value && string.IsNullOrWhiteSpace(inputField.text))
                             toggle.isOn = false;
+                        AdaptNextButton();
                     });
                 }
                 else
@@ -168,6 +220,7 @@ namespace GameLabGraz.LimeSurvey
                     toggle.onValueChanged.AddListener(answer =>
                     {
                         subQuestion.Answer = answer ? "Y" : string.Empty;
+                        AdaptNextButton();
                     });
                 }
 
@@ -181,12 +234,16 @@ namespace GameLabGraz.LimeSurvey
 
             // Header
             var headerGroup = ((GameObject)Instantiate(UIContent.HorizontalLayoutGroup, rowGroup.transform)).GetComponent<HorizontalLayoutGroup>();
-            var placeholder = Instantiate(new GameObject(), headerGroup.transform).AddComponent<LayoutElement>();
-            placeholder.minWidth = 300;
-            placeholder.preferredWidth = 300;
-            placeholder.flexibleWidth = 0;
 
-            foreach(var answerOption in CurrentQuestion.AnswerOptions)
+            var placeholder = new GameObject();
+            placeholder.transform.parent = headerGroup.transform;
+
+            var placeholderLayoutElement = placeholder.AddComponent<LayoutElement>();
+            placeholderLayoutElement.minWidth = 300;
+            placeholderLayoutElement.preferredWidth = 300;
+            placeholderLayoutElement.flexibleWidth = 0;
+
+            foreach (var answerOption in CurrentQuestion.AnswerOptions)
             {
                 var optionObj = Instantiate(UIContent.Text, headerGroup.transform) as GameObject;
                 optionObj.GetComponent<TMP_Text>().text = answerOption.AnswerText;
@@ -268,6 +325,8 @@ namespace GameLabGraz.LimeSurvey
                         oldToggle.isOn = false;
                     else if (value == false)
                         toggle.isOn = true;
+                    
+                    AdaptNextButton();
                 });
             }
         }
@@ -283,28 +342,22 @@ namespace GameLabGraz.LimeSurvey
             // Next Button
             nextButton.onClick.AddListener(() =>
             {
-                if (CurrentQuestion.Mandatory && CurrentQuestion.SubQuestions.Count == 0 &&
-                    CurrentQuestion.Answer == null) return;
-
-                if (CurrentQuestion.Mandatory && CurrentQuestion.QuestionType == QuestionType.MultipleChoice &&
-                    CurrentQuestion.SubQuestions.TrueForAll(subQuestion => subQuestion.Answer == null)) return;
-
-                if (CurrentQuestion.Mandatory && CurrentQuestion.QuestionType != QuestionType.MultipleChoice &&
-                    !CurrentQuestion.SubQuestions.TrueForAll(subQuestion => subQuestion.Answer != null)) return;
-
-
+                if (!MandatoryOK()) return;
+                
                 ShowQuestion(++_questionIndex);
             });
             
             // Submit Button
             submitButton.onClick.AddListener(() =>
             {
+                if (!MandatoryOK()) return;
+
                 ClearQuestionContent();
                 
                 // Disable Buttons
                 prevButton.gameObject.SetActive(false);
                 nextButton.gameObject.SetActive(false);
-                submitButton.gameObject.SetActive(false);
+                submitButton.interactable = false;
 
                 questionText.text = "Submitting Responses ...";
 
@@ -314,33 +367,40 @@ namespace GameLabGraz.LimeSurvey
 
         private IEnumerator SubmitResponses()
         {
+            OnStartSubmission.Invoke();
+            
             var cd = new CoroutineWithData(this, LimeSurveyManager.Instance.UploadQuestionResponses(_questions, responseID));
             yield return cd.Coroutine;
 
             responseID = (int)cd.Result;
             if (responseID != -1)
-                OnSubmission?.Invoke(responseID);
+                OnSubmissionFinished?.Invoke(responseID);
             else
-                Debug.LogError("LimeSurveyView::OnSubmission: Unable to submit responses.");
+            {
+                var errorStr = "Unable to submit responses.";
+                Debug.Log("[LimeSurvey] ERROR OnSubmission: " + errorStr);
+                OnError.Invoke(errorStr, LimeSurveyManager.Instance.GetLastError());
+            }
         }
 
         private void EnableButtons()
         {
-            prevButton.gameObject.SetActive(true);
-            nextButton.gameObject.SetActive(true);
-            submitButton.gameObject.SetActive(false);
+            prevButton.gameObject.SetActive(_questionIndex != 0);
+            nextButton.gameObject.SetActive(_questionIndex != _questions.Count - 1);
+            submitButton.gameObject.SetActive(_questionIndex == _questions.Count - 1);
 
-            prevButton.interactable = true;
-            nextButton.interactable = true;
+            prevButton.interactable = _questionIndex != 0;
+            nextButton.interactable = !CurrentQuestion.Mandatory || CurrentQuestion.HasAnswer();
+            submitButton.interactable = !CurrentQuestion.Mandatory || CurrentQuestion.HasAnswer();
+        }
 
-
-            if (_questionIndex == 0)
-                prevButton.interactable = false;
-            if (_questionIndex == _questions.Count - 1)
-            {
-                nextButton.interactable = false;
-                submitButton.gameObject.SetActive(true);
-            }
+        private void AdaptNextButton()
+        {
+            var nextIsInteractable = !CurrentQuestion.Mandatory || CurrentQuestion.HasAnswer();
+            if(nextButton.isActiveAndEnabled)
+                nextButton.interactable = nextIsInteractable;
+            if (submitButton.isActiveAndEnabled)
+                submitButton.interactable = nextIsInteractable;
         }
 
         private void ClearQuestionContent()
@@ -350,6 +410,20 @@ namespace GameLabGraz.LimeSurvey
                 var content = questionContent.transform.GetChild(childIndex);
                 Destroy(content.gameObject);
             }
+        }
+
+        private bool MandatoryOK()
+        {
+            if (CurrentQuestion.Mandatory && CurrentQuestion.SubQuestions.Count == 0 &&
+                CurrentQuestion.Answer == null) return false;
+
+            if (CurrentQuestion.Mandatory && CurrentQuestion.QuestionType == QuestionType.MultipleChoice &&
+                CurrentQuestion.SubQuestions.TrueForAll(subQuestion => subQuestion.Answer == null)) return false;
+
+            if (CurrentQuestion.Mandatory && CurrentQuestion.QuestionType != QuestionType.MultipleChoice &&
+                !CurrentQuestion.SubQuestions.TrueForAll(subQuestion => subQuestion.Answer != null)) return false;
+
+            return true;
         }
     }
 }

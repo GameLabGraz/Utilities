@@ -20,6 +20,9 @@ namespace GameLabGraz.VRInteraction
 		public ValueChangeEventFloat onValueChanged;
 		public ValueChangeEventInt onValueChangedInt;
 
+        public ValueChangeEventFloat onRelease;
+        public ValueChangeEventInt onReleaseInt;
+
 		protected float _currentValue;
 		protected float _valueRange;
 
@@ -47,6 +50,26 @@ namespace GameLabGraz.VRInteraction
 				onValueChangedInt.Invoke(Mathf.RoundToInt(_currentValue));
 		}
 		
+		public virtual void SetMinMax(float min, float max)
+		{
+			minimum = min;
+			maximum = max;
+			AdaptMinMax();
+		}
+
+		protected virtual void AdaptMinMax()
+		{
+			_valueRange = maximum - minimum;
+			_currentValue = Mathf.Clamp(_currentValue, minimum, maximum);
+			linearMapping.value = (_currentValue - minimum) / _valueRange;
+			// Debug.Log("linear mapping val: " + linearMapping + " - " + linearMapping.value);
+			transform.position = Vector3.Lerp(startPosition.position, endPosition.position, linearMapping.value);
+
+			onValueChanged.Invoke(_currentValue);
+			if(useAsInteger)
+				onValueChangedInt.Invoke(Mathf.RoundToInt(_currentValue));
+		}
+		
 		protected override void HandAttachedUpdate(Hand hand)
 		{
 			UpdateLinearMapping(hand.transform);
@@ -54,6 +77,10 @@ namespace GameLabGraz.VRInteraction
 			if (hand.IsGrabEnding(gameObject))
 			{
 				hand.DetachObject(gameObject);
+
+				onRelease?.Invoke(_currentValue);
+				if (useAsInteger)
+					onReleaseInt?.Invoke(Mathf.RoundToInt(_currentValue));
 			}
 		}
 		

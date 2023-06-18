@@ -114,4 +114,14 @@ namespace GameLabGraz.VRInteraction.Editor
     public class VRRotatableEditor : VRDefaultEditor
     {
     }
+        
+    [CustomEditor(typeof(VRTeleport))]
+    public class VRTeleportEditor : VRDefaultEditor
+    {
+    }
+    
+    [CustomEditor(typeof(VRHand))]
+    public class VRHandEditor : VRDefaultEditor
+    {
+    }
 }
