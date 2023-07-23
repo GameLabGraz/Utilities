@@ -308,11 +308,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1278506628747159315}
-  - component: {fileID: 5187172208952266460}
   - component: {fileID: 5144816195001918610}
   - component: {fileID: 7648376416680833322}
   - component: {fileID: 5757410887346106606}
   - component: {fileID: 2184275664295268019}
+  - component: {fileID: 3868951463072184479}
   m_Layer: 5
   m_Name: MainQuestBodyPC
   m_TagString: Untagged
@@ -338,22 +338,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 650, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &5187172208952266460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4830570165754200996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
 --- !u!114 &5144816195001918610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,9 +378,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c770ff1cc51e0e449886ed8779b62442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeLamp: {fileID: 0}
-  deactiveLamp: {fileID: 0}
-  finishLine: {fileID: 0}
+  _activeLamp: {fileID: 0}
+  _deactiveLamp: {fileID: 0}
+  FinishLine: {fileID: 0}
   onQuestFinished:
     m_PersistentCalls:
       m_Calls: []
@@ -436,6 +422,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3868951463072184479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4830570165754200996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
 --- !u!1 &5433739443283445991
 GameObject:
   m_ObjectHideFlags: 0

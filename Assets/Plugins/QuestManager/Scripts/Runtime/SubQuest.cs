@@ -1,10 +1,4 @@
-﻿using System;
-using Antares.Evaluation.LearningContent;
-using GEAR.Localization;
-using GEAR.Localization.Text;
-using TMPro;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 namespace GameLabGraz.QuestManager
 {

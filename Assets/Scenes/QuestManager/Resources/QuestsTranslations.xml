@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageManager>
+  <Translations>
+    <Translation Key="QM_MainQuest1">
+      <English>First MainQuest</English>
+      <German>Erste Aufgabe</German>
+    </Translation>
+	  <Translation Key="QM_SubQuest11">
+		  <English>First SubQuest</English>
+		  <German>Erster Task</German>
+	  </Translation>
+	  <Translation Key="QM_SubQuest12">
+		  <English>Second SubQuest</English>
+		  <German>Zweiter Task</German>
+	  </Translation>
+    <Translation Key="QM_MainQuest2">
+      <English>Second MainQuest</English>
+      <German>Zweite Aufgabe</German>
+    </Translation>
+	  <Translation Key="QM_SubQuest21">
+		  <English>First SubQuest</English>
+		  <German>Erster Task</German>
+	  </Translation>
+	  <Translation Key="QM_SubQuest22">
+		  <English>Second SubQuest</English>
+		  <German>Zweiter Task</German>
+	  </Translation>
+	<Translation Key="QM_MainQuest3">
+		<English>Third MainQuest</English>
+		<German>Dritte Aufgabe</German>
+	</Translation>
+</Translations>
+</LanguageManager>

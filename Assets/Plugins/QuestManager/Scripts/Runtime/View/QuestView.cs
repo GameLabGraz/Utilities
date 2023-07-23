@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameLabGraz.QuestManager
+namespace GameLabGraz.QuestManager.View
 {
     [RequireComponent(typeof(QuestManager))]
     public abstract class QuestView : MonoBehaviour

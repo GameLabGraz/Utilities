@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -9,7 +7,6 @@ using System.Xml.Schema;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace GameLabGraz.QuestManager
 {
@@ -30,6 +27,7 @@ namespace GameLabGraz.QuestManager
         
         public static readonly UnityEvent OnQuestsRead = new UnityEvent();
         public UnityEvent OnQuestCompleted = new UnityEvent();
+        public UnityEvent<GameObject, float> ScrollDownVR;
 
 
         private void Start()
@@ -139,8 +137,8 @@ namespace GameLabGraz.QuestManager
                 {
                     activeMainQuest.FinishLine.SetActive(true);
                     var questCount = activeMainQuest.GetSubQuestCount();
-                    var view = this.gameObject.GetComponent<QuestViewVR>();
-                    StartCoroutine(view.ScrollDownView(activeMainQuest.gameObject, 0.25f * questCount));
+                    var questManager = FindObjectOfType<QuestManager>();
+                    ScrollDownVR?.Invoke(activeMainQuest.gameObject, 0.25f * questCount);
                 }
                 else
                 {

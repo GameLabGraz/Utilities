@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows;
 
-namespace GameLabGraz.QuestManager
+namespace GameLabGraz.QuestManager.View
 {
     public class QuestViewVR : QuestView
     {
@@ -18,8 +18,14 @@ namespace GameLabGraz.QuestManager
         [SerializeField] private Vector3 _mQBodyOffset = new Vector3(0, -2.85f, 0);
         [SerializeField] private Vector3 _sQBodyOffset = new Vector3(0f, -2f, -0.1f);
 
+
         protected override void InitializeQuestView(List<QuestData> mainQuests)
         {
+            QuestManager questManager = FindObjectOfType<QuestManager>();
+            if (questManager != null)
+            {
+                questManager.ScrollDownVR.AddListener(HandleScrollDownView);
+            }
             var mainQuestPosition = _mQBodyiniOffset;
             foreach (var mainQuestData in mainQuests)
             {
@@ -122,6 +128,11 @@ namespace GameLabGraz.QuestManager
                 subQuest.AdditionalInformationBody.GetComponentInChildren<RawImage>().GetComponent<RectTransform>()
                     .sizeDelta = new Vector2(subQuestData.AdditionalImageWidth, subQuestData.AdditionalImageHeight);
             }
+        }
+
+        private void HandleScrollDownView(GameObject target, float duration)
+        {
+            StartCoroutine(ScrollDownView(target, duration));
         }
 
         public IEnumerator ScrollDownView(GameObject quest, float distance)
