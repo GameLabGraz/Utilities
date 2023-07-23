@@ -19,7 +19,6 @@ namespace GameLabGraz.QuestManager.View
                 var mainQuestBody = Instantiate(MainQuestBody, DataObjectRoot.transform);
                 mainQuestBody.name = mainQuestData.DefaultText;
                 mainQuestBody.GetComponentInChildren<LocalizedTMP>().Key = mainQuestData.TranslationKey;
-                var test = LanguageManager.Instance.GetString(mainQuestData?.TranslationKey);
                 mainQuestBody.GetComponentInChildren<TMP_Text>().text = LanguageManager.Instance.GetString(mainQuestData?.TranslationKey);
                 
                 var mainQuestObject = mainQuestBody.GetComponent<MainQuest>();
