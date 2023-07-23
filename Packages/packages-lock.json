@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.github.siccity.xnode": {
-      "version": "https://github.com/siccity/xNode.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "157489b3c32fd403f5066715f150b885d8c0d204"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
