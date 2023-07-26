@@ -1,38 +1,71 @@
 ﻿using UnityEngine;
 
-namespace GEAR.QuestManager
+namespace GameLabGraz.QuestManager
 {
-    public class SubQuest : IQuest
+    public class SubQuest : Quest
     {
-        [SerializeField] private GameObject finishLine;
+        [SerializeField] private GameObject _infoLogoObject;
 
-        [SerializeField] private GameObject infoLogoObject;
-
-        private bool hasAdditionalInformation;
-
+        [SerializeField] private GameObject _uIAchievement;
+        
+        [SerializeField] public GameObject AdditionalInformationBody;
+        
+        private bool _hasAdditionalInformation;
+        
         public delegate bool QuestCheck();
         public QuestCheck questCheck;
 
         private void Start()
         {
-            OnQuestFinished.AddListener(() =>
+            if (_uIAchievement)
+                _uIAchievement.SetActive(false);
+        }
+
+        private new void Update()
+        {
+            if (IsHidden)
+                AdditionalInformationBody.SetActive(false);
+
+            if (!IsActive)
+                return;
+            if (!IsDone()) 
+                return;
+            
+            
+            IsFinished = true;
+            IsActive = false;
+            _infoLogoObject.SetActive(false);
+            AdditionalInformationBody.SetActive(false);
+            QuestData.IsCompleted = true;
+            if (QuestData.QuestAchievement != null)
             {
-                if (finishLine != null)
-                {
-                    finishLine.SetActive(true);
-                    finishLine.GetComponent<Renderer>().enabled = !IsHidden;
-                }
-            });
+                _uIAchievement = QuestData.QuestAchievement;
+            }
+            QuestData.QuestAchievement?.SetActive(true);
+            if (_uIAchievement)
+            {
+                _uIAchievement?.SetActive(true);
+                _uIAchievement?.GetComponentInChildren<ParticleSystem>()?.Play();
+                Destroy(_uIAchievement, 3);
+            }
+            onQuestFinished.Invoke();
         }
 
         public bool HasAdditionalInformation
         {
-            get => hasAdditionalInformation;
+            get => _hasAdditionalInformation;
             set
             {
-                hasAdditionalInformation = value;
-                if (infoLogoObject != null) infoLogoObject.SetActive(true);
+                _hasAdditionalInformation = value;
+                if (_infoLogoObject != null) _infoLogoObject.SetActive(true);
             }
+        }
+        
+        public void ShowAdditionalInformation()
+        {
+            foreach (var renderer in AdditionalInformationBody.GetComponentsInChildren<Renderer>())
+                renderer.enabled = !AdditionalInformationBody.activeInHierarchy;
+            AdditionalInformationBody.SetActive(!AdditionalInformationBody.activeInHierarchy);
         }
 
         protected override bool IsDone()

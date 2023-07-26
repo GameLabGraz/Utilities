@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8767443595149700147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8767443595149700146}
+  - component: {fileID: 8767443595149700144}
+  - component: {fileID: 8767443595149700145}
+  m_Layer: 5
+  m_Name: QuestManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8767443595149700146
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8767443595149700147}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.376, z: 1.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8767443595149700144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8767443595149700147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b405c6c55e384543860e614fec2d775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _questFile: {fileID: 0}
+  _hideCompletedQuests: 1
+  OnQuestCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8767443595149700145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8767443595149700147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad2731dda28ba1c46a9c7f59671a21c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainQuestBody: {fileID: 4830570165754200996, guid: b5a5786879f5673438712ac986bfac64,
+    type: 3}
+  SubQuestBody: {fileID: 4721635913886084926, guid: a8413a2fb0d9104419f291f55498ce03,
+    type: 3}
+  DataObjectRoot: {fileID: 0}
+  MaxImageSize: {x: 800, y: 500}

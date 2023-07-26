@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="QuestManager">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="QuestList">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="MainQuest" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element type="xs:string" name="TranslationKey"/>
+                                        <xs:element type="xs:string" name="DefaultText"/>
+                                        <xs:element name="SubQuest" minOccurs="1" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element type="xs:string" name="TranslationKey"/>
+                                                    <xs:element type="xs:string" name="DefaultText"/>
+                                                    <xs:element type="xs:string" name="Script"/>
+                                                    <xs:element type="xs:string" name="QuestHint" minOccurs="0"/>
+                                                    <xs:element type="xs:string" name="QuestAchievement" minOccurs="0"/>
+                                                    <xs:element name="AdditionalInformation" minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element type="xs:string" name="AdditionalTranslationKey" minOccurs="0"/>
+                                                                <xs:element type="xs:string" name="DefaultText" minOccurs="0"/>
+                                                                <xs:element name="Image" minOccurs="0">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element type="xs:string" name="ImagePath"/>
+                                                                            <xs:element type="xs:nonNegativeInteger" name="Width" minOccurs="0"/>
+                                                                            <xs:element type="xs:nonNegativeInteger" name="Height" minOccurs="0"/>
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
