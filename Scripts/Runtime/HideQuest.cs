@@ -1,11 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace GEAR.QuestManager
+namespace GameLabGraz.QuestManager
 {
     public class HideQuest : MonoBehaviour
     {
+        private List<GameObject> _disabledQuests = new List<GameObject>();
         private void OnTriggerEnter(Collider trigger)
         {
+            if (CompareTag("AdditionalInformationBody"))
+                _disabledQuests.Add(trigger.gameObject);
+            
             if(trigger.CompareTag("QuestBody"))
                 HideObjects(trigger.gameObject);
         }
@@ -16,16 +21,24 @@ namespace GEAR.QuestManager
                 RevealObjects(trigger.gameObject);
         }
 
+        private void OnDisable()
+        {
+            foreach (var go in _disabledQuests)
+                RevealObjects(go);
+        }
+
         private static void HideObjects(GameObject obj)
         {
-            obj.GetComponentInParent<IQuest>().IsHidden = true;
+            obj.GetComponentInParent<Quest>().IsHidden = true;
             foreach (var renderer in obj.GetComponentsInChildren<Renderer>())
                 renderer.enabled = false;
         }
 
         private static void RevealObjects(GameObject obj)
         {
-            obj.GetComponentInParent<IQuest>().IsHidden = false;
+            var quest = obj.GetComponentInParent<Quest>();
+            if (quest != null)
+                quest.IsHidden = false;
             foreach (var renderer in obj.GetComponentsInChildren<Renderer>())
                 renderer.enabled = true;
         }
