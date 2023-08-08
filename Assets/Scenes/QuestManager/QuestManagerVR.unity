@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &959294414
+--- !u!1001 &1021016784
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -138,7 +138,7 @@ PrefabInstance:
     - target: {fileID: 2950544649461641928, guid: c7ee92604ed6ea744b7204c26cfcbb81,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2950544649461641928, guid: c7ee92604ed6ea744b7204c26cfcbb81,
         type: 3}
@@ -148,12 +148,12 @@ PrefabInstance:
     - target: {fileID: 2950544649461641928, guid: c7ee92604ed6ea744b7204c26cfcbb81,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 1.65
       objectReference: {fileID: 0}
     - target: {fileID: 2950544649461641928, guid: c7ee92604ed6ea744b7204c26cfcbb81,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8
+      value: -8.48
       objectReference: {fileID: 0}
     - target: {fileID: 2950544649461641928, guid: c7ee92604ed6ea744b7204c26cfcbb81,
         type: 3}
@@ -189,11 +189,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3845156728649207397, guid: c7ee92604ed6ea744b7204c26cfcbb81,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4079065021718549917, guid: c7ee92604ed6ea744b7204c26cfcbb81,
         type: 3}
@@ -403,7 +398,7 @@ PrefabInstance:
     - target: {fileID: 9079110210785623910, guid: fe0a30be743451540982d538c670799e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9079110210785623910, guid: fe0a30be743451540982d538c670799e,
         type: 3}

@@ -9,13 +9,13 @@
             <SubQuest>
 				<TranslationKey>QM_SubQuest11</TranslationKey>
 				<DefaultText>Sub Quest 1</DefaultText>
-				<Script></Script>
+				<Script>Quests.QuestExampleScript</Script>
 			</SubQuest>
 			
             <SubQuest>
 				<TranslationKey>QM_SubQuest12</TranslationKey>
 				<DefaultText>Sub Quest 2</DefaultText>
-				<Script></Script>
+				<Script>Quests.QuestExampleScript</Script>
 			</SubQuest>
         </MainQuest>
 
@@ -26,13 +26,13 @@
             <SubQuest>
 				<TranslationKey>QM_SubQuest21</TranslationKey>
 				<DefaultText>Sub Quest 1</DefaultText>
-				<Script></Script>
+				<Script>Quests.QuestExampleScript</Script>
 			</SubQuest>
 			
             <SubQuest>
 				<TranslationKey>QM_SubQuest22</TranslationKey>
 				<DefaultText>Sub Quest 2</DefaultText>
-				<Script></Script>
+				<Script>Quests.QuestExampleScript</Script>
 			</SubQuest>
         </MainQuest>
 		
