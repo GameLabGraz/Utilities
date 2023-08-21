@@ -146,7 +146,7 @@ namespace GameLabGraz.QuestManager.View
             if (renderer == null)
                 yield return null;
 
-            while (mainRenderer.isVisible || renderer.isVisible)
+            while (mainRenderer.enabled || renderer.enabled)
             {
                 Vector3 newPosition = Handle.transform.position - new Vector3(0, moveAmount, 0);
                 Handle.transform.position = newPosition;
