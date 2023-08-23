@@ -22,6 +22,9 @@ namespace GameLabGraz.LimeSurvey
         private int cnt = 0;
         private void Awake()
         {
+            if (view == null)
+                view = FindObjectOfType<LimeSurveyView>(true);
+
             if (view)
             {
                 view.OnError.AddListener(OnError.Invoke);
