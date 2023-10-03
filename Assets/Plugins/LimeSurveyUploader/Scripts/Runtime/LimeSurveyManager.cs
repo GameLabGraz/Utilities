@@ -37,7 +37,7 @@ namespace GameLabGraz.LimeSurvey
         public bool LoggedIn { get; private set; }
 
         private static LimeSurveyManager _instance;
-        
+
         [HideInInspector] public ErrorEvent OnError;
         [HideInInspector] public WarningEvent OnWarning;
         [HideInInspector] public UnityEvent OnStartLogin;
@@ -81,24 +81,24 @@ namespace GameLabGraz.LimeSurvey
             {
                 jsonObject = JObject.Parse(jsonFile.text);
             }
-            catch(System.Exception)
+            catch (System.Exception)
             {
                 _lastError = "LimeSurveyServerConfig.json not found or format is invalid.";
-                Debug.LogError("[LimeSurvey] " + _lastError); 
+                Debug.LogError("[LimeSurvey] " + _lastError);
                 OnError.Invoke("Cannot load Lime Survey settings.", _lastError);
                 throw;
             }
-            
+
             // Apply values
-            this.url        = (string)jsonObject["url"];
-            this.userName   = (string)jsonObject["username"];
-            this.password   = (string)jsonObject["password"];
+            this.url = (string)jsonObject["url"];
+            this.userName = (string)jsonObject["username"];
+            this.password = (string)jsonObject["password"];
         }
 
         private IEnumerator Login()
         {
             OnStartLogin.Invoke();
-            
+
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.GetSessionKey);
             _client.AddParameter(LimeSurveyParameter.UserName, userName);
@@ -137,11 +137,17 @@ namespace GameLabGraz.LimeSurvey
                 Debug.Log("[LimeSurvey] ERROR: HandleClientResponse: " + _lastError);
                 return ErrorCode.HttpStatusError;
             }
-            if (_client.Response.Error != null)
+            if (response.Error != null)
             {
                 _lastError = $"Error: {_client.Response.Error}";
                 Debug.Log("[LimeSurvey] ERROR: HandleClientResponse: " + _lastError);
                 return ErrorCode.ResponseError;
+            }
+            if (response.Result != null && response.Result.ToString().Contains("No matching Response"))
+            {
+                _lastError = $"Error - No matching Response";
+                Debug.Log("[LimeSurvey] ERROR: No matching Response.");
+                return ErrorCode.NoMatchingResponse;
             }
 
             _lastError = "";
@@ -171,7 +177,7 @@ namespace GameLabGraz.LimeSurvey
                 var randOrder = attributes["random_order"];
                 question.RandomOrder = randOrder != null && randOrder.ToString() == "1";
             }
-            
+
             // SubQuestions
             var subQuestions = questionProperties["subquestions"];
             if (subQuestions != null && subQuestions.ToString() != "No available answers")
@@ -184,7 +190,7 @@ namespace GameLabGraz.LimeSurvey
                 }
 
                 question.SubQuestions.Sort((lhs, rhs) => String.Compare(lhs.SubquestionName, rhs.SubquestionName, StringComparison.Ordinal));
-                
+
                 if (question.Other)
                 {
                     var otherSubQuestion = JsonUtility.FromJson<SubQuestion>("{\"title\": \"other\", \"question\": \"Other:\"}");
@@ -203,11 +209,11 @@ namespace GameLabGraz.LimeSurvey
 
                     if (answerCode.StartsWith("answeroptions"))
                     {
-                        answerCodeJson = $"{{\"answer_code\": \"{answerOption["order"]}\"," + answerOption.ToString().Remove(0,1);
+                        answerCodeJson = $"{{\"answer_code\": \"{answerOption["order"]}\"," + answerOption.ToString().Remove(0, 1);
                     }
                     else
                     {
-                        answerCodeJson =$"{{\"answer_code\": \"{answerCode}\"," + 
+                        answerCodeJson = $"{{\"answer_code\": \"{answerCode}\"," +
                                         answerOption.First?.ToString().Remove(0, 1);
                     }
 
@@ -240,9 +246,27 @@ namespace GameLabGraz.LimeSurvey
         private static void SetAnswerOptionsForPointQuestion(Question question, int optionSize)
         {
             for (var point = 1; point <= optionSize; point++)
-                question.AnswerOptions.Add(new AnswerOption($"{point}", $"{point}", point-1));
+                question.AnswerOptions.Add(new AnswerOption($"{point}", $"{point}", point - 1));
 
             AddNoAnswerOption(question);
+        }
+
+        private JObject GetResponseData(IEnumerable<Question> questions, int responseID)
+        {
+            var responseData = new JObject();
+            if (responseID != -1)
+                responseData.Add("id", responseID);
+
+            foreach (var question in questions)
+            {
+                if (question.SubQuestions.Count > 0)
+                    foreach (var subQuestion in question.SubQuestions)
+                        responseData.Add($"{surveyId}X{question.GID}X{question.ID}{subQuestion.Title}", subQuestion.Answer);
+                else
+                    responseData.Add($"{surveyId}X{question.GID}X{question.ID}", question.Answer);
+            }
+
+            return responseData;
         }
 
         public IEnumerator GetQuestionGroups()
@@ -257,13 +281,13 @@ namespace GameLabGraz.LimeSurvey
             yield return _client.Post();
 
             var groupList = new List<QuestionGroup>();
-            foreach(var group in (JArray)_client.Response.Result)
+            foreach (var group in (JArray)_client.Response.Result)
             {
                 var groupObj = JsonUtility.FromJson<QuestionGroup>(group.ToString());
 
                 var cd = new CoroutineWithData(this, GetQuestionList(groupObj.ID));
                 yield return cd.Coroutine;
-                
+
                 groupObj.Questions.AddRange((List<Question>)cd.Result);
                 groupList.Add(groupObj);
             }
@@ -290,14 +314,14 @@ namespace GameLabGraz.LimeSurvey
             foreach (var question in (JArray)_client.Response.Result)
             {
                 var questionObj = JsonUtility.FromJson<Question>(question.ToString());
-                if(questionObj.ParentID != 0) continue;
+                if (questionObj.ParentID != 0) continue;
 
                 // questionObj.Randomized = question["title"].ToString().Contains("randomized");
 
                 yield return StartCoroutine(SetQuestionProperties(questionObj));
-                
+
                 // questionObj.SubQuestions.Reverse();
-                if(questionObj.RandomOrder)
+                if (questionObj.RandomOrder)
                     questionObj.SubQuestions = questionObj.SubQuestions.OrderBy(a => Guid.NewGuid()).ToList();
 
 
@@ -308,26 +332,14 @@ namespace GameLabGraz.LimeSurvey
 
         public IEnumerator UploadQuestionResponses(IEnumerable<Question> questions, int responseID = -1)
         {
-            var responseData = new JObject();
-            if (responseID != -1)
-                responseData.Add("id", responseID);
-
-            foreach (var question in questions)
-            {
-                if (question.SubQuestions.Count > 0)
-                    foreach (var subQuestion in question.SubQuestions)
-                        responseData.Add($"{surveyId}X{question.GID}X{question.ID}{subQuestion.Title}", subQuestion.Answer);
-                else
-                    responseData.Add($"{surveyId}X{question.GID}X{question.ID}", question.Answer);
-
-            }
+            var responseData = GetResponseData(questions, responseID);
 
             _client.ClearParameters();
             _client.SetMethod(LimeSurveyMethod.AddResponse);
             _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
             _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
             _client.AddParameter(LimeSurveyParameter.ResponseData, responseData);
-            
+
             yield return _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
@@ -360,6 +372,33 @@ namespace GameLabGraz.LimeSurvey
                     yield return -1;
                 }
             }
+        }
+
+        public IEnumerator UpdateQuestionResponses(IEnumerable<Question> questions, int responseID)
+        {
+            var responseData = GetResponseData(questions, responseID);
+
+            _client.ClearParameters();
+            _client.SetMethod(LimeSurveyMethod.UpdateResponse);
+            _client.AddParameter(LimeSurveyParameter.SessionKey, SessionKey);
+            _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
+            _client.AddParameter(LimeSurveyParameter.ResponseData, responseData);
+
+            yield return _client.Post();
+
+            var errorCode = HandleClientResponse(_client.Response);
+
+            if (errorCode == ErrorCode.NoMatchingResponse)
+            {
+                yield return UploadQuestionResponses(questions, responseID);
+            }
+            else if (errorCode != ErrorCode.OK)
+            {
+                Debug.Log("[LimeSurvey] ERROR UpdateQuestionResponses: Unable to update responses.");
+                OnError.Invoke("Unable to update responses", _lastError);
+                yield return -1;
+            }
+            yield return responseID;
         }
 
         public string GetLastError()

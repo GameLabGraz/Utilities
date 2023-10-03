@@ -8,7 +8,8 @@ namespace GameLabGraz.LimeSurvey
     {
         OK,
         HttpStatusError,
-        ResponseError
+        ResponseError,
+        NoMatchingResponse
     }
 
     public enum LimeSurveyMethod
@@ -17,7 +18,8 @@ namespace GameLabGraz.LimeSurvey
         [StringValue("list_groups")] ListGroups,
         [StringValue("list_questions")] ListQuestions,
         [StringValue("get_question_properties")] GetQuestionProperties,
-        [StringValue("add_response")] AddResponse
+        [StringValue("add_response")] AddResponse,
+        [StringValue("update_response")] UpdateResponse,
     }
 
     public enum LimeSurveyParameter
