@@ -36,7 +36,6 @@ namespace GameLabGraz.QuestManager.View
             {
                 Destroy(child.gameObject);
             }
-            InitializeQuestView();
         }
     }
 }
