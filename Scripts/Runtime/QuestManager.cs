@@ -28,6 +28,7 @@ namespace GameLabGraz.QuestManager
         public static readonly UnityEvent OnQuestsRead = new UnityEvent();
         public UnityEvent OnQuestCompleted = new UnityEvent();
         public UnityEvent<GameObject, float> ScrollDownVR;
+        public UnityEvent OnQuestsReset = new UnityEvent();
 
 
         private void Start()
@@ -153,5 +154,13 @@ namespace GameLabGraz.QuestManager
             });
         }
 
+        public void ResetQuests()
+        {
+            _currentQuestIndex = 0;
+            ReadQuestXml();
+            ActivateNextMainQuest();
+
+            OnQuestsReset.Invoke();
+        }
     }
 }

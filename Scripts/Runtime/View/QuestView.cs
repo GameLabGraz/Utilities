@@ -21,6 +21,8 @@ namespace GameLabGraz.QuestManager.View
         {
             _questManager = GetComponent<QuestManager>();
 
+            _questManager.OnQuestsReset.AddListener(ResetQuestView);
+
             QuestManager.OnQuestsRead.AddListener(() =>
             {
                 InitializeQuestView(_questManager.MainQuests);
@@ -28,7 +30,13 @@ namespace GameLabGraz.QuestManager.View
             });
         }
 
-
+        public void ResetQuestView()
+        {
+            foreach (Transform child in DataObjectRoot.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            InitializeQuestView();
+        }
     }
-
 }
