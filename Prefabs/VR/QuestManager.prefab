@@ -120,6 +120,9 @@ MonoBehaviour:
   ScrollDownVR:
     m_PersistentCalls:
       m_Calls: []
+  OnQuestsReset:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4090638363657070428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5998,6 +6001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f26bb22a210244081c2e35360e7bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _questManager: {fileID: 4079065021718549917}
   _dataObjectRoot: {fileID: 4702103523925832652}
   _movementMultiplier: 1
 --- !u!1 &7314605987909221411
