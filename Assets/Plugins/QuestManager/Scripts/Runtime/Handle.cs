@@ -4,6 +4,7 @@ namespace GameLabGraz.QuestManager
 {
     public class Handle : MonoBehaviour
     {
+        [SerializeField] private QuestManager _questManager;
         [SerializeField] private GameObject _dataObjectRoot;
         [SerializeField] private float _movementMultiplier = 1.0f;
 
@@ -14,6 +15,12 @@ namespace GameLabGraz.QuestManager
         {
             _iniPosition = transform.position;
             _iniRootPosition = _dataObjectRoot.transform.position;
+
+            _questManager.OnQuestsReset.AddListener(() =>
+            {
+                transform.position = _iniPosition;
+            });
+
         }
 
         private void Update()

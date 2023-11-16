@@ -149,7 +149,6 @@ namespace GameLabGraz.QuestManager
                     if (_hideCompletedQuests)
                         StartCoroutine(activeMainQuest.HideSubQuests());
                 }
-
                 ActivateNextMainQuest();
             });
         }
@@ -157,10 +156,8 @@ namespace GameLabGraz.QuestManager
         public void ResetQuests()
         {
             _currentQuestIndex = 0;
-            ReadQuestXml();
-            ActivateNextMainQuest();
-
             OnQuestsReset.Invoke();
+            ReadQuestXml();
         }
     }
 }
