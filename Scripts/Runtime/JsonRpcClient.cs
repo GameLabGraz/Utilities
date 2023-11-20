@@ -39,7 +39,7 @@ namespace GameLabGraz.LimeSurvey
 
             var postData = JsonConvert.SerializeObject(jObject);
 
-            using (var request = UnityWebRequest.Post(URL, string.Empty))
+            using (var request = UnityWebRequest.PostWwwForm(URL, string.Empty))
             {
                 request.method = UnityWebRequest.kHttpVerbPOST;
                 request.downloadHandler = new DownloadHandlerBuffer();
