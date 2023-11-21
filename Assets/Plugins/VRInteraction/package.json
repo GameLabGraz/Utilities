@@ -7,6 +7,7 @@
 	"description": "This package offers some helpful features for Virtual Reality development.",
 	"dependencies": {
 		"com.unity.textmeshpro": "1.4.1",
-		"com.gear.languagemanager": "1.0.2"
+		"com.gear.languagemanager": "1.0.2",
+		"com.gear.gadgets": "1.0.1"
 	}
 }

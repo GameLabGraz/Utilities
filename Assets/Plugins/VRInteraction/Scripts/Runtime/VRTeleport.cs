@@ -1,5 +1,5 @@
+using GEAR.Gadgets.Extensions;
 using UnityEngine;
-using PrivateAccess;
 using Valve.VR.InteractionSystem;
 
 namespace GameLabGraz.VRInteraction
@@ -11,7 +11,6 @@ namespace GameLabGraz.VRInteraction
 			get => this.GetBaseFieldValue<TeleportMarkerBase[]>("teleportMarkers");
 			set => this.SetBaseFieldValue("teleportMarkers", value);
 		}
-		
 
 		public void ReinitTeleports()
 		{

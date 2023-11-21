@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using PrivateAccess;
+﻿using GEAR.Gadgets.Extensions;
 using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR.InteractionSystem;

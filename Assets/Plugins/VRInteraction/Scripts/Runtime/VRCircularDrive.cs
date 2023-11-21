@@ -1,5 +1,4 @@
-﻿using System;
-using PrivateAccess;
+﻿using GEAR.Gadgets.Extensions;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
