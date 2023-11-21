@@ -5,31 +5,13 @@
         "Unity.TextMeshPro",
         "SteamVR",
         "SteamVR_Actions",
-        "SteamVR_Input",
-        "Valve.VR",
-        "GEAR.LanguageManager"
+        "GEAR.LanguageManager",
+        "GEAR.Gadgets"
     ],
-    "includePlatforms": [
-        "Android",
-        "CloudRendering",
-        "Editor",
-        "GameCoreScarlett",
-        "GameCoreXboxOne",
-        "iOS",
-        "LinuxStandalone64",
-        "Lumin",
-        "macOSStandalone",
-        "PS4",
-        "PS5",
-        "Stadia",
-        "Switch",
-        "tvOS",
-        "WSA",
-        "WindowsStandalone32",
-        "WindowsStandalone64",
-        "XboxOne"
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WebGL"
     ],
-    "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],

@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using PrivateAccess;
+﻿using GEAR.Gadgets.Extensions;
+using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
