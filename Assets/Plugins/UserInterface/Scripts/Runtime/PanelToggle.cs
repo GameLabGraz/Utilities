@@ -6,6 +6,11 @@ public class PanelToggle : MonoBehaviour
 {
     [SerializeField] private Transform _arrow;
     [SerializeField] private GameObject _content;
+    [SerializeField] private bool _hideByDefault;
+
+    void Start() {
+        if (_hideByDefault) Toggle();
+    }
 
     public void Toggle() {
         if (_content.activeSelf) {
