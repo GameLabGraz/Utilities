@@ -1,9 +1,9 @@
 {
-	"name": "com.gear.gadgets",
+	"name": "com.gamelabgraz.gadgets",
 	"displayName": "Gadgets",
 	"version": "1.0.1",
 	"unity": "2018.4",
-	"author": "TUG GEAR Group",
+	"author": "Game Lab Graz",
 	"description": "This package contains general helpful tools.",
 	"dependencies": {}
 }
