@@ -1,9 +1,9 @@
 {
     "name": "GameLabGraz.QuestManager.View",
-    "rootnamespace": "GameLabGraz.QuestManager",
+    "rootNamespace": "",
     "references": [
         "Unity.TextMeshPro",
-        "GEAR.LanguageManager",
+        "GameLabGraz.LanguageManager",
         "GameLabGraz.QuestManager"
     ],
     "includePlatforms": [],

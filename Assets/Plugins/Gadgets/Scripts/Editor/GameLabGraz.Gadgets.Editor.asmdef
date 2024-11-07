@@ -1,7 +1,9 @@
 {
-    "name": "GameLabGraz.QuestManager.Editor",
+    "name": "GameLabGraz.Gadgets.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GameLabGraz.Gadgets"
+    ],
     "includePlatforms": [
         "Editor"
     ],

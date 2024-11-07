@@ -1,18 +1,20 @@
 {
-    "name": "GEAR.LanguageManager",
+    "name": "GameLabGraz.LanguageManager",
+    "rootNamespace": "",
     "references": [
-        "GEAR.SerializeProperty",
+        "GameLabGraz.SerializeProperty",
         "Unity.TextMeshPro",
         "RotaryHeart.AutoCompleteTextField",
         "RotaryHeart.AutoCompleteTextField.Editor",
         "RotaryHeart"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

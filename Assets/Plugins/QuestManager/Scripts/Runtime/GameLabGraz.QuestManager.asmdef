@@ -2,7 +2,7 @@
     "name": "GameLabGraz.QuestManager",
     "references": [
         "Unity.TextMeshPro",
-        "GEAR.LanguageManager"
+        "GameLabGraz.LanguageManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
