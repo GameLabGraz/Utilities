@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using GEAR.Localization;
+using GameLabGraz.Localization;
 using UnityEngine;
 
 namespace GameLabGraz.VRInteraction

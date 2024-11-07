@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GEAR.Localization.Text
+namespace GameLabGraz.Localization.Text
 {
     [RequireComponent(typeof(UnityEngine.UI.Text))]
     public class LocalizedText : LocalizedTextBase

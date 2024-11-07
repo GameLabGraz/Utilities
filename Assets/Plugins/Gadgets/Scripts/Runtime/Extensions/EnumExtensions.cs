@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using GEAR.Gadgets.Attribute;
+using GameLabGraz.Gadgets.Attribute;
 
-namespace GEAR.Gadgets.Extensions
+namespace GameLabGraz.Gadgets.Extensions
 {
     public static class EnumExtensions
     {

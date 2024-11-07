@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace GEAR.Localization.DropDown
+namespace GameLabGraz.Localization.DropDown
 {
     public abstract class LocalizedDropDownBase : MonoBehaviour
     {

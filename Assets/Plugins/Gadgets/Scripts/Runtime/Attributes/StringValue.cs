@@ -1,4 +1,4 @@
-﻿namespace GEAR.Gadgets.Attribute
+﻿namespace GameLabGraz.Gadgets.Attribute
 {
     public class StringValue : System.Attribute
     {

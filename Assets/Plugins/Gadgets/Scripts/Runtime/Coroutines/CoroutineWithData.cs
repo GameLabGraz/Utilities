@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace GEAR.Gadgets.Coroutine
+namespace GameLabGraz.Gadgets.Coroutine
 {
     public class CoroutineWithData
     {

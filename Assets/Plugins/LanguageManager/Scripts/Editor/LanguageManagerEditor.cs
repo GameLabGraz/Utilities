@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace GEAR.Localization.Editor
+namespace GameLabGraz.Localization.Editor
 {
     [CustomEditor(typeof(LanguageManager))]
     public class LanguageManagerEditor : UnityEditor.Editor

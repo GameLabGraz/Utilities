@@ -7,7 +7,7 @@ using System.Collections;
 using UnityEditor;
 #endif
 
-namespace GEAR.Serialize
+namespace GameLabGraz.Serialize
 {
     [System.AttributeUsage(System.AttributeTargets.Field)]
     public class SerializeProperty : PropertyAttribute

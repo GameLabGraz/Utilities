@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.TestTools;
 using NUnit.Framework;
-using GEAR.Localization;
-using GEAR.Localization.DropDown;
+using GameLabGraz.Localization;
+using GameLabGraz.Localization.DropDown;
 
 public class LocalizedDropDownTest
 {

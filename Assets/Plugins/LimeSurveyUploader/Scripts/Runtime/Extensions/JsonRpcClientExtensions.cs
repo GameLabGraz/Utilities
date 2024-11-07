@@ -1,4 +1,4 @@
-﻿using GEAR.Gadgets.Extensions;
+﻿using GameLabGraz.Gadgets.Extensions;
 using Newtonsoft.Json.Linq;
 
 namespace GameLabGraz.LimeSurvey.Extensions

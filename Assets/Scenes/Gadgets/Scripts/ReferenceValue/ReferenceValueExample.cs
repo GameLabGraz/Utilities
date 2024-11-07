@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using GEAR.Gadgets.ReferenceValue;
+using GameLabGraz.Gadgets.ReferenceValue;
 using UnityEditor;
 using UnityEngine;
 
 #if UNITY_EDITOR
-using GEAR.Gadgets.ReferenceValue.Editor;
+using GameLabGraz.Gadgets.ReferenceValue.Editor;
 [CustomPropertyDrawer(typeof(MyClassReferenceValue))]
 public class MyClassReferenceValuePropertyDrawer : ReferenceValuePropertyDrawer<MyTestClass> { }
 #endif
