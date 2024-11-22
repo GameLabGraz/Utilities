@@ -358,7 +358,7 @@ namespace Valve.VR.InteractionSystem
         // flags - The flags to use for attaching the object
         // attachmentPoint - Name of the GameObject in the hierarchy of this Hand which should act as the attachment point for this GameObject
         //-------------------------------------------------
-        public virtual void AttachObject(GameObject objectToAttach, GrabTypes grabbedWithType, AttachmentFlags flags = defaultAttachmentFlags, Transform attachmentOffset = null)
+        public void AttachObject(GameObject objectToAttach, GrabTypes grabbedWithType, AttachmentFlags flags = defaultAttachmentFlags, Transform attachmentOffset = null)
         {
             AttachedObject attachedObject = new AttachedObject();
             attachedObject.attachmentFlags = flags;
@@ -1435,12 +1435,12 @@ namespace Valve.VR.InteractionSystem
 
         public void ShowGrabHint()
         {
-            ControllerButtonHints.ShowButtonHint(this, grabGripAction); //todo: assess
+            ControllerButtonHints.ShowButtonHint(this, grabGripAction);
         }
 
         public void HideGrabHint()
         {
-            ControllerButtonHints.HideButtonHint(this, grabGripAction); //todo: assess
+            ControllerButtonHints.HideTextHint(this, grabGripAction);
         }
 
         public void ShowGrabHint(string text)

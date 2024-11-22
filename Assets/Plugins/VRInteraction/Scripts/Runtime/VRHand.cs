@@ -7,7 +7,7 @@ namespace GameLabGraz.VRInteraction
 {
     public class VRHand : Hand
     {
-        public override void AttachObject(GameObject objectToAttach, GrabTypes grabbedWithType,
+        public new void AttachObject(GameObject objectToAttach, GrabTypes grabbedWithType,
             AttachmentFlags flags = defaultAttachmentFlags, Transform attachmentOffset = null)
         {
             if (objectToAttach)
