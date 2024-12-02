@@ -11,6 +11,7 @@ namespace Valve.VR
     public class SteamVR_ActivateActionSetOnLoad : MonoBehaviour
     {
         public SteamVR_ActionSet actionSet = SteamVR_Input.GetActionSet("default");
+        public SteamVR_ActionSet vrInteractionSet = SteamVR_Input.GetActionSet("VRInteractionPlugin");
 
         public SteamVR_Input_Sources forSources = SteamVR_Input_Sources.Any;
 
@@ -23,19 +24,31 @@ namespace Valve.VR
 
         private void Start()
         {
-            if (actionSet != null && activateOnStart)
+            if(activateOnStart)
             {
-                //Debug.Log(string.Format("[SteamVR] Activating {0} action set.", actionSet.fullPath));
-                actionSet.Activate(forSources, initialPriority, disableAllOtherActionSets);
+                if (actionSet != null)
+                {
+                    actionSet.Activate(forSources, initialPriority, disableAllOtherActionSets);
+                }
+                if (vrInteractionSet != null)
+                {
+                    vrInteractionSet.Activate();
+                }
             }
         }
 
         private void OnDestroy()
         {
-            if (actionSet != null && deactivateOnDestroy)
+            if (deactivateOnDestroy)
             {
-                //Debug.Log(string.Format("[SteamVR] Deactivating {0} action set.", actionSet.fullPath));
-                actionSet.Deactivate(forSources);
+                if (actionSet != null)
+                {
+                    actionSet.Deactivate(forSources);
+                }
+                if (vrInteractionSet != null)
+                {
+                    vrInteractionSet.Deactivate();
+                }
             }
         }
     }
