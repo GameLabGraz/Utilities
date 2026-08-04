@@ -41,7 +41,17 @@ namespace GameLabGraz.Localization.Editor
             var style = new GUIStyle(GUI.skin.textField);
             if (keyProperty.stringValue != "" && !_options.Contains(keyProperty.stringValue))
                 style.normal.textColor = Color.red;
-            keyProperty.stringValue = AutoCompleteTextField.EditorGUILayout.AutoCompleteTextField("Key", keyProperty.stringValue, style, _options.ToArray(), "");
+
+            keyProperty.stringValue =
+                AutoCompleteTextField.EditorGUILayout.AutoCompleteTextField(
+                    label: "Key",
+                    text: keyProperty.stringValue,
+                    style: style,
+                    entries: _options.ToArray(),
+                    hint: "",
+                    allowCustom: true
+                );
+            
             EditorGUILayout.PropertyField(suffixProperty);
             
             serializedObject.ApplyModifiedProperties();
