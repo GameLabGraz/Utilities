@@ -6,12 +6,12 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using GEAR.Serialize;
+using GameLabGraz.Serialize;
 using UnityEngine;
 using UnityEngine.Events;
-using TranslationDict = System.Collections.Generic.Dictionary<string, GEAR.Localization.Translation>;
+using TranslationDict = System.Collections.Generic.Dictionary<string, GameLabGraz.Localization.Translation>;
 
-namespace GEAR.Localization
+namespace GameLabGraz.Localization
 {
     [Serializable] public class LanguageChangedEvent : UnityEvent<SystemLanguage> { }
 

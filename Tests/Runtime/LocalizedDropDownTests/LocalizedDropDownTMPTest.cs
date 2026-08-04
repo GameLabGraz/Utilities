@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using GEAR.Localization;
-using GEAR.Localization.DropDown;
+using GameLabGraz.Localization;
+using GameLabGraz.Localization.DropDown;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
