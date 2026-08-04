@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace GEAR.Gadgets.Extensions
+namespace GameLabGraz.Gadgets.Extensions
 {
     public static class PrivateAccessExtension
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GEAR.Gadgets.Extensions
+namespace GameLabGraz.Gadgets.Extensions
 {
     public static class SystemLanguageExtensions
     {

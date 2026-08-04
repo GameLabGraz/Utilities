@@ -1,9 +1,9 @@
 {
-    "name": "GEAR.Gadgets.Editor",
+    "name": "GameLabGraz.Gadgets.Editor",
+    "rootNamespace": "",
     "references": [
-        "GEAR.Gadgets"
+        "GameLabGraz.Gadgets"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -12,5 +12,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

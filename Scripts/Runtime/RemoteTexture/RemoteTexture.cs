@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace GEAR.Gadgets.RemoteTexture
+namespace GameLabGraz.Gadgets.RemoteTexture
 {
   public static class RemoteTexture
   {
