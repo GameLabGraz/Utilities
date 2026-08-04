@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GEAR.Localization
+namespace GameLabGraz.Localization
 {
     [Serializable]
     public class Translation

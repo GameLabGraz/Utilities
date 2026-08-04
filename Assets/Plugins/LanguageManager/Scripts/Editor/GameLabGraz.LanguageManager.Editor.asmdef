@@ -1,0 +1,21 @@
+{
+    "name": "GameLabGraz.LanguageManager.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GameLabGraz.LanguageManager",
+        "RotaryHeart.AutoCompleteTextField",
+        "RotaryHeart.AutoCompleteTextField.Editor",
+        "RotaryHeart"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

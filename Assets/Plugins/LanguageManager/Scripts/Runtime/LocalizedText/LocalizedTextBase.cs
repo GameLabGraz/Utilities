@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GEAR.Localization.Text
+namespace GameLabGraz.Localization.Text
 {
     public abstract class LocalizedTextBase : MonoBehaviour
     {

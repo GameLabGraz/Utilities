@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using GEAR.Serialize;
+using GameLabGraz.Serialize;
 
 public class SerializePropertyExample : MonoBehaviour
 {

@@ -1,0 +1,20 @@
+{
+    "name": "GameLabGraz.LanguageManager",
+    "rootNamespace": "",
+    "references": [
+        "GameLabGraz.SerializeProperty",
+        "Unity.TextMeshPro",
+        "RotaryHeart.AutoCompleteTextField",
+        "RotaryHeart.AutoCompleteTextField.Editor",
+        "RotaryHeart"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

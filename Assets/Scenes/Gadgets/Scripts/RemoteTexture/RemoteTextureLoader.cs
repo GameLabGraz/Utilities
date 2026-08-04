@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using GEAR.Gadgets.RemoteTexture;
+using GameLabGraz.Gadgets.RemoteTexture;
 
 [RequireComponent(typeof(Image))]
 public class RemoteTextureLoader : MonoBehaviour

@@ -1,11 +1,12 @@
 {
-	"name": "com.gear.languagemanager",
+	"name": "com.gamelabgraz.languagemanager",
 	"displayName": "Language Manager",
 	"version": "1.0.2",
 	"unity": "2018.4",
-	"author": "TUG GEAR Group",
+	"author": "Game Lab Graz",
 	"description": "This package is used to localize text components in Unity.",
 	"dependencies": {
-		"com.unity.textmeshpro": "1.4.1"
+		"com.unity.textmeshpro": "1.4.1",
+		"com.gamelabgraz.serializeproperty": "1.0.0"
 	}
 }

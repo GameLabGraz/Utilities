@@ -1,8 +1,8 @@
-﻿using GEAR.Localization.DropDown;
+﻿using GameLabGraz.Localization.DropDown;
 using UnityEditor;
 using UnityEngine;
 
-namespace GEAR.Localization.Editor
+namespace GameLabGraz.Localization.Editor
 {
     [CustomEditor(typeof(LocalizedDropDownBase), true)]
     public class LocalizedDropDownEditor : UnityEditor.Editor

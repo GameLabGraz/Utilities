@@ -1,7 +1,8 @@
 {
     "name": "GameLabGraz.LimeSurveyUploader",
+    "rootNamespace": "",
     "references": [
-        "GEAR.Gadgets",
+        "GameLabGraz.Gadgets",
         "GameLabGraz.UserInterface",
         "Unity.TextMeshPro"
     ],

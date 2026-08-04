@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace GEAR.Localization.DropDown
+namespace GameLabGraz.Localization.DropDown
 {
     [RequireComponent(typeof(TMP_Dropdown))]
     public class LocalizedDropDownTMP : LocalizedDropDownBase

@@ -1,5 +1,5 @@
 ﻿using System;
-using GEAR.Gadgets.Attribute;
+using GameLabGraz.Gadgets.Attribute;
 using UnityEngine.Events;
 
 namespace GameLabGraz.LimeSurvey

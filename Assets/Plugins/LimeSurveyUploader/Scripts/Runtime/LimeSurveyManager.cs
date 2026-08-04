@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.LimeSurvey.Extensions;
-using GEAR.Gadgets.Coroutine;
-using GEAR.Gadgets.Extensions;
+using GameLabGraz.Gadgets.Coroutine;
+using GameLabGraz.Gadgets.Extensions;
 using Newtonsoft.Json.Linq;
 using UnityEngine.Events;
 

@@ -1,4 +1,4 @@
-﻿using GEAR.Gadgets.Extensions;
+﻿using GameLabGraz.Gadgets.Extensions;
 using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR.InteractionSystem;

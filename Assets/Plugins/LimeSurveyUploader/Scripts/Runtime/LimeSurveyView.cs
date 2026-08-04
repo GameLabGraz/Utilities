@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GameLabGraz.LimeSurvey.Data;
 using GameLabGraz.UI;
-using GEAR.Gadgets.Coroutine;
+using GameLabGraz.Gadgets.Coroutine;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Assertions;
