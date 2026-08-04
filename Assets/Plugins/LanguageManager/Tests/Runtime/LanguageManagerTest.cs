@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using NUnit.Framework;
-using GEAR.Localization;
+using GameLabGraz.Localization;
 
 public class LanguageManagerTest
 {

@@ -6,9 +6,9 @@ using System.Xml;
 using System.Xml.Schema;
 using UnityEditor;
 using UnityEngine;
-using TranslationDict = System.Collections.Generic.Dictionary<string, GEAR.Localization.Translation>;
+using TranslationDict = System.Collections.Generic.Dictionary<string, GameLabGraz.Localization.Translation>;
 
-namespace GEAR.Localization.Editor
+namespace GameLabGraz.Localization.Editor
 {
     public class LanguageFileEditor : EditorWindow
     {

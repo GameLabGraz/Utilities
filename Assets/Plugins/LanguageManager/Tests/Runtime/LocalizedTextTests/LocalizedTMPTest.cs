@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using NUnit.Framework;
 using TMPro;
-using GEAR.Localization;
-using GEAR.Localization.Text;
+using GameLabGraz.Localization;
+using GameLabGraz.Localization.Text;
 
 public class LocalizedTMPTest
 {

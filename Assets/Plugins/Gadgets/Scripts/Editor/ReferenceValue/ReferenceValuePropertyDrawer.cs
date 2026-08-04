@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace GEAR.Gadgets.ReferenceValue.Editor
+namespace GameLabGraz.Gadgets.ReferenceValue.Editor
 {
     public class ReferenceValuePropertyDrawer<T> : PropertyDrawer
     {

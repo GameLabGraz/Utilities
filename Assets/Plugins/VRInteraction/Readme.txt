@@ -1,6 +1,6 @@
 1. Import the VR Interaction Plugin (SteamVR is already included there, but you may need the Oculus Integration Package too).
 
-2. Copy the actions (the whole content of the folder VR Interaction Plugin\SteamVR_GEAR_VRInteraction\1\) into your project's SteamVR-Folder (YourProject\Assets\StreamingAssets\SteamVR\).
+2. Copy the actions (the whole content of the folder VR Interaction Plugin\SteamVR_GameLabGraz_VRInteraction\1\) into your project's SteamVR-Folder (YourProject\Assets\StreamingAssets\SteamVR\).
 
 3. Go to "Window > SteamVR Input" and click "Save and generate" to actually generate the actions.
 

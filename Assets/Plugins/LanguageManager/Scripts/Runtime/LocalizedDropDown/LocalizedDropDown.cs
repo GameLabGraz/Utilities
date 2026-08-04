@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace GEAR.Localization.DropDown
+namespace GameLabGraz.Localization.DropDown
 {
     [RequireComponent(typeof(Dropdown))]
     public class LocalizedDropDown : LocalizedDropDownBase

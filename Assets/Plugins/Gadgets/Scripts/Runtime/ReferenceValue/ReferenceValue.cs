@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace GEAR.Gadgets.ReferenceValue
+namespace GameLabGraz.Gadgets.ReferenceValue
 {
     [Serializable]
     public struct ObjectInfo
