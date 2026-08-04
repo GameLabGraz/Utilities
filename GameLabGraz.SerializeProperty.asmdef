@@ -1,12 +1,14 @@
 {
-    "name": "GEAR.SerializeProperty",
+    "name": "GameLabGraz.SerializeProperty",
+    "rootNamespace": "",
     "references": [],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
