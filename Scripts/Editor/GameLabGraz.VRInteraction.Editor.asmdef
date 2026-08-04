@@ -1,9 +1,9 @@
 {
-    "name": "com.gamelabgraz.vrinteraction.Editor",
+    "name": "GameLabGraz.VRInteraction.Editor",
+    "rootNamespace": "",
     "references": [
-        "com.gamelabgraz.vrinteraction"
+        "GameLabGraz.VRInteraction"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -12,5 +12,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
