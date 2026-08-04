@@ -6,6 +6,7 @@
 	"author": "Game Lab Graz",
 	"description": "This package can be used to show different main and sub quests to users.",
 	"dependencies": {
-		"com.unity.textmeshpro": "1.4.1"
+		"com.unity.textmeshpro": "1.4.1",
+		"com.gamelabgraz.languagemanager": "1.0.2"
 	}
 }

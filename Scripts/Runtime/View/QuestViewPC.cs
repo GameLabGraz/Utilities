@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using GEAR.Localization;
-using GEAR.Localization.Text;
+using GameLabGraz.Localization;
+using GameLabGraz.Localization.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
