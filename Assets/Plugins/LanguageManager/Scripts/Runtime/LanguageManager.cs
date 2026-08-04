@@ -68,7 +68,7 @@ namespace GEAR.Localization
                 Instance._xmlSchemaSet.Add("", XmlReader.Create(
                         new MemoryStream(Resources.Load<TextAsset>(XmlSchemaFile).bytes)));
             }
-            else if (Instance != this)
+            else if (Instance != this && !Application.isEditor)
             {
                 Destroy(gameObject);
             }
