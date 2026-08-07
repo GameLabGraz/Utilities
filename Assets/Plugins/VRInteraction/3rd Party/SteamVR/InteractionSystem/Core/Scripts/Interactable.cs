@@ -67,7 +67,7 @@ namespace Valve.VR.InteractionSystem
         protected SkinnedMeshRenderer[] existingSkinnedRenderers;
         protected static Material highlightMat;
         [Tooltip("An array of child gameObjects to not render a highlight for. Things like transparent parts, vfx, etc.")]
-        public GameObject[] hideHighlight;
+        public GameObject[] hideHighlight = new GameObject[] { };
 
         [Tooltip("Higher is better")]
         public int hoverPriority = 0;
@@ -91,6 +91,10 @@ namespace Valve.VR.InteractionSystem
         public bool isDestroying { get; protected set; }
         public bool isHovering { get; protected set; }
         public bool wasHovering { get; protected set; }
+
+        
+		public UnityEvent OnAttachedToHandEvent = new UnityEvent();
+		public UnityEvent OnDetachedFromHandEvent = new UnityEvent();
 
 
         private void Awake()
@@ -310,6 +314,7 @@ namespace Valve.VR.InteractionSystem
             }
 
             attachedToHand = hand;
+            OnAttachedToHandEvent.Invoke();
         }
 
         protected virtual void OnDetachedFromHand(Hand hand)
@@ -337,6 +342,7 @@ namespace Valve.VR.InteractionSystem
             }
 
             attachedToHand = null;
+            OnDetachedFromHandEvent.Invoke();
         }
 
         protected virtual void OnDestroy()
