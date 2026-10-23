@@ -109,7 +109,7 @@ namespace GameLabGraz.LimeSurvey
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
             {
                 OnError.Invoke("Unable to login.", _lastError);
-                yield return null;
+                yield break;
             }
 
             var response = _client.Response.Result.ToString();
@@ -124,20 +124,25 @@ namespace GameLabGraz.LimeSurvey
                 _lastError = "";
                 SessionKey = response;
                 LoggedIn = true;
-                Debug.Log($"[LimeSurvey] Login: Login successfully - Session Key: {SessionKey}");
+                Debug.Log("[LimeSurvey] Login: Login successfully");
                 OnLoggedIn.Invoke(SessionKey);
             }
         }
 
         private ErrorCode HandleClientResponse(JsonRpcResponse response)
         {
+            if (response == null)
+            {
+                _lastError = "No response received from LimeSurvey.";
+                return ErrorCode.ResponseError;
+            }
             if (response.StatusCode != 200)
             {
                 _lastError = $"Error - HTTP Status Code: {_client.Response.StatusCode}";
                 Debug.Log("[LimeSurvey] ERROR: HandleClientResponse: " + _lastError);
                 return ErrorCode.HttpStatusError;
             }
-            if (response.Error != null)
+            if (response.Error != null && response.Error.Type != JTokenType.Null)
             {
                 _lastError = $"Error: {_client.Response.Error}";
                 Debug.Log("[LimeSurvey] ERROR: HandleClientResponse: " + _lastError);
@@ -148,6 +153,17 @@ namespace GameLabGraz.LimeSurvey
                 _lastError = $"Error - No matching Response";
                 Debug.Log("[LimeSurvey] ERROR: No matching Response.");
                 return ErrorCode.NoMatchingResponse;
+            }
+
+            if (response.Result is JObject result && (result["status"] != null || result["error_code"] != null))
+            {
+                _lastError = result.ToString();
+                return ErrorCode.ResponseError;
+            }
+            if (response.Result == null)
+            {
+                _lastError = "LimeSurvey returned an empty result.";
+                return ErrorCode.ResponseError;
             }
 
             _lastError = "";
@@ -167,11 +183,11 @@ namespace GameLabGraz.LimeSurvey
             yield return _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
-                yield return null;
+                yield break;
 
             var questionProperties = (JObject)_client.Response.Result;
             // Attributes
-            var attributes = questionProperties["attributes"];
+            var attributes = questionProperties["attributes"] as JObject;
             if (attributes != null)
             {
                 var randOrder = attributes["random_order"];
@@ -186,6 +202,9 @@ namespace GameLabGraz.LimeSurvey
                 {
                     var subQuestionObj = JsonUtility.FromJson<SubQuestion>(subQuestion.First?.ToString());
                     subQuestionObj.SubquestionName = (subQuestion as JProperty)?.Name;
+                    if (!int.TryParse(subQuestionObj.SubquestionName, out var subquestionId) || subquestionId <= 0)
+                        throw new InvalidOperationException("LimeSurvey 7 returned an invalid subquestion ID.");
+                    subQuestionObj.ID = subquestionId;
                     question.SubQuestions.Add(subQuestionObj);
                 }
 
@@ -261,9 +280,18 @@ namespace GameLabGraz.LimeSurvey
             {
                 if (question.SubQuestions.Count > 0)
                     foreach (var subQuestion in question.SubQuestions)
-                        responseData.Add($"{surveyId}X{question.GID}X{question.ID}{subQuestion.Title}", subQuestion.Answer);
+                    {
+                        if (subQuestion.Title == "other")
+                            responseData.Add($"Q{question.ID}_Cother", subQuestion.Answer);
+                        else
+                        {
+                            if (subQuestion.ID <= 0)
+                                throw new InvalidOperationException($"Missing subquestion ID for '{subQuestion.Title}'.");
+                            responseData.Add($"Q{question.ID}_S{subQuestion.ID}", subQuestion.Answer);
+                        }
+                    }
                 else
-                    responseData.Add($"{surveyId}X{question.GID}X{question.ID}", question.Answer);
+                    responseData.Add($"Q{question.ID}", question.Answer);
             }
 
             return responseData;
@@ -279,6 +307,12 @@ namespace GameLabGraz.LimeSurvey
             _client.AddParameter(LimeSurveyParameter.SurveyID, surveyId);
 
             yield return _client.Post();
+
+            if (HandleClientResponse(_client.Response) != ErrorCode.OK)
+            {
+                OnError.Invoke("Unable to load question groups.", _lastError);
+                yield break;
+            }
 
             var groupList = new List<QuestionGroup>();
             foreach (var group in (JArray)_client.Response.Result)
@@ -308,7 +342,7 @@ namespace GameLabGraz.LimeSurvey
             yield return _client.Post();
 
             if (HandleClientResponse(_client.Response) != ErrorCode.OK)
-                yield return null;
+                yield break;
 
             var questionList = new List<Question>();
             foreach (var question in (JArray)_client.Response.Result)
@@ -391,12 +425,21 @@ namespace GameLabGraz.LimeSurvey
             if (errorCode == ErrorCode.NoMatchingResponse)
             {
                 yield return UploadQuestionResponses(questions, responseID);
+                yield break;
             }
             else if (errorCode != ErrorCode.OK)
             {
                 Debug.Log("[LimeSurvey] ERROR UpdateQuestionResponses: Unable to update responses.");
                 OnError.Invoke("Unable to update responses", _lastError);
                 yield return -1;
+                yield break;
+            }
+            if (!bool.TryParse(_client.Response.Result.ToString(), out var updated) || !updated)
+            {
+                _lastError = "LimeSurvey did not confirm the response update.";
+                OnError.Invoke("Unable to update responses", _lastError);
+                yield return -1;
+                yield break;
             }
             yield return responseID;
         }

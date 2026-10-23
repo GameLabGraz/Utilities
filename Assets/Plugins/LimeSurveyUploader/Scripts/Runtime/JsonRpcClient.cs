@@ -29,6 +29,8 @@ namespace GameLabGraz.LimeSurvey
 
         public IEnumerator Post()
         {
+            // Never reuse an earlier successful response after a failed request.
+            Response = new JsonRpcResponse();
             var jObject = new JObject
             {
                 new JProperty("jsonrpc", "2.0"),
@@ -51,14 +53,23 @@ namespace GameLabGraz.LimeSurvey
                 request.SetRequestHeader("Content-Type", "application/json");
                 yield return request.SendWebRequest();
 
+                Response.StatusCode = request.responseCode;
                 if (request.isNetworkError || request.isHttpError)
                 {
-                    yield return request.error;
+                    Response.Error = request.error;
+                    yield break;
                 }
                 else
                 {
-                    Response = new JsonRpcResponse();
-                    Response = JsonConvert.DeserializeObject<JsonRpcResponse>(request.downloadHandler.text);
+                    try
+                    {
+                        Response = JsonConvert.DeserializeObject<JsonRpcResponse>(request.downloadHandler.text)
+                            ?? new JsonRpcResponse { Error = "Empty JSON-RPC response." };
+                    }
+                    catch (JsonException)
+                    {
+                        Response = new JsonRpcResponse { Error = "Invalid JSON-RPC response." };
+                    }
                     Response.StatusCode = request.responseCode;
                 }
             }
@@ -74,14 +85,14 @@ namespace GameLabGraz.LimeSurvey
     {
         public int Id { set; get; }
         public object Result { set; get; }
-        public string Error { set; get; }
+        public JToken Error { set; get; }
         public long StatusCode { set; get; }
 
         public JsonRpcResponse() { }
 
         public override string ToString()
         {
-            return "{\"id\":" + Id + ",\"result\":\"" + Result + "\",\"error\":" + Error + ((string.IsNullOrEmpty(Error)) ? "null" : "\"" + Error + "\"") + "}";
+            return JsonConvert.SerializeObject(this);
         }
     }
 }
