@@ -2,7 +2,7 @@
 The GameLabGraz/Utilities project contains a list of useful packages for [Unity](https://unity.com/):
 
 - [LanguageManager](https://github.com/GameLabGraz/Utilities/tree/package/languagemanager) - Used to localize text components in Unity.
-- [LimeSurveyUploader](https://github.com/GameLabGraz/Utilities/tree/package/limesurveyuploader) - Used to upload VV survey files to LimeSurvey.
+- [LimeSurveyUploader](https://github.com/GameLabGraz/Utilities/tree/package/limesurveyuploader) - Displays survey questions and uploads responses through the LimeSurvey 7 RemoteControl API. LimeSurvey 6 is no longer supported.
 - [QuestManager](https://github.com/GameLabGraz/Utilities/tree/package/questmanager) - Used to show users different main/sub quests.
 - [SerializeProperty](https://github.com/GameLabGraz/Utilities/tree/package/serializeproperty) - Used to serialze c# properties for the Unity Editor.
 - [Gadgets](https://github.com/GameLabGraz/Utilities/tree/package/gadgets) - Includes different useful stuff.

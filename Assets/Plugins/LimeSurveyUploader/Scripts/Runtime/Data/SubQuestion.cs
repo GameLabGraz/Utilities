@@ -8,6 +8,8 @@ namespace GameLabGraz.LimeSurvey.Data
     {
         [SerializeField] private int scale_id;
 
+        public int ID { get; set; }
+
         public int ScaleId => scale_id;
         public string SubquestionName { set; get; } = "";
     }
